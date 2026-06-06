@@ -1,0 +1,364 @@
+{{ 'team-order-form.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'team-order-form.js' | asset_url }}" defer></script>
+
+{% liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign featured_image = product.featured_image | default: product.images.first
+  assign contact_link = section.settings.contact_url | default: '/pages/contact'
+  assign min_players = section.settings.min_players | default: 6
+  if min_players < 6
+    assign min_players = 6
+  endif
+  assign preset_colors = 'White:#FFFFFF,Black:#111111,Royal Blue:#003DA5,Navy:#001F5B,Forest Green:#1E6B3A,Red:#C8102E,Maroon:#6F263D' | split: ','
+%}
+
+<section
+  class="team-order-section"
+  data-section-id="{{ section.id }}"
+  data-cart-add-url="{{ routes.cart_add_url }}.js"
+  data-min-players="{{ min_players }}"
+  data-variant-id="{{ current_variant.id }}"
+>
+  <script type="application/json" class="team-order-section__product-json">{{ product | json }}</script>
+
+  <div class="team-order-section__utility-bar" aria-label="Team order details">
+    <div class="team-order-section__utility-item">
+      <span class="team-order-section__utility-icon" aria-hidden="true">👥</span>
+      <div class="team-order-section__utility-copy">
+        <p class="team-order-section__utility-title">Custom Team Orders</p>
+        <p class="team-order-section__utility-text">{{ section.settings.utility_bar_delivery }}</p>
+      </div>
+    </div>
+    <div class="team-order-section__utility-item">
+      <span class="team-order-section__utility-icon" aria-hidden="true">🚫</span>
+      <div class="team-order-section__utility-copy">
+        <p class="team-order-section__utility-title">No Returns</p>
+        <p class="team-order-section__utility-text">All sales are final</p>
+      </div>
+    </div>
+    <div class="team-order-section__utility-item">
+      <span class="team-order-section__utility-icon" aria-hidden="true">📦</span>
+      <div class="team-order-section__utility-copy">
+        <p class="team-order-section__utility-title">Minimum Order</p>
+        <p class="team-order-section__utility-text">{{ section.settings.minimum_order }}</p>
+      </div>
+    </div>
+    <a class="team-order-section__utility-item team-order-section__utility-item--link" href="{{ contact_link }}">
+      <span class="team-order-section__utility-icon" aria-hidden="true">💬</span>
+      <div class="team-order-section__utility-copy">
+        <p class="team-order-section__utility-title">Need Help?</p>
+        <p class="team-order-section__utility-text">Contact our team</p>
+      </div>
+    </a>
+  </div>
+
+  <div class="team-order-section__inner page-width">
+    <div class="team-order-section__grid">
+      <div class="team-order-section__gallery-column">
+        <div class="team-order-section__gallery">
+          <div class="team-order-section__thumbnails" role="tablist" aria-label="Product images">
+            {% for image in product.images %}
+              <button
+                type="button"
+                class="team-order-section__thumbnail{% if image.id == featured_image.id %} is-active{% endif %}"
+                data-gallery-thumb
+                data-image-id="{{ image.id }}"
+                data-image-src="{{ image | image_url: width: 1400 }}"
+                data-image-alt="{{ image.alt | default: product.title | escape }}"
+                aria-label="View image {{ forloop.index }}"
+                aria-selected="{% if image.id == featured_image.id %}true{% else %}false{% endif %}"
+              >
+                <img
+                  src="{{ image | image_url: width: 180 }}"
+                  alt="{{ image.alt | default: product.title | escape }}"
+                  loading="lazy"
+                  width="88"
+                  height="88"
+                >
+              </button>
+            {% endfor %}
+          </div>
+
+          <div class="team-order-section__main-image-shell">
+            {% if featured_image %}
+              <img
+                class="team-order-section__main-image"
+                data-main-image
+                src="{{ featured_image | image_url: width: 1400 }}"
+                alt="{{ featured_image.alt | default: product.title | escape }}"
+                loading="eager"
+                width="{{ featured_image.width }}"
+                height="{{ featured_image.height }}"
+              >
+            {% else %}
+              <div class="team-order-section__main-image team-order-section__main-image--fallback" aria-hidden="true">
+                <svg class="team-order-section__fallback-svg" viewBox="0 0 240 240" fill="none">
+                  <rect x="40" y="48" width="160" height="144" stroke="currentColor" stroke-width="8"/>
+                  <path d="M64 168l40-44 28 28 24-20 20 36" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="92" cy="92" r="14" fill="currentColor"/>
+                </svg>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="team-order-section__content-column">
+        <div class="team-order-section__product-meta">
+          <p class="team-order-section__eyebrow">Premium team uniform ordering</p>
+          <h1 class="team-order-section__title">{{ product.title }}</h1>
+          <p class="team-order-section__price">Starting at {{ product.price | money }}/player</p>
+          <ul class="team-order-section__feature-list">
+            <li>100% polyester moisture wicking micro-mesh.</li>
+            <li>Lightweight 4oz construction for full-speed movement.</li>
+            <li>Athletic fit built for distraction-free play.</li>
+            <li>Fully sublimated graphics with rich Italian ink.</li>
+            <li>Custom orders are ready in 30 days (imported).</li>
+            <li>Minimum order of 6 pieces with no additional set up fees.</li>
+          </ul>
+        </div>
+
+        <div class="team-order-section__form-card">
+          <div class="team-order-section__message team-order-section__message--error" data-form-message="error" role="alert" hidden>
+            Please complete all player information before adding to cart.
+          </div>
+          <div class="team-order-section__message team-order-section__message--success" data-form-message="success" role="status" hidden></div>
+
+          <div class="team-order-section__field-group">
+            <div class="team-order-section__field-header">
+              <label class="team-order-section__field-label" for="TeamName-{{ section.id }}">1. Team Name</label>
+              <span class="team-order-section__field-meta" data-team-name-count>0/15</span>
+            </div>
+            <input
+              id="TeamName-{{ section.id }}"
+              class="team-order-section__text-input"
+              type="text"
+              name="team_name"
+              maxlength="15"
+              autocomplete="off"
+              placeholder="Enter team name"
+              data-team-name
+            >
+          </div>
+
+          <div class="team-order-section__field-group">
+            <div class="team-order-section__field-header">
+              <span class="team-order-section__field-label">2. Uniform Color</span>
+              <span class="team-order-section__field-meta" data-selected-color-label>#FFFFFF (White)</span>
+            </div>
+            <input type="hidden" value="#FFFFFF (White)" data-uniform-color-value>
+            <div class="team-order-section__color-panel">
+              <div class="team-order-section__swatches" role="list" aria-label="Uniform color presets">
+                {% for color_entry in preset_colors %}
+                  {% assign color_parts = color_entry | split: ':' %}
+                  {% assign color_name = color_parts[0] %}
+                  {% assign color_hex = color_parts[1] %}
+                  <button
+                    type="button"
+                    class="team-order-section__swatch{% if forloop.first %} is-active{% endif %}"
+                    data-color-swatch
+                    data-color-name="{{ color_name }}"
+                    data-color-value="{{ color_hex }}"
+                    aria-label="{{ color_name }}"
+                    aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+                  >
+                    <span class="team-order-section__swatch-fill" style="background-color: {{ color_hex }};"></span>
+                    <span class="team-order-section__swatch-name">{{ color_name }}</span>
+                  </button>
+                {% endfor %}
+              </div>
+
+              <div class="team-order-section__custom-color">
+                <label class="team-order-section__field-label team-order-section__field-label--subtle" for="ColorHex-{{ section.id }}">Custom HEX</label>
+                <div class="team-order-section__custom-color-input">
+                  <span class="team-order-section__custom-color-preview" data-custom-color-preview aria-hidden="true"></span>
+                  <input
+                    id="ColorHex-{{ section.id }}"
+                    class="team-order-section__text-input"
+                    type="text"
+                    value="#FFFFFF"
+                    maxlength="7"
+                    inputmode="text"
+                    autocomplete="off"
+                    data-color-hex
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="team-order-section__field-group">
+            <span class="team-order-section__field-label">3. Style</span>
+            <input type="hidden" value="Home" data-style-value>
+            <div class="team-order-section__style-toggle" role="group" aria-label="Uniform style">
+              <button type="button" class="team-order-section__style-button is-active" data-style-button data-style-option="Home" aria-pressed="true">HOME</button>
+              <button type="button" class="team-order-section__style-button" data-style-button data-style-option="Away" aria-pressed="false">AWAY</button>
+            </div>
+          </div>
+
+          <div class="team-order-section__field-group">
+            <div class="team-order-section__field-header">
+              <span class="team-order-section__field-label">4. Player Roster Table</span>
+              <span class="team-order-section__field-meta">Minimum {{ min_players }} players</span>
+            </div>
+
+            <div class="team-order-section__roster-table-shell">
+              <table class="team-order-section__roster-table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Number</th>
+                    <th scope="col">Size</th>
+                    <th scope="col"><span class="visually-hidden">Remove</span></th>
+                  </tr>
+                </thead>
+                <tbody data-roster-body>
+                  {% for index in (1..min_players) %}
+                    <tr class="team-order-section__roster-row" data-player-row>
+                      <td class="team-order-section__roster-index" data-player-index>{{ index }}</td>
+                      <td>
+                        <label class="visually-hidden" for="PlayerLastName-{{ section.id }}-{{ index }}">Player {{ index }} last name</label>
+                        <input
+                          id="PlayerLastName-{{ section.id }}-{{ index }}"
+                          class="team-order-section__text-input"
+                          type="text"
+                          maxlength="12"
+                          autocomplete="off"
+                          placeholder="Last Name"
+                          data-player-last-name
+                        >
+                      </td>
+                      <td>
+                        <label class="visually-hidden" for="PlayerNumber-{{ section.id }}-{{ index }}">Player {{ index }} number</label>
+                        <input
+                          id="PlayerNumber-{{ section.id }}-{{ index }}"
+                          class="team-order-section__text-input"
+                          type="number"
+                          min="0"
+                          max="99"
+                          inputmode="numeric"
+                          placeholder="00"
+                          data-player-number
+                        >
+                      </td>
+                      <td>
+                        <label class="visually-hidden" for="PlayerSize-{{ section.id }}-{{ index }}">Player {{ index }} size</label>
+                        <select id="PlayerSize-{{ section.id }}-{{ index }}" class="team-order-section__select-input" data-player-size>
+                          <option value="">Select size</option>
+                          <optgroup label="Youth">
+                            <option value="Youth YXS">YXS</option>
+                            <option value="Youth YS">YS</option>
+                            <option value="Youth YM">YM</option>
+                            <option value="Youth YL">YL</option>
+                            <option value="Youth YXL">YXL</option>
+                          </optgroup>
+                          <optgroup label="Women's">
+                            <option value="Women's WXS">WXS</option>
+                            <option value="Women's WS">WS</option>
+                            <option value="Women's WM">WM</option>
+                            <option value="Women's WL">WL</option>
+                            <option value="Women's WXL">WXL</option>
+                            <option value="Women's W2XL">W2XL</option>
+                          </optgroup>
+                          <optgroup label="Men's">
+                            <option value="Men's XS">XS</option>
+                            <option value="Men's S">S</option>
+                            <option value="Men's M">M</option>
+                            <option value="Men's L">L</option>
+                            <option value="Men's XL">XL</option>
+                            <option value="Men's 2XL">2XL</option>
+                            <option value="Men's 3XL">3XL</option>
+                          </optgroup>
+                        </select>
+                      </td>
+                      <td class="team-order-section__roster-remove-cell">
+                        <button type="button" class="team-order-section__remove-row" data-remove-player aria-label="Remove player {{ index }}">
+                          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm1 7h2v8h-2v-8Zm4 0h2v8h-2v-8ZM7 10h2v8H7v-8Zm-1 11h12l1-13H5l1 13Z" fill="currentColor"/>
+                          </svg>
+                        </button>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="team-order-section__roster-actions">
+              <button type="button" class="team-order-section__add-player" data-add-player>+ Add Another Player</button>
+            </div>
+          </div>
+
+          <div class="team-order-section__field-group">
+            <label class="team-order-section__field-label" for="SampleSize-{{ section.id }}">5. Sample Size (Optional)</label>
+            <select id="SampleSize-{{ section.id }}" class="team-order-section__select-input" data-sample-size>
+              <option value="No sample needed" selected>No sample needed</option>
+              <optgroup label="Youth">
+                <option value="Youth YXS">YXS</option>
+                <option value="Youth YS">YS</option>
+                <option value="Youth YM">YM</option>
+                <option value="Youth YL">YL</option>
+                <option value="Youth YXL">YXL</option>
+              </optgroup>
+              <optgroup label="Women's">
+                <option value="Women's WXS">WXS</option>
+                <option value="Women's WS">WS</option>
+                <option value="Women's WM">WM</option>
+                <option value="Women's WL">WL</option>
+                <option value="Women's WXL">WXL</option>
+                <option value="Women's W2XL">W2XL</option>
+              </optgroup>
+              <optgroup label="Men's">
+                <option value="Men's XS">XS</option>
+                <option value="Men's S">S</option>
+                <option value="Men's M">M</option>
+                <option value="Men's L">L</option>
+                <option value="Men's XL">XL</option>
+                <option value="Men's 2XL">2XL</option>
+                <option value="Men's 3XL">3XL</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div class="team-order-section__field-group">
+            <span class="team-order-section__field-label">Size Guide</span>
+            {% render 'team-size-guide' %}
+          </div>
+
+          <div class="team-order-section__cta-group">
+            <button type="button" class="team-order-section__cta team-order-section__cta--primary" data-add-to-cart>
+              🛒 Add Team Order to Cart
+            </button>
+            <a class="team-order-section__cta team-order-section__cta--secondary" href="/pages/contact?type=quote">
+              📋 Request Team Quote
+            </a>
+          </div>
+
+          <p class="team-order-section__rules">
+            Minimum order: 6 uniforms. Each player requires a last name, number, and size. Custom orders are final sale. No returns.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-order-section__features-wrapper">
+      {% render 'team-feature-icons' %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Team Order Form",
+  "tag": "section",
+  "class": "team-order-section",
+  "settings": [
+    { "type": "text", "id": "utility_bar_delivery", "label": "Delivery Time", "default": "Ready in 30 days (Imported)" },
+    { "type": "text", "id": "minimum_order", "label": "Minimum Order Text", "default": "6 uniforms per order" },
+    { "type": "url", "id": "contact_url", "label": "Contact Page URL" },
+    { "type": "number", "id": "min_players", "label": "Minimum Players", "default": 6 }
+  ],
+  "presets": [{ "name": "Team Order Form" }]
+}
+{% endschema %}
