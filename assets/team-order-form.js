@@ -9,6 +9,8 @@
     { name: 'Maroon', value: '#6F263D' }
   ];
 
+  const VECTOR_EXTENSIONS = ['svg', 'ai', 'eps', 'pdf'];
+
   const sizeOptionsMarkup = `
     <option value="">Select size</option>
     <optgroup label="Youth">
@@ -48,6 +50,8 @@
   const isValidHex = (value) => /^#[0-9A-F]{6}$/.test(value);
 
   const formatColorLabel = (hex, name) => `${hex} (${name})`;
+
+  const getColorName = (hex) => PRESET_COLORS.find((color) => color.value === hex)?.name || 'Custom';
 
   const createRosterRow = (index, sectionId) => {
     const row = document.createElement('tr');
@@ -99,47 +103,79 @@
     return row;
   };
 
+  const getFileExtension = (fileName) => {
+    const lastSegment = fileName.split('.').pop();
+    return lastSegment ? lastSegment.toLowerCase() : '';
+  };
+
   const initializeSection = (section) => {
     const sectionId = section.dataset.sectionId || 'section';
     const minPlayers = Math.max(parseInt(section.dataset.minPlayers || '6', 10) || 6, 6);
     const cartAddUrl = section.dataset.cartAddUrl || '/cart/add.js';
-    const productDataNode = section.querySelector('.team-order-section__product-json');
-    const productData = productDataNode ? JSON.parse(productDataNode.textContent) : null;
-    const variantId = Number(section.dataset.variantId || productData?.selected_or_first_available_variant?.id || productData?.variants?.[0]?.id || 0);
 
     const mainImage = section.querySelector('[data-main-image]');
     const thumbnails = Array.from(section.querySelectorAll('[data-gallery-thumb]'));
+    const form = section.querySelector('[data-team-order-form]');
     const teamNameInput = section.querySelector('[data-team-name]');
     const teamNameCount = section.querySelector('[data-team-name-count]');
-    const colorHexInput = section.querySelector('[data-color-hex]');
-    const colorLabel = section.querySelector('[data-selected-color-label]');
-    const colorPreview = section.querySelector('[data-custom-color-preview]');
-    const colorValueInput = section.querySelector('[data-uniform-color-value]');
-    const swatches = Array.from(section.querySelectorAll('[data-color-swatch]'));
     const styleInput = section.querySelector('[data-style-value]');
     const styleButtons = Array.from(section.querySelectorAll('[data-style-button]'));
     const rosterBody = section.querySelector('[data-roster-body]');
     const addPlayerButton = section.querySelector('[data-add-player]');
     const addToCartButton = section.querySelector('[data-add-to-cart]');
-    const sampleSizeSelect = section.querySelector('[data-sample-size]');
+    const rosterPropertyInput = section.querySelector('[data-roster-property]');
+    const playerCountPropertyInput = section.querySelector('[data-player-count-property]');
+    const uploadInputs = Array.from(section.querySelectorAll('[data-vector-upload]'));
     const errorMessage = section.querySelector('[data-form-message="error"]');
     const successMessage = section.querySelector('[data-form-message="success"]');
-
-    let activeColorName = 'White';
+    const colorStudio = section.querySelector('[data-color-studio]');
+    const colorPicker = section.querySelector('[data-color-picker]');
+    const colorHexInput = section.querySelector('[data-color-hex]');
+    const colorPreview = section.querySelector('[data-color-preview]');
+    const activeColorDisplay = section.querySelector('[data-active-color-display]');
+    const colorApplyCopy = section.querySelector('[data-color-apply-copy]');
+    const colorTargetButtons = Array.from(section.querySelectorAll('[data-color-target-button]'));
+    const colorSwatches = Array.from(section.querySelectorAll('[data-color-swatch]'));
+    const colorPropertyInputs = {
+      Main: section.querySelector('[data-color-property="Main"]'),
+      Number: section.querySelector('[data-color-property="Number"]'),
+      Alt: section.querySelector('[data-color-property="Alt"]')
+    };
+    const colorSummaryValues = {
+      Main: section.querySelector('[data-color-summary="Main"] .team-order-section__color-summary-value'),
+      Number: section.querySelector('[data-color-summary="Number"] .team-order-section__color-summary-value'),
+      Alt: section.querySelector('[data-color-summary="Alt"] .team-order-section__color-summary-value')
+    };
+    const colorState = {
+      Main: { hex: '#FFFFFF', name: 'White', apply: 'Applies to jersey body and shorts body.' },
+      Number: { hex: '#111111', name: 'Black', apply: 'Applies to front number, back number, and player number detailing.' },
+      Alt: { hex: '#003DA5', name: 'Royal Blue', apply: 'Applies to trim, piping, side panels, and secondary accents.' }
+    };
+    let activeColorTarget = 'Main';
 
     const setMessage = (type, message) => {
       if (type === 'error') {
         errorMessage.textContent = message;
         errorMessage.hidden = false;
         successMessage.hidden = true;
-      } else if (type === 'success') {
+        return;
+      }
+
+      if (type === 'success') {
         successMessage.textContent = message;
         successMessage.hidden = false;
         errorMessage.hidden = true;
-      } else {
-        errorMessage.hidden = true;
-        successMessage.hidden = true;
+        return;
       }
+
+      errorMessage.hidden = true;
+      successMessage.hidden = true;
+    };
+
+    const clearFieldErrors = () => {
+      section.querySelectorAll('.team-order-section__field-error').forEach((field) => {
+        field.classList.remove('team-order-section__field-error');
+      });
     };
 
     const updateTeamNameCount = () => {
@@ -150,56 +186,45 @@
       teamNameCount.textContent = `${teamNameInput.value.length}/15`;
     };
 
-    const syncColorState = (hex, name) => {
-      activeColorName = name;
-      colorHexInput.value = hex;
-      colorLabel.textContent = formatColorLabel(hex, name);
-      colorValueInput.value = formatColorLabel(hex, name);
-      colorPreview.style.backgroundColor = hex;
-
-      swatches.forEach((swatch) => {
-        const isActive = swatch.dataset.colorValue === hex && swatch.dataset.colorName === name;
-        swatch.classList.toggle('is-active', isActive);
-        swatch.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    const refreshSwatches = () => {
+      const current = colorState[activeColorTarget];
+      colorSwatches.forEach((swatch) => {
+        const isMatch = swatch.dataset.colorValue === current.hex && swatch.dataset.colorName === current.name;
+        swatch.classList.toggle('is-active', isMatch);
+        swatch.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
       });
     };
 
-    const refreshSwatchMatch = () => {
-      const normalized = normalizeHex(colorHexInput.value);
-      colorHexInput.value = normalized;
+    const refreshColorEditor = () => {
+      const current = colorState[activeColorTarget];
+      const valid = isValidHex(current.hex);
 
-      if (!isValidHex(normalized)) {
-        colorPreview.style.backgroundColor = '#FFFFFF';
-        colorValueInput.value = normalized;
-        colorLabel.textContent = `${normalized} (Custom)`;
-        swatches.forEach((swatch) => {
-          swatch.classList.remove('is-active');
-          swatch.setAttribute('aria-pressed', 'false');
-        });
-        activeColorName = 'Custom';
-        return;
-      }
-
-      const matchingPreset = PRESET_COLORS.find((color) => color.value === normalized);
-      if (matchingPreset) {
-        syncColorState(matchingPreset.value, matchingPreset.name);
-        return;
-      }
-
-      activeColorName = 'Custom';
-      colorPreview.style.backgroundColor = normalized;
-      colorLabel.textContent = formatColorLabel(normalized, 'Custom');
-      colorValueInput.value = formatColorLabel(normalized, 'Custom');
-      swatches.forEach((swatch) => {
-        swatch.classList.remove('is-active');
-        swatch.setAttribute('aria-pressed', 'false');
+      colorTargetButtons.forEach((button) => {
+        const isActive = button.dataset.colorTarget === activeColorTarget;
+        button.classList.toggle('is-active', isActive);
+        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
       });
+
+      colorHexInput.value = current.hex;
+      colorPicker.value = valid ? current.hex : '#000000';
+      colorPreview.style.backgroundColor = valid ? current.hex : '#FFFFFF';
+      activeColorDisplay.textContent = valid ? formatColorLabel(current.hex, current.name) : 'Enter a valid HEX value';
+      colorApplyCopy.textContent = current.apply;
+      refreshSwatches();
     };
 
-    const clearFieldErrors = () => {
-      section.querySelectorAll('.team-order-section__field-error').forEach((field) => {
-        field.classList.remove('team-order-section__field-error');
-      });
+    const commitColorState = (target, rawHex, forcedName) => {
+      const hex = normalizeHex(rawHex);
+      const valid = isValidHex(hex);
+      const name = forcedName || (valid ? getColorName(hex) : 'Custom');
+
+      colorState[target].hex = hex;
+      colorState[target].name = name;
+
+      colorPropertyInputs[target].value = valid ? formatColorLabel(hex, name) : '';
+      colorSummaryValues[target].textContent = valid ? formatColorLabel(hex, name) : 'Invalid HEX';
+
+      refreshColorEditor();
     };
 
     const getRows = () => Array.from(rosterBody.querySelectorAll('[data-player-row]'));
@@ -212,34 +237,36 @@
         const numberInput = row.querySelector('[data-player-number]');
         const sizeSelect = row.querySelector('[data-player-size]');
         const removeButton = row.querySelector('[data-remove-player]');
+        const labels = row.querySelectorAll('label');
 
         if (indexCell) {
           indexCell.textContent = String(displayIndex);
         }
+
         if (lastNameInput) {
           lastNameInput.id = `PlayerLastName-${sectionId}-${displayIndex}`;
-          const label = row.querySelector(`label[for^="PlayerLastName-"]`);
-          if (label) {
-            label.htmlFor = lastNameInput.id;
-            label.textContent = `Player ${displayIndex} last name`;
+          if (labels[0]) {
+            labels[0].htmlFor = lastNameInput.id;
+            labels[0].textContent = `Player ${displayIndex} last name`;
           }
         }
+
         if (numberInput) {
           numberInput.id = `PlayerNumber-${sectionId}-${displayIndex}`;
-          const labels = row.querySelectorAll('label');
           if (labels[1]) {
             labels[1].htmlFor = numberInput.id;
             labels[1].textContent = `Player ${displayIndex} number`;
           }
         }
+
         if (sizeSelect) {
           sizeSelect.id = `PlayerSize-${sectionId}-${displayIndex}`;
-          const labels = row.querySelectorAll('label');
           if (labels[2]) {
             labels[2].htmlFor = sizeSelect.id;
             labels[2].textContent = `Player ${displayIndex} size`;
           }
         }
+
         if (removeButton) {
           removeButton.setAttribute('aria-label', `Remove player ${displayIndex}`);
         }
@@ -256,8 +283,7 @@
     };
 
     const handleNumberInput = (input) => {
-      const digits = input.value.replace(/\D/g, '').slice(0, 2);
-      input.value = digits;
+      input.value = input.value.replace(/\D/g, '').slice(0, 2);
     };
 
     const clampNumberInput = (input) => {
@@ -305,24 +331,52 @@
       updateRowIndexes();
     };
 
-    const validateRoster = () => {
+    const buildRosterEntries = () => getRows().map((row, index) => {
+      const lastName = row.querySelector('[data-player-last-name]').value.trim().toUpperCase();
+      const number = row.querySelector('[data-player-number]').value.trim();
+      const size = row.querySelector('[data-player-size]').value.trim();
+      return `${index + 1}. ${lastName} #${number} ${size}`;
+    });
+
+    const validateVectorUpload = (input) => {
+      const filenameNode = input.closest('.team-order-section__upload-card')?.querySelector('[data-upload-name]');
+      if (!input.files || !input.files.length) {
+        if (filenameNode) {
+          filenameNode.textContent = 'No file selected';
+        }
+        return false;
+      }
+
+      const file = input.files[0];
+      const extension = getFileExtension(file.name);
+      if (!VECTOR_EXTENSIONS.includes(extension)) {
+        return false;
+      }
+
+      if (filenameNode) {
+        filenameNode.textContent = file.name;
+      }
+      return true;
+    };
+
+    const validateForm = () => {
       clearFieldErrors();
       setMessage(null);
-      refreshSwatchMatch();
+      commitColorState(activeColorTarget, colorHexInput.value);
 
       let isValid = true;
-      const teamName = teamNameInput.value.trim();
-      const normalizedHex = normalizeHex(colorHexInput.value);
 
-      if (!teamName) {
+      if (!teamNameInput.value.trim()) {
         teamNameInput.classList.add('team-order-section__field-error');
         isValid = false;
       }
 
-      if (!isValidHex(normalizedHex)) {
-        colorHexInput.classList.add('team-order-section__field-error');
-        isValid = false;
-      }
+      Object.keys(colorState).forEach((target) => {
+        if (!isValidHex(colorState[target].hex) || !colorPropertyInputs[target].value) {
+          colorHexInput.classList.add('team-order-section__field-error');
+          isValid = false;
+        }
+      });
 
       const rows = getRows();
       if (rows.length < minPlayers) {
@@ -333,83 +387,61 @@
         const lastNameInput = row.querySelector('[data-player-last-name]');
         const numberInput = row.querySelector('[data-player-number]');
         const sizeSelect = row.querySelector('[data-player-size]');
-        const lastName = lastNameInput.value.trim();
-        const number = numberInput.value.trim();
-        const size = sizeSelect.value.trim();
-        const parsedNumber = Number(number);
+        const numberValue = numberInput.value.trim();
+        const parsedNumber = Number(numberValue);
 
-        if (!lastName) {
+        if (!lastNameInput.value.trim()) {
           lastNameInput.classList.add('team-order-section__field-error');
           isValid = false;
         }
 
-        if (number === '' || Number.isNaN(parsedNumber) || parsedNumber < 0 || parsedNumber > 99) {
+        if (numberValue === '' || Number.isNaN(parsedNumber) || parsedNumber < 0 || parsedNumber > 99) {
           numberInput.classList.add('team-order-section__field-error');
           isValid = false;
         }
 
-        if (!size) {
+        if (!sizeSelect.value.trim()) {
           sizeSelect.classList.add('team-order-section__field-error');
           isValid = false;
         }
       });
 
+      uploadInputs.forEach((input) => {
+        const extensionValid = validateVectorUpload(input);
+        if (!extensionValid) {
+          input.classList.add('team-order-section__field-error');
+          isValid = false;
+        }
+      });
+
       if (!isValid) {
-        setMessage('error', 'Please complete all player information before adding to cart.');
+        setMessage('error', 'Please complete all player information, choose valid colors, and upload vector logo files before adding to cart.');
       }
 
       return isValid;
     };
 
-    const buildRosterSummary = () => getRows().map((row, index) => {
-      const lastName = row.querySelector('[data-player-last-name]').value.trim().toUpperCase();
-      const number = row.querySelector('[data-player-number]').value.trim();
-      const size = row.querySelector('[data-player-size]').value.trim();
-      return `${index + 1}. ${lastName} #${number} ${size}`;
-    });
-
-    const addToCart = async () => {
-      if (!variantId) {
-        setMessage('error', 'This product does not have an available variant to add to cart.');
+    const submitOrder = async () => {
+      if (!validateForm()) {
         return;
       }
 
-      if (!validateRoster()) {
-        return;
-      }
+      const rosterEntries = buildRosterEntries();
+      rosterPropertyInput.value = rosterEntries.join(' | ');
+      playerCountPropertyInput.value = String(rosterEntries.length);
 
       addToCartButton.disabled = true;
       addToCartButton.textContent = 'Adding Team Order...';
 
-      const teamName = teamNameInput.value.trim();
-      const rosterEntries = buildRosterSummary();
-      const properties = {
-        'Team Name': teamName,
-        'Uniform Color': colorValueInput.value,
-        'Style': styleInput.value,
-        'Player Count': String(rosterEntries.length),
-        'Roster': rosterEntries.join(' | '),
-        'Sample Size': sampleSizeSelect.value
-      };
-
-      const payload = {
-        items: [
-          {
-            id: variantId,
-            quantity: 1,
-            properties
-          }
-        ]
-      };
+      const formData = new FormData(form);
 
       try {
         const response = await fetch(cartAddUrl, {
           method: 'POST',
           headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            Accept: 'application/json'
           },
-          body: JSON.stringify(payload)
+          body: formData
         });
 
         const responseData = await response.json();
@@ -417,7 +449,7 @@
           throw new Error(responseData.description || 'Unable to add the team order to cart.');
         }
 
-        setMessage('success', 'Team order added to cart. Review the cart to confirm the roster and line item properties.');
+        setMessage('success', 'Team order added to cart with roster details, color selections, and vector logo uploads.');
       } catch (error) {
         setMessage('error', error.message || 'Unable to add the team order to cart.');
       } finally {
@@ -429,10 +461,8 @@
     if (mainImage && thumbnails.length) {
       thumbnails.forEach((thumbnail) => {
         thumbnail.addEventListener('click', () => {
-          const nextSrc = thumbnail.dataset.imageSrc;
-          const nextAlt = thumbnail.dataset.imageAlt || '';
-          mainImage.src = nextSrc;
-          mainImage.alt = nextAlt;
+          mainImage.src = thumbnail.dataset.imageSrc || mainImage.src;
+          mainImage.alt = thumbnail.dataset.imageAlt || mainImage.alt;
 
           thumbnails.forEach((item) => {
             item.classList.remove('is-active');
@@ -450,27 +480,44 @@
       updateTeamNameCount();
     }
 
-    if (colorPreview) {
-      colorPreview.style.backgroundColor = '#FFFFFF';
-    }
+    if (colorStudio) {
+      refreshColorEditor();
 
-    swatches.forEach((swatch) => {
-      swatch.addEventListener('click', () => {
-        const hex = swatch.dataset.colorValue || '#FFFFFF';
-        const name = swatch.dataset.colorName || 'Custom';
-        syncColorState(hex, name);
+      colorTargetButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          activeColorTarget = button.dataset.colorTarget || 'Main';
+          refreshColorEditor();
+        });
       });
-    });
 
-    if (colorHexInput) {
-      colorHexInput.addEventListener('input', refreshSwatchMatch);
-      colorHexInput.addEventListener('blur', refreshSwatchMatch);
+      colorPicker.addEventListener('input', () => {
+        commitColorState(activeColorTarget, colorPicker.value);
+      });
+
+      colorHexInput.addEventListener('input', () => {
+        commitColorState(activeColorTarget, colorHexInput.value);
+      });
+
+      colorHexInput.addEventListener('blur', () => {
+        commitColorState(activeColorTarget, colorHexInput.value);
+      });
+
+      colorSwatches.forEach((swatch) => {
+        swatch.addEventListener('click', () => {
+          commitColorState(
+            activeColorTarget,
+            swatch.dataset.colorValue || '#FFFFFF',
+            swatch.dataset.colorName || 'Custom'
+          );
+        });
+      });
     }
 
     styleButtons.forEach((button) => {
       button.addEventListener('click', () => {
         const value = button.dataset.styleOption || 'Home';
         styleInput.value = value;
+
         styleButtons.forEach((item) => {
           const isActive = item === button;
           item.classList.toggle('is-active', isActive);
@@ -482,16 +529,24 @@
     getRows().forEach((row) => {
       attachRowInputHandlers(row);
     });
-
     updateRowIndexes();
-    syncColorState('#FFFFFF', 'White');
 
     if (addPlayerButton) {
       addPlayerButton.addEventListener('click', addPlayerRow);
     }
 
-    if (addToCartButton) {
-      addToCartButton.addEventListener('click', addToCart);
+    uploadInputs.forEach((input) => {
+      input.addEventListener('change', () => {
+        input.classList.remove('team-order-section__field-error');
+        validateVectorUpload(input);
+      });
+    });
+
+    if (form) {
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        submitOrder();
+      });
     }
   };
 
