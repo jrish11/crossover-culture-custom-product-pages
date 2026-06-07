@@ -9,7 +9,8 @@
     { name: 'Maroon', value: '#6F263D' }
   ];
 
-  const VECTOR_EXTENSIONS = ['svg', 'ai', 'eps', 'pdf'];
+  const VECTOR_EXTENSIONS = ['svg', 'ai', 'eps'];
+  const INITIAL_ROWS = 3;
 
   const sizeOptionsMarkup = `
     <option value="">Select size</option>
@@ -125,6 +126,8 @@
     const addToCartButton = section.querySelector('[data-add-to-cart]');
     const rosterPropertyInput = section.querySelector('[data-roster-property]');
     const playerCountPropertyInput = section.querySelector('[data-player-count-property]');
+    const fontSelect = section.querySelector('[data-font-select]');
+    const fontPreviewButtons = Array.from(section.querySelectorAll('[data-font-preview]'));
     const uploadInputs = Array.from(section.querySelectorAll('[data-vector-upload]'));
     const errorMessage = section.querySelector('[data-form-message="error"]');
     const successMessage = section.querySelector('[data-form-message="success"]');
@@ -134,6 +137,8 @@
     const colorPreview = section.querySelector('[data-color-preview]');
     const activeColorDisplay = section.querySelector('[data-active-color-display]');
     const colorApplyCopy = section.querySelector('[data-color-apply-copy]');
+    const colorEmpty = section.querySelector('[data-color-empty]');
+    const colorWorkbench = section.querySelector('[data-color-workbench]');
     const colorTargetButtons = Array.from(section.querySelectorAll('[data-color-target-button]'));
     const colorSwatches = Array.from(section.querySelectorAll('[data-color-swatch]'));
     const colorPropertyInputs = {
@@ -148,10 +153,11 @@
     };
     const colorState = {
       Main: { hex: '#FFFFFF', name: 'White', apply: 'Applies to jersey body and shorts body.' },
-      Number: { hex: '#111111', name: 'Black', apply: 'Applies to front number, back number, and player number detailing.' },
-      Alt: { hex: '#003DA5', name: 'Royal Blue', apply: 'Applies to trim, piping, side panels, and secondary accents.' }
+      Number: { hex: '#111111', name: 'Black', apply: 'Applies to front and back numbers.' },
+      Alt: { hex: '#003DA5', name: 'Royal Blue', apply: 'Applies to trim, piping, and secondary accents.' }
     };
-    let activeColorTarget = 'Main';
+
+    let activeColorTarget = null;
 
     const setMessage = (type, message) => {
       if (type === 'error') {
@@ -179,55 +185,28 @@
     };
 
     const updateTeamNameCount = () => {
-      if (!teamNameInput || !teamNameCount) {
-        return;
+      if (teamNameInput && teamNameCount) {
+        teamNameCount.textContent = `${teamNameInput.value.length}/15`;
       }
-
-      teamNameCount.textContent = `${teamNameInput.value.length}/15`;
-    };
-
-    const refreshSwatches = () => {
-      const current = colorState[activeColorTarget];
-      colorSwatches.forEach((swatch) => {
-        const isMatch = swatch.dataset.colorValue === current.hex && swatch.dataset.colorName === current.name;
-        swatch.classList.toggle('is-active', isMatch);
-        swatch.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
-      });
-    };
-
-    const refreshColorEditor = () => {
-      const current = colorState[activeColorTarget];
-      const valid = isValidHex(current.hex);
-
-      colorTargetButtons.forEach((button) => {
-        const isActive = button.dataset.colorTarget === activeColorTarget;
-        button.classList.toggle('is-active', isActive);
-        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-      });
-
-      colorHexInput.value = current.hex;
-      colorPicker.value = valid ? current.hex : '#000000';
-      colorPreview.style.backgroundColor = valid ? current.hex : '#FFFFFF';
-      activeColorDisplay.textContent = valid ? formatColorLabel(current.hex, current.name) : 'Enter a valid HEX value';
-      colorApplyCopy.textContent = current.apply;
-      refreshSwatches();
-    };
-
-    const commitColorState = (target, rawHex, forcedName) => {
-      const hex = normalizeHex(rawHex);
-      const valid = isValidHex(hex);
-      const name = forcedName || (valid ? getColorName(hex) : 'Custom');
-
-      colorState[target].hex = hex;
-      colorState[target].name = name;
-
-      colorPropertyInputs[target].value = valid ? formatColorLabel(hex, name) : '';
-      colorSummaryValues[target].textContent = valid ? formatColorLabel(hex, name) : 'Invalid HEX';
-
-      refreshColorEditor();
     };
 
     const getRows = () => Array.from(rosterBody.querySelectorAll('[data-player-row]'));
+
+    const updateAddPlayerButton = () => {
+      const currentCount = getRows().length;
+      if (currentCount < minPlayers) {
+        addPlayerButton.textContent = `+ Add player ${currentCount + 1} of ${minPlayers}`;
+      } else {
+        addPlayerButton.textContent = '+ Add another player';
+      }
+    };
+
+    const updateRemoveButtons = () => {
+      const disableRemovals = getRows().length <= 1;
+      section.querySelectorAll('[data-remove-player]').forEach((button) => {
+        button.disabled = disableRemovals;
+      });
+    };
 
     const updateRowIndexes = () => {
       getRows().forEach((row, index) => {
@@ -239,43 +218,27 @@
         const removeButton = row.querySelector('[data-remove-player]');
         const labels = row.querySelectorAll('label');
 
-        if (indexCell) {
-          indexCell.textContent = String(displayIndex);
-        }
+        indexCell.textContent = String(displayIndex);
+        lastNameInput.id = `PlayerLastName-${sectionId}-${displayIndex}`;
+        numberInput.id = `PlayerNumber-${sectionId}-${displayIndex}`;
+        sizeSelect.id = `PlayerSize-${sectionId}-${displayIndex}`;
 
-        if (lastNameInput) {
-          lastNameInput.id = `PlayerLastName-${sectionId}-${displayIndex}`;
-          if (labels[0]) {
-            labels[0].htmlFor = lastNameInput.id;
-            labels[0].textContent = `Player ${displayIndex} last name`;
-          }
+        if (labels[0]) {
+          labels[0].htmlFor = lastNameInput.id;
         }
-
-        if (numberInput) {
-          numberInput.id = `PlayerNumber-${sectionId}-${displayIndex}`;
-          if (labels[1]) {
-            labels[1].htmlFor = numberInput.id;
-            labels[1].textContent = `Player ${displayIndex} number`;
-          }
+        if (labels[1]) {
+          labels[1].htmlFor = numberInput.id;
         }
-
-        if (sizeSelect) {
-          sizeSelect.id = `PlayerSize-${sectionId}-${displayIndex}`;
-          if (labels[2]) {
-            labels[2].htmlFor = sizeSelect.id;
-            labels[2].textContent = `Player ${displayIndex} size`;
-          }
+        if (labels[2]) {
+          labels[2].htmlFor = sizeSelect.id;
         }
-
         if (removeButton) {
           removeButton.setAttribute('aria-label', `Remove player ${displayIndex}`);
         }
       });
 
-      const disableRemovals = getRows().length <= minPlayers;
-      section.querySelectorAll('[data-remove-player]').forEach((button) => {
-        button.disabled = disableRemovals;
-      });
+      updateAddPlayerButton();
+      updateRemoveButtons();
     };
 
     const handleLastNameInput = (input) => {
@@ -290,7 +253,6 @@
       if (input.value === '') {
         return;
       }
-
       const number = Math.min(Math.max(parseInt(input.value, 10), 0), 99);
       input.value = String(number);
     };
@@ -300,27 +262,18 @@
       const numberInput = row.querySelector('[data-player-number]');
       const removeButton = row.querySelector('[data-remove-player]');
 
-      if (lastNameInput) {
-        lastNameInput.addEventListener('input', () => handleLastNameInput(lastNameInput));
-      }
+      lastNameInput.addEventListener('input', () => handleLastNameInput(lastNameInput));
+      numberInput.addEventListener('input', () => handleNumberInput(numberInput));
+      numberInput.addEventListener('blur', () => clampNumberInput(numberInput));
 
-      if (numberInput) {
-        numberInput.addEventListener('input', () => handleNumberInput(numberInput));
-        numberInput.addEventListener('blur', () => clampNumberInput(numberInput));
-      }
-
-      if (removeButton) {
-        removeButton.addEventListener('click', () => {
-          if (getRows().length <= minPlayers) {
-            setMessage('error', `At least ${minPlayers} players are required for each order.`);
-            return;
-          }
-
-          row.remove();
-          updateRowIndexes();
-          setMessage(null);
-        });
-      }
+      removeButton.addEventListener('click', () => {
+        if (getRows().length <= 1) {
+          return;
+        }
+        row.remove();
+        updateRowIndexes();
+        setMessage(null);
+      });
     };
 
     const addPlayerRow = () => {
@@ -338,8 +291,16 @@
       return `${index + 1}. ${lastName} #${number} ${size}`;
     });
 
+    const updateFontPreviews = () => {
+      const value = fontSelect.value;
+      fontPreviewButtons.forEach((button) => {
+        const isActive = button.dataset.fontPreview === value;
+        button.classList.toggle('is-active', isActive);
+      });
+    };
+
     const validateVectorUpload = (input) => {
-      const filenameNode = input.closest('.team-order-section__upload-card')?.querySelector('[data-upload-name]');
+      const filenameNode = input.closest('.team-order-section__upload-row')?.querySelector('[data-upload-name]');
       if (!input.files || !input.files.length) {
         if (filenameNode) {
           filenameNode.textContent = 'No file selected';
@@ -359,10 +320,73 @@
       return true;
     };
 
+    const refreshSwatches = () => {
+      if (!activeColorTarget) {
+        colorSwatches.forEach((swatch) => {
+          swatch.classList.remove('is-active');
+          swatch.setAttribute('aria-pressed', 'false');
+        });
+        return;
+      }
+
+      const current = colorState[activeColorTarget];
+      colorSwatches.forEach((swatch) => {
+        const isMatch = swatch.dataset.colorValue === current.hex && swatch.dataset.colorName === current.name;
+        swatch.classList.toggle('is-active', isMatch);
+        swatch.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
+      });
+    };
+
+    const refreshColorEditor = () => {
+      colorTargetButtons.forEach((button) => {
+        const isActive = activeColorTarget && button.dataset.colorTarget === activeColorTarget;
+        button.classList.toggle('is-active', Boolean(isActive));
+        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+
+      if (!activeColorTarget) {
+        activeColorDisplay.textContent = 'Select a target';
+        colorEmpty.hidden = false;
+        colorApplyCopy.hidden = true;
+        colorWorkbench.hidden = true;
+        refreshSwatches();
+        return;
+      }
+
+      const current = colorState[activeColorTarget];
+      const valid = isValidHex(current.hex);
+
+      colorEmpty.hidden = true;
+      colorApplyCopy.hidden = false;
+      colorWorkbench.hidden = false;
+      colorApplyCopy.textContent = current.apply;
+      colorHexInput.value = current.hex;
+      colorPicker.value = valid ? current.hex : '#000000';
+      colorPreview.style.backgroundColor = valid ? current.hex : '#FFFFFF';
+      activeColorDisplay.textContent = valid ? formatColorLabel(current.hex, current.name) : 'Enter a valid HEX value';
+      refreshSwatches();
+    };
+
+    const commitColorState = (target, rawHex, forcedName) => {
+      const hex = normalizeHex(rawHex);
+      const valid = isValidHex(hex);
+      const name = forcedName || (valid ? getColorName(hex) : 'Custom');
+
+      colorState[target].hex = hex;
+      colorState[target].name = name;
+      colorPropertyInputs[target].value = valid ? formatColorLabel(hex, name) : '';
+      colorSummaryValues[target].textContent = valid ? formatColorLabel(hex, name) : 'Invalid HEX';
+
+      refreshColorEditor();
+    };
+
     const validateForm = () => {
       clearFieldErrors();
       setMessage(null);
-      commitColorState(activeColorTarget, colorHexInput.value);
+
+      if (activeColorTarget) {
+        commitColorState(activeColorTarget, colorHexInput.value);
+      }
 
       let isValid = true;
 
@@ -373,7 +397,9 @@
 
       Object.keys(colorState).forEach((target) => {
         if (!isValidHex(colorState[target].hex) || !colorPropertyInputs[target].value) {
-          colorHexInput.classList.add('team-order-section__field-error');
+          if (activeColorTarget) {
+            colorHexInput.classList.add('team-order-section__field-error');
+          }
           isValid = false;
         }
       });
@@ -407,15 +433,14 @@
       });
 
       uploadInputs.forEach((input) => {
-        const extensionValid = validateVectorUpload(input);
-        if (!extensionValid) {
+        if (!validateVectorUpload(input)) {
           input.classList.add('team-order-section__field-error');
           isValid = false;
         }
       });
 
       if (!isValid) {
-        setMessage('error', 'Please complete all player information, choose valid colors, and upload vector logo files before adding to cart.');
+        setMessage('error', `Complete the roster, upload vector logo files, and make sure you have at least ${minPlayers} players before adding this order to cart.`);
       }
 
       return isValid;
@@ -449,7 +474,7 @@
           throw new Error(responseData.description || 'Unable to add the team order to cart.');
         }
 
-        setMessage('success', 'Team order added to cart with roster details, color selections, and vector logo uploads.');
+        setMessage('success', 'Team order added to cart with roster details, color selections, font choice, and vector logo uploads.');
       } catch (error) {
         setMessage('error', error.message || 'Unable to add the team order to cart.');
       } finally {
@@ -475,10 +500,8 @@
       });
     }
 
-    if (teamNameInput) {
-      teamNameInput.addEventListener('input', updateTeamNameCount);
-      updateTeamNameCount();
-    }
+    teamNameInput.addEventListener('input', updateTeamNameCount);
+    updateTeamNameCount();
 
     if (colorStudio) {
       refreshColorEditor();
@@ -491,24 +514,28 @@
       });
 
       colorPicker.addEventListener('input', () => {
-        commitColorState(activeColorTarget, colorPicker.value);
+        if (activeColorTarget) {
+          commitColorState(activeColorTarget, colorPicker.value);
+        }
       });
 
       colorHexInput.addEventListener('input', () => {
-        commitColorState(activeColorTarget, colorHexInput.value);
+        if (activeColorTarget) {
+          commitColorState(activeColorTarget, colorHexInput.value);
+        }
       });
 
       colorHexInput.addEventListener('blur', () => {
-        commitColorState(activeColorTarget, colorHexInput.value);
+        if (activeColorTarget) {
+          commitColorState(activeColorTarget, colorHexInput.value);
+        }
       });
 
       colorSwatches.forEach((swatch) => {
         swatch.addEventListener('click', () => {
-          commitColorState(
-            activeColorTarget,
-            swatch.dataset.colorValue || '#FFFFFF',
-            swatch.dataset.colorName || 'Custom'
-          );
+          if (activeColorTarget) {
+            commitColorState(activeColorTarget, swatch.dataset.colorValue || '#FFFFFF', swatch.dataset.colorName || 'Custom');
+          }
         });
       });
     }
@@ -517,7 +544,6 @@
       button.addEventListener('click', () => {
         const value = button.dataset.styleOption || 'Home';
         styleInput.value = value;
-
         styleButtons.forEach((item) => {
           const isActive = item === button;
           item.classList.toggle('is-active', isActive);
@@ -531,9 +557,16 @@
     });
     updateRowIndexes();
 
-    if (addPlayerButton) {
-      addPlayerButton.addEventListener('click', addPlayerRow);
-    }
+    addPlayerButton.addEventListener('click', addPlayerRow);
+
+    fontPreviewButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        fontSelect.value = button.dataset.fontPreview || fontSelect.value;
+        updateFontPreviews();
+      });
+    });
+    fontSelect.addEventListener('change', updateFontPreviews);
+    updateFontPreviews();
 
     uploadInputs.forEach((input) => {
       input.addEventListener('change', () => {
@@ -542,12 +575,10 @@
       });
     });
 
-    if (form) {
-      form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        submitOrder();
-      });
-    }
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      submitOrder();
+    });
   };
 
   document.querySelectorAll('.team-order-section').forEach(initializeSection);

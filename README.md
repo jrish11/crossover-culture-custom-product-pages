@@ -11,7 +11,9 @@ The current build focuses on structured customization capture:
 - number color
 - alt or accent color
 - home or away style
-- full player roster
+- progressive player roster entry
+- collapsed size guide
+- number and name font selection
 - optional sample size
 - required vector logo upload for the jersey right chest
 - required vector logo upload for the shorts lower-left placement
@@ -38,17 +40,17 @@ crossover-culture-team-order-system/
 ## What each file does
 
 - `sections/team-order-form.liquid`
-  Renders the full page experience, including the utility bar, gallery, product information, color builder, roster table, required vector uploads, CTAs, and schema settings.
+  Renders the simplified product page, including the utility bar, gallery, minimal product information, progressive roster table, collapsed size guide, font selector, vector uploads, CTAs, and schema settings.
 - `templates/product.team-uniform.json`
   Creates the alternate product template that renders the custom team order section.
 - `assets/team-order-form.css`
   Provides fully scoped styles under `.team-order-section` so the layout stays isolated from the rest of the theme.
 - `assets/team-order-form.js`
-  Handles gallery swapping, team name counting, three color controls, style toggle, roster row management, validation, vector upload checks, and AJAX add-to-cart submission.
+  Handles gallery swapping, team name counting, progressive roster row management, hidden-until-selected color controls, font preview selection, vector upload checks, and AJAX add-to-cart submission.
 - `snippets/team-size-guide.liquid`
-  Renders the always-visible size guide.
+  Renders the size guide content used inside the collapsed dropdown.
 - `snippets/team-feature-icons.liquid`
-  Renders the four feature blocks beneath the main content.
+  Legacy feature snippet retained in the repo but not used by the simplified layout.
 
 ## Shopify installation instructions
 
@@ -95,12 +97,14 @@ The code enforces a floor of six players even if a lower number is entered in th
    - number color for front and back numbers
    - alt color for trim, piping, and accent areas
 5. They choose `Home` or `Away`.
-6. They complete the roster table with at least six players.
-7. They upload:
+6. They build the roster progressively until it reaches at least six players.
+7. They optionally open `View size guide`.
+8. They choose a number and name font.
+9. They upload:
    - one vector logo for the top right jersey placement
    - one vector logo for the bottom left shorts placement
-8. They optionally choose a sample size.
-9. They submit the team order without leaving the page.
+10. They optionally choose a sample size.
+11. They submit the team order without leaving the page.
 
 ## Cart property format
 
@@ -116,6 +120,7 @@ Alt Color: #003DA5 (Royal Blue)
 Style: Home
 Player Count: 8
 Roster: 1. WILLIAMS #30 Men's L | 2. JOHNSON #23 Men's XL | 3. DAVIS #10 Youth YL
+Number & Name Font: Athletic
 Sample Size: Men's L
 ```
 
@@ -128,12 +133,11 @@ Shorts Bottom Left Logo: [uploaded vector file]
 
 ## Vector upload rule
 
-The current implementation treats both logo uploads as required and only accepts:
+The current implementation treats both logo uploads as required and only accepts vector files:
 
 - `.svg`
 - `.ai`
 - `.eps`
-- `.pdf`
 
 If either upload is missing or uses a different file extension, the form blocks add-to-cart and displays an error.
 
@@ -147,6 +151,7 @@ If your cart currently hides line item properties or uploaded file links, update
 
 - To change the descriptive text for where colors apply, edit the three color blocks in `sections/team-order-form.liquid`.
 - To change the preset colors, update the preset list in `sections/team-order-form.liquid` and the `PRESET_COLORS` array in `assets/team-order-form.js`.
+- To change the available fonts, update the `font_options` list in `sections/team-order-form.liquid` and the preview buttons there if you want different featured styles.
 - To make logo uploads optional instead of required, update the validation logic in `assets/team-order-form.js` and remove the `required` attribute on the file inputs in `sections/team-order-form.liquid`.
 - To add more roster columns or new roster logic, update both the Liquid table and the matching row template in `assets/team-order-form.js`.
 - To restyle the page, keep selectors inside `.team-order-section` so the build remains isolated from the rest of the theme.
@@ -154,12 +159,13 @@ If your cart currently hides line item properties or uploaded file links, update
 ## Recommended QA after installation
 
 1. Open a product using the `team-uniform` template.
-2. Confirm the gallery, utility bar, roster layout, color builder, and upload fields render cleanly.
+2. Confirm the gallery, utility bar, simplified roster layout, collapsed size guide, font selector, and upload fields render cleanly.
 3. Test each color group:
    - main color
    - number color
    - alt color
-4. Try a validation failure by leaving a player incomplete or omitting a vector file.
-5. Upload valid vector files and submit a complete order.
-6. Open the cart and verify the line item properties and uploaded file links appear correctly.
-7. Check the page on desktop, tablet, and mobile widths.
+4. Confirm the color workbench stays hidden until one of `Main`, `Number`, or `Alt` is selected.
+5. Try a validation failure by leaving a player incomplete or omitting a vector file.
+6. Upload valid vector files, choose a font, and submit a complete order.
+7. Open the cart and verify the line item properties and uploaded file links appear correctly.
+8. Check the page on desktop, tablet, and mobile widths.
