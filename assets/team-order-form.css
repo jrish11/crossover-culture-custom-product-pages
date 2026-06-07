@@ -660,14 +660,24 @@
   border: 1px solid var(--team-order-soft-border);
 }
 
+.team-order-section__dropdown--font {
+  border-color: var(--team-order-border);
+}
+
 .team-order-section__dropdown-summary {
   align-items: center;
+  background: var(--team-order-surface);
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   list-style: none;
   min-height: 42px;
   padding: 0 14px;
+}
+
+.team-order-section__dropdown--font .team-order-section__dropdown-summary {
+  background: var(--team-order-primary);
+  color: var(--team-order-white);
 }
 
 .team-order-section__dropdown-summary::-webkit-details-marker {
@@ -738,6 +748,13 @@
   display: grid;
   gap: 10px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.team-order-section__font-intro {
+  color: var(--team-order-muted);
+  font-size: 0.78rem;
+  line-height: 1.4;
+  margin: 0 0 12px;
 }
 
 .team-order-section__font-card {

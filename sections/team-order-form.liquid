@@ -400,10 +400,11 @@
             <div class="team-order-section__form-section team-order-section__form-section--compact">
               <details class="team-order-section__dropdown team-order-section__dropdown--font">
                 <summary class="team-order-section__dropdown-summary">
-                  <span class="team-order-section__dropdown-label">View font options</span>
+                  <span class="team-order-section__dropdown-label">Show all font examples</span>
                   <span class="team-order-section__dropdown-icon" aria-hidden="true">+</span>
                 </summary>
                 <div class="team-order-section__dropdown-content">
+                  <p class="team-order-section__font-intro">Preview each number style before choosing the final jersey font.</p>
                   <div class="team-order-section__font-reference">
                     {% for font_name in font_options %}
                       {% assign font_key = font_name | downcase | replace: ' ', '-' %}
