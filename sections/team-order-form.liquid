@@ -98,13 +98,16 @@
             {% endif %}
           </div>
         </div>
+        <p class="team-order-section__gallery-note">More views</p>
       </div>
 
       <div class="team-order-section__content-column">
         <div class="team-order-section__product-meta">
+          <p class="team-order-section__reviews">★★★★★ <span>4.9</span> <span>(128 reviews)</span></p>
           <p class="team-order-section__eyebrow">Premium team uniform ordering</p>
           <h1 class="team-order-section__title">{{ product.title }}</h1>
           <p class="team-order-section__price">Starting at {{ product.price | money }}/player</p>
+          <p class="team-order-section__intro">Custom team uniform set. Includes one jersey and one short per player.</p>
           <ul class="team-order-section__feature-list">
             <li>100% polyester moisture wicking micro-mesh for dry, breathable wear.</li>
             <li>Lightweight 4oz construction for full-speed movement.</li>
@@ -127,7 +130,7 @@
 
           <div class="team-order-section__field-group">
             <div class="team-order-section__field-header">
-              <label class="team-order-section__field-label" for="TeamName-{{ section.id }}">1. Team Name</label>
+              <label class="team-order-section__field-label" for="TeamName-{{ section.id }}">1. Team Name (On Front)</label>
               <span class="team-order-section__field-meta" data-team-name-count>0/15</span>
             </div>
             <input
@@ -328,7 +331,7 @@
               </div>
 
               <div class="team-order-section__guide-area">
-                <span class="team-order-section__field-label team-order-section__field-label--small">Size Guide</span>
+                <span class="team-order-section__field-label team-order-section__field-label--small">5. Size Guide</span>
                 {% render 'team-size-guide' %}
               </div>
             </div>
@@ -336,7 +339,7 @@
 
           <div class="team-order-section__field-group">
             <div class="team-order-section__field-header">
-              <span class="team-order-section__field-label">5. Vector Logo Uploads</span>
+              <span class="team-order-section__field-label">6. Vector Logo Uploads</span>
               <span class="team-order-section__field-meta">SVG, AI, EPS, or PDF only</span>
             </div>
 
@@ -376,7 +379,7 @@
           </div>
 
           <div class="team-order-section__field-group">
-            <label class="team-order-section__field-label" for="SampleSize-{{ section.id }}">6. Sample Size (Optional)</label>
+            <label class="team-order-section__field-label" for="SampleSize-{{ section.id }}">7. Select Size For Sample (Optional)</label>
             <select id="SampleSize-{{ section.id }}" class="team-order-section__select-input" name="properties[Sample Size]" data-sample-size>
               <option value="No sample needed" selected>No sample needed</option>
               <optgroup label="Youth">
