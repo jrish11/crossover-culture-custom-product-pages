@@ -2,23 +2,22 @@
 
 ## Project overview
 
-This repository contains a complete Shopify theme implementation for a custom team uniform ordering flow for Crossover Culture. It replaces the normal retail-style product page on selected products with a team-order experience designed for coaches, team managers, and program directors.
+This repository contains a Shopify theme implementation for a custom team uniform ordering flow for Crossover Culture. It replaces the standard retail product template on selected products with a denser, product-page-style team order experience designed for coaches, team managers, and program directors.
 
-The current build focuses on structured customization capture:
+The current build focuses on a shorter, cleaner order flow:
 
 - team name
 - main uniform color
 - number color
 - alt or accent color
 - home or away style
-- progressive player roster entry
+- progressive roster entry with five starter rows
 - collapsed size guide
 - number and name font selection
 - optional sample size
-- required vector logo upload for the jersey right chest
-- required vector logo upload for the shorts lower-left placement
+- one required vector logo upload used for both jersey and shorts placements
 
-The section submits the order through Shopify's AJAX cart endpoint using `fetch` plus `FormData`, which allows the line item properties and vector logo uploads to travel together without redirecting the customer away from the product page.
+The section submits the order through Shopify's AJAX cart endpoint using `fetch` plus `FormData`, which allows text line item properties and the vector logo upload to be added without redirecting the customer away from the product page.
 
 ## File structure
 
@@ -40,17 +39,17 @@ crossover-culture-team-order-system/
 ## What each file does
 
 - `sections/team-order-form.liquid`
-  Renders the simplified product page, including the utility bar, gallery, minimal product information, progressive roster table, collapsed size guide, font selector, vector uploads, CTAs, and schema settings.
+  Renders the full product layout, including the utility bar, gallery, streamlined order form, collapsed size guide, collapsed font reference, shared logo upload, and schema settings.
 - `templates/product.team-uniform.json`
   Creates the alternate product template that renders the custom team order section.
 - `assets/team-order-form.css`
   Provides fully scoped styles under `.team-order-section` so the layout stays isolated from the rest of the theme.
 - `assets/team-order-form.js`
-  Handles gallery swapping, team name counting, progressive roster row management, hidden-until-selected color controls, font preview selection, vector upload checks, and AJAX add-to-cart submission.
+  Handles gallery swapping, team name counting, color targeting, roster row management, vector upload checks, and AJAX add-to-cart submission.
 - `snippets/team-size-guide.liquid`
   Renders the size guide content used inside the collapsed dropdown.
 - `snippets/team-feature-icons.liquid`
-  Legacy feature snippet retained in the repo but not used by the simplified layout.
+  Legacy feature snippet retained in the repo but not used by the current streamlined layout.
 
 ## Shopify installation instructions
 
@@ -97,18 +96,18 @@ The code enforces a floor of six players even if a lower number is entered in th
    - number color for front and back numbers
    - alt color for trim, piping, and accent areas
 5. They choose `Home` or `Away`.
-6. They build the roster progressively until it reaches at least six players.
-7. They optionally open `View size guide`.
-8. They choose a number and name font.
-9. They upload:
-   - one vector logo for the top right jersey placement
-   - one vector logo for the bottom left shorts placement
-10. They optionally choose a sample size.
+6. They choose a number and name font.
+7. They complete the roster, starting from five visible rows and adding more as needed.
+8. They optionally open `View size & fit guide`.
+9. They optionally choose a sample size.
+10. They upload one vector logo file that will be used for both placements:
+   - top right on jersey
+   - bottom left on shorts
 11. They submit the team order without leaving the page.
 
 ## Cart property format
 
-The script posts the section form to Shopify using `FormData`. Text-based selections are stored as line item properties, and the two vector uploads are attached using line item property file inputs.
+The script posts the section form to Shopify using `FormData`. Text-based selections are stored as line item properties, and the vector logo is attached using a line item property file input.
 
 Expected text properties:
 
@@ -124,22 +123,21 @@ Number & Name Font: Athletic
 Sample Size: Men's L
 ```
 
-Expected file properties:
+Expected file property:
 
 ```text
-Jersey Right Chest Logo: [uploaded vector file]
-Shorts Bottom Left Logo: [uploaded vector file]
+Team Logo Upload: [uploaded vector file]
 ```
 
 ## Vector upload rule
 
-The current implementation treats both logo uploads as required and only accepts vector files:
+The current implementation treats the shared logo upload as required and only accepts vector files:
 
 - `.svg`
 - `.ai`
 - `.eps`
 
-If either upload is missing or uses a different file extension, the form blocks add-to-cart and displays an error.
+If the file is missing or uses a different extension, the form blocks add-to-cart and displays an error.
 
 ## Important theme note for carts
 
@@ -149,23 +147,23 @@ If your cart currently hides line item properties or uploaded file links, update
 
 ## How to modify or extend
 
-- To change the descriptive text for where colors apply, edit the three color blocks in `sections/team-order-form.liquid`.
+- To change the color application copy, edit the `DEFAULT_COLORS` object in `assets/team-order-form.js`.
 - To change the preset colors, update the preset list in `sections/team-order-form.liquid` and the `PRESET_COLORS` array in `assets/team-order-form.js`.
-- To change the available fonts, update the `font_options` list in `sections/team-order-form.liquid` and the preview buttons there if you want different featured styles.
-- To make logo uploads optional instead of required, update the validation logic in `assets/team-order-form.js` and remove the `required` attribute on the file inputs in `sections/team-order-form.liquid`.
-- To add more roster columns or new roster logic, update both the Liquid table and the matching row template in `assets/team-order-form.js`.
+- To change the available fonts, update the `font_options` list in `sections/team-order-form.liquid`.
+- To make the logo upload optional instead of required, update the validation logic in `assets/team-order-form.js` and remove the `required` attribute on the file input in `sections/team-order-form.liquid`.
+- To increase or reduce the initial visible roster rows, update the hardcoded table rows in `sections/team-order-form.liquid` and `INITIAL_ROWS` in `assets/team-order-form.js`.
 - To restyle the page, keep selectors inside `.team-order-section` so the build remains isolated from the rest of the theme.
 
 ## Recommended QA after installation
 
 1. Open a product using the `team-uniform` template.
-2. Confirm the gallery, utility bar, simplified roster layout, collapsed size guide, font selector, and upload fields render cleanly.
+2. Confirm the gallery, utility bar, compact two-column layout, dropdown size guide, dropdown font reference, and single logo upload field render cleanly.
 3. Test each color group:
    - main color
    - number color
    - alt color
-4. Confirm the color workbench stays hidden until one of `Main`, `Number`, or `Alt` is selected.
-5. Try a validation failure by leaving a player incomplete or omitting a vector file.
-6. Upload valid vector files, choose a font, and submit a complete order.
-7. Open the cart and verify the line item properties and uploaded file links appear correctly.
+4. Confirm the `Main`, `Number`, and `Alt` buttons update the active color target and summary values.
+5. Try a validation failure by leaving a player incomplete or omitting the vector logo file.
+6. Upload a valid vector file, choose a font, and submit a complete order.
+7. Open the cart and verify the line item properties and uploaded file link appear correctly.
 8. Check the page on desktop, tablet, and mobile widths.

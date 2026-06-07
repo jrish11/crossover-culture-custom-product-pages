@@ -9,8 +9,13 @@
     { name: 'Maroon', value: '#6F263D' }
   ];
 
+  const DEFAULT_COLORS = {
+    Main: { hex: '#FFFFFF', name: 'White', apply: 'Applies to the jersey body and shorts body.' },
+    Number: { hex: '#111111', name: 'Black', apply: 'Applies to front and back numbers.' },
+    Alt: { hex: '#003DA5', name: 'Royal Blue', apply: 'Applies to trim, piping, and secondary accents.' }
+  };
+
   const VECTOR_EXTENSIONS = ['svg', 'ai', 'eps'];
-  const INITIAL_ROWS = 3;
 
   const sizeOptionsMarkup = `
     <option value="">Select size</option>
@@ -42,17 +47,19 @@
 
   const normalizeHex = (value) => {
     const stripped = value.toUpperCase().replace(/[^0-9A-F]/g, '').slice(0, 6);
-    if (!stripped) {
-      return '#';
-    }
-    return `#${stripped}`;
+    return stripped ? `#${stripped}` : '#';
   };
 
   const isValidHex = (value) => /^#[0-9A-F]{6}$/.test(value);
 
+  const getColorName = (hex) => PRESET_COLORS.find((color) => color.value === hex)?.name || 'Custom';
+
   const formatColorLabel = (hex, name) => `${hex} (${name})`;
 
-  const getColorName = (hex) => PRESET_COLORS.find((color) => color.value === hex)?.name || 'Custom';
+  const getFileExtension = (filename) => {
+    const parts = filename.split('.');
+    return parts.length > 1 ? parts.pop().toLowerCase() : '';
+  };
 
   const createRosterRow = (index, sectionId) => {
     const row = document.createElement('tr');
@@ -104,11 +111,6 @@
     return row;
   };
 
-  const getFileExtension = (fileName) => {
-    const lastSegment = fileName.split('.').pop();
-    return lastSegment ? lastSegment.toLowerCase() : '';
-  };
-
   const initializeSection = (section) => {
     const sectionId = section.dataset.sectionId || 'section';
     const minPlayers = Math.max(parseInt(section.dataset.minPlayers || '6', 10) || 6, 6);
@@ -119,28 +121,25 @@
     const form = section.querySelector('[data-team-order-form]');
     const teamNameInput = section.querySelector('[data-team-name]');
     const teamNameCount = section.querySelector('[data-team-name-count]');
-    const styleInput = section.querySelector('[data-style-value]');
-    const styleButtons = Array.from(section.querySelectorAll('[data-style-button]'));
     const rosterBody = section.querySelector('[data-roster-body]');
     const addPlayerButton = section.querySelector('[data-add-player]');
     const addToCartButton = section.querySelector('[data-add-to-cart]');
     const rosterPropertyInput = section.querySelector('[data-roster-property]');
     const playerCountPropertyInput = section.querySelector('[data-player-count-property]');
-    const fontSelect = section.querySelector('[data-font-select]');
-    const fontPreviewButtons = Array.from(section.querySelectorAll('[data-font-preview]'));
-    const uploadInputs = Array.from(section.querySelectorAll('[data-vector-upload]'));
+    const styleInput = section.querySelector('[data-style-value]');
+    const styleButtons = Array.from(section.querySelectorAll('[data-style-button]'));
+    const uploadInput = section.querySelector('[data-vector-upload]');
     const errorMessage = section.querySelector('[data-form-message="error"]');
     const successMessage = section.querySelector('[data-form-message="success"]');
-    const colorStudio = section.querySelector('[data-color-studio]');
     const colorPicker = section.querySelector('[data-color-picker]');
     const colorHexInput = section.querySelector('[data-color-hex]');
     const colorPreview = section.querySelector('[data-color-preview]');
-    const activeColorDisplay = section.querySelector('[data-active-color-display]');
     const colorApplyCopy = section.querySelector('[data-color-apply-copy]');
-    const colorEmpty = section.querySelector('[data-color-empty]');
-    const colorWorkbench = section.querySelector('[data-color-workbench]');
+    const activeColorDisplay = section.querySelector('[data-active-color-display]');
     const colorTargetButtons = Array.from(section.querySelectorAll('[data-color-target-button]'));
     const colorSwatches = Array.from(section.querySelectorAll('[data-color-swatch]'));
+    const resetColorsButton = section.querySelector('[data-reset-colors]');
+    const uploadName = section.querySelector('[data-upload-name]');
     const colorPropertyInputs = {
       Main: section.querySelector('[data-color-property="Main"]'),
       Number: section.querySelector('[data-color-property="Number"]'),
@@ -151,13 +150,14 @@
       Number: section.querySelector('[data-color-summary="Number"] .team-order-section__color-summary-value'),
       Alt: section.querySelector('[data-color-summary="Alt"] .team-order-section__color-summary-value')
     };
+
     const colorState = {
-      Main: { hex: '#FFFFFF', name: 'White', apply: 'Applies to jersey body and shorts body.' },
-      Number: { hex: '#111111', name: 'Black', apply: 'Applies to front and back numbers.' },
-      Alt: { hex: '#003DA5', name: 'Royal Blue', apply: 'Applies to trim, piping, and secondary accents.' }
+      Main: { ...DEFAULT_COLORS.Main },
+      Number: { ...DEFAULT_COLORS.Number },
+      Alt: { ...DEFAULT_COLORS.Alt }
     };
 
-    let activeColorTarget = null;
+    let activeColorTarget = 'Main';
 
     const setMessage = (type, message) => {
       if (type === 'error') {
@@ -184,27 +184,25 @@
       });
     };
 
-    const updateTeamNameCount = () => {
-      if (teamNameInput && teamNameCount) {
-        teamNameCount.textContent = `${teamNameInput.value.length}/15`;
-      }
-    };
-
     const getRows = () => Array.from(rosterBody.querySelectorAll('[data-player-row]'));
 
+    const updateTeamNameCount = () => {
+      teamNameCount.textContent = `${teamNameInput.value.length}/15`;
+    };
+
     const updateAddPlayerButton = () => {
-      const currentCount = getRows().length;
-      if (currentCount < minPlayers) {
-        addPlayerButton.textContent = `+ Add player ${currentCount + 1} of ${minPlayers}`;
-      } else {
-        addPlayerButton.textContent = '+ Add another player';
+      const count = getRows().length;
+      if (count < minPlayers) {
+        addPlayerButton.textContent = `+ Add player ${count + 1} of ${minPlayers}`;
+        return;
       }
+      addPlayerButton.textContent = '+ Add Another Player';
     };
 
     const updateRemoveButtons = () => {
-      const disableRemovals = getRows().length <= 1;
+      const disableRemoval = getRows().length <= 1;
       section.querySelectorAll('[data-remove-player]').forEach((button) => {
-        button.disabled = disableRemovals;
+        button.disabled = disableRemoval;
       });
     };
 
@@ -253,11 +251,12 @@
       if (input.value === '') {
         return;
       }
+
       const number = Math.min(Math.max(parseInt(input.value, 10), 0), 99);
       input.value = String(number);
     };
 
-    const attachRowInputHandlers = (row) => {
+    const attachRowHandlers = (row) => {
       const lastNameInput = row.querySelector('[data-player-last-name]');
       const numberInput = row.querySelector('[data-player-number]');
       const removeButton = row.querySelector('[data-remove-player]');
@@ -270,6 +269,7 @@
         if (getRows().length <= 1) {
           return;
         }
+
         row.remove();
         updateRowIndexes();
         setMessage(null);
@@ -280,55 +280,11 @@
       const nextIndex = getRows().length + 1;
       const row = createRosterRow(nextIndex, sectionId);
       rosterBody.appendChild(row);
-      attachRowInputHandlers(row);
+      attachRowHandlers(row);
       updateRowIndexes();
     };
 
-    const buildRosterEntries = () => getRows().map((row, index) => {
-      const lastName = row.querySelector('[data-player-last-name]').value.trim().toUpperCase();
-      const number = row.querySelector('[data-player-number]').value.trim();
-      const size = row.querySelector('[data-player-size]').value.trim();
-      return `${index + 1}. ${lastName} #${number} ${size}`;
-    });
-
-    const updateFontPreviews = () => {
-      const value = fontSelect.value;
-      fontPreviewButtons.forEach((button) => {
-        const isActive = button.dataset.fontPreview === value;
-        button.classList.toggle('is-active', isActive);
-      });
-    };
-
-    const validateVectorUpload = (input) => {
-      const filenameNode = input.closest('.team-order-section__upload-row')?.querySelector('[data-upload-name]');
-      if (!input.files || !input.files.length) {
-        if (filenameNode) {
-          filenameNode.textContent = 'No file selected';
-        }
-        return false;
-      }
-
-      const file = input.files[0];
-      const extension = getFileExtension(file.name);
-      if (!VECTOR_EXTENSIONS.includes(extension)) {
-        return false;
-      }
-
-      if (filenameNode) {
-        filenameNode.textContent = file.name;
-      }
-      return true;
-    };
-
     const refreshSwatches = () => {
-      if (!activeColorTarget) {
-        colorSwatches.forEach((swatch) => {
-          swatch.classList.remove('is-active');
-          swatch.setAttribute('aria-pressed', 'false');
-        });
-        return;
-      }
-
       const current = colorState[activeColorTarget];
       colorSwatches.forEach((swatch) => {
         const isMatch = swatch.dataset.colorValue === current.hex && swatch.dataset.colorName === current.name;
@@ -338,55 +294,71 @@
     };
 
     const refreshColorEditor = () => {
+      const current = colorState[activeColorTarget];
+
       colorTargetButtons.forEach((button) => {
-        const isActive = activeColorTarget && button.dataset.colorTarget === activeColorTarget;
-        button.classList.toggle('is-active', Boolean(isActive));
+        const isActive = button.dataset.colorTarget === activeColorTarget;
+        button.classList.toggle('is-active', isActive);
         button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
       });
 
-      if (!activeColorTarget) {
-        activeColorDisplay.textContent = 'Select a target';
-        colorEmpty.hidden = false;
-        colorApplyCopy.hidden = true;
-        colorWorkbench.hidden = true;
-        refreshSwatches();
-        return;
-      }
-
-      const current = colorState[activeColorTarget];
-      const valid = isValidHex(current.hex);
-
-      colorEmpty.hidden = true;
-      colorApplyCopy.hidden = false;
-      colorWorkbench.hidden = false;
+      activeColorDisplay.textContent = formatColorLabel(current.hex, current.name);
       colorApplyCopy.textContent = current.apply;
       colorHexInput.value = current.hex;
-      colorPicker.value = valid ? current.hex : '#000000';
-      colorPreview.style.backgroundColor = valid ? current.hex : '#FFFFFF';
-      activeColorDisplay.textContent = valid ? formatColorLabel(current.hex, current.name) : 'Enter a valid HEX value';
+      colorPicker.value = isValidHex(current.hex) ? current.hex : '#000000';
+      colorPreview.style.backgroundColor = isValidHex(current.hex) ? current.hex : '#FFFFFF';
       refreshSwatches();
     };
 
     const commitColorState = (target, rawHex, forcedName) => {
-      const hex = normalizeHex(rawHex);
-      const valid = isValidHex(hex);
-      const name = forcedName || (valid ? getColorName(hex) : 'Custom');
+      const normalizedHex = normalizeHex(rawHex);
+      const valid = isValidHex(normalizedHex);
+      const name = forcedName || (valid ? getColorName(normalizedHex) : 'Custom');
 
-      colorState[target].hex = hex;
+      colorState[target].hex = normalizedHex;
       colorState[target].name = name;
-      colorPropertyInputs[target].value = valid ? formatColorLabel(hex, name) : '';
-      colorSummaryValues[target].textContent = valid ? formatColorLabel(hex, name) : 'Invalid HEX';
-
+      colorPropertyInputs[target].value = valid ? formatColorLabel(normalizedHex, name) : '';
+      colorSummaryValues[target].textContent = valid ? formatColorLabel(normalizedHex, name) : 'Invalid HEX';
       refreshColorEditor();
     };
+
+    const resetColors = () => {
+      Object.keys(DEFAULT_COLORS).forEach((target) => {
+        colorState[target] = { ...DEFAULT_COLORS[target] };
+        colorPropertyInputs[target].value = formatColorLabel(DEFAULT_COLORS[target].hex, DEFAULT_COLORS[target].name);
+        colorSummaryValues[target].textContent = formatColorLabel(DEFAULT_COLORS[target].hex, DEFAULT_COLORS[target].name);
+      });
+
+      activeColorTarget = 'Main';
+      refreshColorEditor();
+    };
+
+    const validateVectorUpload = () => {
+      if (!uploadInput.files || !uploadInput.files.length) {
+        uploadName.textContent = 'No file selected';
+        return false;
+      }
+
+      const file = uploadInput.files[0];
+      const extension = getFileExtension(file.name);
+      if (!VECTOR_EXTENSIONS.includes(extension)) {
+        return false;
+      }
+
+      uploadName.textContent = file.name;
+      return true;
+    };
+
+    const buildRosterEntries = () => getRows().map((row, index) => {
+      const lastName = row.querySelector('[data-player-last-name]').value.trim().toUpperCase();
+      const number = row.querySelector('[data-player-number]').value.trim();
+      const size = row.querySelector('[data-player-size]').value.trim();
+      return `${index + 1}. ${lastName} #${number} ${size}`;
+    });
 
     const validateForm = () => {
       clearFieldErrors();
       setMessage(null);
-
-      if (activeColorTarget) {
-        commitColorState(activeColorTarget, colorHexInput.value);
-      }
 
       let isValid = true;
 
@@ -397,9 +369,7 @@
 
       Object.keys(colorState).forEach((target) => {
         if (!isValidHex(colorState[target].hex) || !colorPropertyInputs[target].value) {
-          if (activeColorTarget) {
-            colorHexInput.classList.add('team-order-section__field-error');
-          }
+          colorHexInput.classList.add('team-order-section__field-error');
           isValid = false;
         }
       });
@@ -432,15 +402,13 @@
         }
       });
 
-      uploadInputs.forEach((input) => {
-        if (!validateVectorUpload(input)) {
-          input.classList.add('team-order-section__field-error');
-          isValid = false;
-        }
-      });
+      if (!validateVectorUpload()) {
+        uploadInput.classList.add('team-order-section__field-error');
+        isValid = false;
+      }
 
       if (!isValid) {
-        setMessage('error', `Complete the roster, upload vector logo files, and make sure you have at least ${minPlayers} players before adding this order to cart.`);
+        setMessage('error', `Please complete all player information, confirm at least ${minPlayers} players, and upload one vector logo file before adding to cart.`);
       }
 
       return isValid;
@@ -474,12 +442,12 @@
           throw new Error(responseData.description || 'Unable to add the team order to cart.');
         }
 
-        setMessage('success', 'Team order added to cart with roster details, color selections, font choice, and vector logo uploads.');
+        setMessage('success', 'Team order added to cart with roster details, font selection, and shared logo upload.');
       } catch (error) {
         setMessage('error', error.message || 'Unable to add the team order to cart.');
       } finally {
         addToCartButton.disabled = false;
-        addToCartButton.textContent = '🛒 Add Team Order to Cart';
+        addToCartButton.textContent = '🛒 Add Team Order To Cart';
       }
     };
 
@@ -503,41 +471,33 @@
     teamNameInput.addEventListener('input', updateTeamNameCount);
     updateTeamNameCount();
 
-    if (colorStudio) {
-      refreshColorEditor();
-
-      colorTargetButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-          activeColorTarget = button.dataset.colorTarget || 'Main';
-          refreshColorEditor();
-        });
+    colorTargetButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        activeColorTarget = button.dataset.colorTarget || 'Main';
+        refreshColorEditor();
       });
+    });
 
-      colorPicker.addEventListener('input', () => {
-        if (activeColorTarget) {
-          commitColorState(activeColorTarget, colorPicker.value);
-        }
-      });
+    colorPicker.addEventListener('input', () => {
+      commitColorState(activeColorTarget, colorPicker.value);
+    });
 
-      colorHexInput.addEventListener('input', () => {
-        if (activeColorTarget) {
-          commitColorState(activeColorTarget, colorHexInput.value);
-        }
-      });
+    colorHexInput.addEventListener('input', () => {
+      commitColorState(activeColorTarget, colorHexInput.value);
+    });
 
-      colorHexInput.addEventListener('blur', () => {
-        if (activeColorTarget) {
-          commitColorState(activeColorTarget, colorHexInput.value);
-        }
-      });
+    colorHexInput.addEventListener('blur', () => {
+      commitColorState(activeColorTarget, colorHexInput.value);
+    });
 
-      colorSwatches.forEach((swatch) => {
-        swatch.addEventListener('click', () => {
-          if (activeColorTarget) {
-            commitColorState(activeColorTarget, swatch.dataset.colorValue || '#FFFFFF', swatch.dataset.colorName || 'Custom');
-          }
-        });
+    colorSwatches.forEach((swatch) => {
+      swatch.addEventListener('click', () => {
+        commitColorState(activeColorTarget, swatch.dataset.colorValue || '#FFFFFF', swatch.dataset.colorName || 'Custom');
       });
+    });
+
+    if (resetColorsButton) {
+      resetColorsButton.addEventListener('click', resetColors);
     }
 
     styleButtons.forEach((button) => {
@@ -553,26 +513,18 @@
     });
 
     getRows().forEach((row) => {
-      attachRowInputHandlers(row);
+      attachRowHandlers(row);
     });
     updateRowIndexes();
+    refreshColorEditor();
 
     addPlayerButton.addEventListener('click', addPlayerRow);
 
-    fontPreviewButtons.forEach((button) => {
-      button.addEventListener('click', () => {
-        fontSelect.value = button.dataset.fontPreview || fontSelect.value;
-        updateFontPreviews();
-      });
-    });
-    fontSelect.addEventListener('change', updateFontPreviews);
-    updateFontPreviews();
-
-    uploadInputs.forEach((input) => {
-      input.addEventListener('change', () => {
-        input.classList.remove('team-order-section__field-error');
-        validateVectorUpload(input);
-      });
+    uploadInput.addEventListener('change', () => {
+      uploadInput.classList.remove('team-order-section__field-error');
+      if (!validateVectorUpload()) {
+        uploadName.textContent = 'Vector files only: SVG, AI, EPS';
+      }
     });
 
     form.addEventListener('submit', (event) => {
