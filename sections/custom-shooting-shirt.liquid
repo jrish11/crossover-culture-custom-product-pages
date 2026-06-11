@@ -133,7 +133,7 @@
             {% endif %}
           </div>
         </div>
-        <p class="shooting-shirt-section__gallery-note">Custom shooting shirt gallery. Use product images to show front, back, sleeve detail, and artwork references.</p>
+        <p class="shooting-shirt-section__gallery-note">Use the product gallery to show front, back, sleeve detail, and artwork-placement references before the customer submits the order.</p>
       </div>
 
       <div class="shooting-shirt-section__content-column">
@@ -143,9 +143,9 @@
           <p class="shooting-shirt-section__price">{{ product.price | money }} each</p>
           <p class="shooting-shirt-section__intro">{{ section.settings.intro_copy }}</p>
           <ul class="shooting-shirt-section__feature-list">
-            <li>Choose one shirt color and one separate wording plus CC logo color.</li>
-            <li>Submit the exact size breakdown the brand owner needs to fulfill the order.</li>
-            <li>Upload one vector artwork file that stays attached to the order details.</li>
+            <li>Choose one shirt color and one separate words plus CC logo color.</li>
+            <li>Submit the full size breakdown the brand owner needs to fulfill the order correctly.</li>
+            <li>Upload one vector artwork file that stays attached to the order details for production review.</li>
           </ul>
         </div>
 
@@ -449,7 +449,7 @@
             <a class="shooting-shirt-section__cta-link" href="/pages/contact?type=quote">Request Team Quote</a>
           </div>
 
-          <p class="shooting-shirt-section__rules">Minimum order: {{ min_pieces }} pieces. Shirt color, wording color, wording text, size breakdown, notes, and artwork upload are submitted with the order for production review.</p>
+          <p class="shooting-shirt-section__rules">Minimum order: {{ min_pieces }} pieces. Shirt color, words plus CC logo color, wording text, size breakdown, notes, and artwork upload are submitted with the order for production review.</p>
         </form>
       </div>
     </div>
@@ -466,7 +466,7 @@
     { "type": "text", "id": "minimum_order", "label": "Minimum Order Text", "default": "6 shirts per order" },
     { "type": "url", "id": "contact_url", "label": "Contact Page URL" },
     { "type": "number", "id": "min_pieces", "label": "Minimum Pieces", "default": 6 },
-    { "type": "textarea", "id": "intro_copy", "label": "Intro Copy", "default": "Build your shooting shirt order with separate shirt and artwork colors, team wording, a full size breakdown, and one vector artwork upload in one clean order form." }
+    { "type": "textarea", "id": "intro_copy", "label": "Intro Copy", "default": "Build your shooting shirt order with a separate shirt color, a separate words plus CC logo color, a full size breakdown, and one vector artwork upload in one clean order form." }
   ],
   "presets": [{ "name": "Shooting Shirt Order" }]
 }
