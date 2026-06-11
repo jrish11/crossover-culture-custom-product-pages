@@ -25,26 +25,26 @@ The section submits the order through Shopify's AJAX cart endpoint using `fetch`
 crossover-culture-team-order-system/
 ├── README.md
 ├── assets/
-│   ├── team-order-form.css
-│   └── team-order-form.js
+│   ├── custom-team-uniform.css
+│   └── custom-team-uniform.js
 ├── sections/
-│   └── team-order-form.liquid
+│   └── custom-team-uniform.liquid
 ├── snippets/
 │   ├── team-feature-icons.liquid
 │   └── team-size-guide.liquid
 └── templates/
-    └── product.team-uniform.json
+    └── product.custom-team-uniform.json
 ```
 
 ## What each file does
 
-- `sections/team-order-form.liquid`
+- `sections/custom-team-uniform.liquid`
   Renders the full product layout, including the utility bar, gallery, streamlined order form, collapsed size guide, collapsed font reference, shared logo upload, and schema settings.
-- `templates/product.team-uniform.json`
+- `templates/product.custom-team-uniform.json`
   Creates the alternate product template that renders the custom team order section.
-- `assets/team-order-form.css`
+- `assets/custom-team-uniform.css`
   Provides fully scoped styles under `.team-order-section` so the layout stays isolated from the rest of the theme.
-- `assets/team-order-form.js`
+- `assets/custom-team-uniform.js`
   Handles gallery swapping, team name counting, color targeting, roster row management, vector upload checks, and AJAX add-to-cart submission.
 - `snippets/team-size-guide.liquid`
   Renders the size guide content used inside the collapsed dropdown.
@@ -56,10 +56,10 @@ crossover-culture-team-order-system/
 1. In Shopify Admin, go to `Online Store -> Themes`.
 2. On the theme you want to edit, click `... -> Edit code`.
 3. Create or replace the following files using the contents from this repository:
-   - `sections/team-order-form.liquid`
-   - `templates/product.team-uniform.json`
-   - `assets/team-order-form.css`
-   - `assets/team-order-form.js`
+   - `sections/custom-team-uniform.liquid`
+   - `templates/product.custom-team-uniform.json`
+   - `assets/custom-team-uniform.css`
+   - `assets/custom-team-uniform.js`
    - `snippets/team-size-guide.liquid`
    - `snippets/team-feature-icons.liquid`
 4. Save each file after pasting the contents.
@@ -68,7 +68,7 @@ crossover-culture-team-order-system/
 
 1. In Shopify Admin, go to `Products`.
 2. Open the uniform product that should use this order flow.
-3. In the `Theme template` selector, choose `team-uniform`.
+3. In the `Theme template` selector, choose `custom-team-uniform`.
 4. Save the product.
 5. Repeat for every uniform product that should use this experience.
 
@@ -88,7 +88,7 @@ The code enforces a floor of six players even if a lower number is entered in th
 
 ## Customer flow
 
-1. The buyer lands on a uniform product assigned to `team-uniform`.
+1. The buyer lands on a uniform product assigned to `custom-team-uniform`.
 2. They browse the product gallery.
 3. They enter the team name.
 4. They choose:
@@ -147,11 +147,11 @@ If your cart currently hides line item properties or uploaded file links, update
 
 ## How to modify or extend
 
-- To change the color application copy, edit the `DEFAULT_COLORS` object in `assets/team-order-form.js`.
-- To change the preset colors, update the preset list in `sections/team-order-form.liquid` and the `PRESET_COLORS` array in `assets/team-order-form.js`.
-- To change the available fonts, update the `font_options` list in `sections/team-order-form.liquid`.
-- To make the logo upload optional instead of required, update the validation logic in `assets/team-order-form.js` and remove the `required` attribute on the file input in `sections/team-order-form.liquid`.
-- To increase or reduce the initial visible roster rows, update the hardcoded table rows in `sections/team-order-form.liquid` and `INITIAL_ROWS` in `assets/team-order-form.js`.
+- To change the color application copy, edit the `DEFAULT_COLORS` object in `assets/custom-team-uniform.js`.
+- To change the preset colors, update the preset list in `sections/custom-team-uniform.liquid` and the `PRESET_COLORS` array in `assets/custom-team-uniform.js`.
+- To change the available fonts, update the `font_options` list in `sections/custom-team-uniform.liquid`.
+- To make the logo upload optional instead of required, update the validation logic in `assets/custom-team-uniform.js` and remove the `required` attribute on the file input in `sections/custom-team-uniform.liquid`.
+- To increase or reduce the initial visible roster rows, update the hardcoded table rows in `sections/custom-team-uniform.liquid` and `INITIAL_ROWS` in `assets/custom-team-uniform.js`.
 - To restyle the page, keep selectors inside `.team-order-section` so the build remains isolated from the rest of the theme.
 
 ## Recommended QA after installation

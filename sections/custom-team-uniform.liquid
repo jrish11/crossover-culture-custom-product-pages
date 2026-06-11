@@ -1,5 +1,5 @@
-{{ 'team-order-form.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'team-order-form.js' | asset_url }}" defer></script>
+{{ 'custom-team-uniform.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-team-uniform.js' | asset_url }}" defer></script>
 
 {% liquid
   assign current_variant = product.selected_or_first_available_variant
@@ -459,7 +459,7 @@
 
 {% schema %}
 {
-  "name": "Team Order Form",
+  "name": "Custom Team Uniform",
   "tag": "section",
   "class": "team-order-section",
   "settings": [
@@ -468,6 +468,6 @@
     { "type": "url", "id": "contact_url", "label": "Contact Page URL" },
     { "type": "number", "id": "min_players", "label": "Minimum Players", "default": 6 }
   ],
-  "presets": [{ "name": "Team Order Form" }]
+  "presets": [{ "name": "Custom Team Uniform" }]
 }
 {% endschema %}
