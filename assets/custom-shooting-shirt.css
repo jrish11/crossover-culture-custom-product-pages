@@ -11,14 +11,19 @@
   --shooting-shirt-white: #ffffff;
   color: var(--shooting-shirt-primary);
   display: block;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  max-width: none;
+  overflow: hidden;
+  position: relative;
+  width: 100vw;
 }
 
-.shooting-shirt-section .page-width,
 .shooting-shirt-section__inner {
   margin: 0 auto;
-  max-width: 1680px;
-  padding: 0 36px 56px;
-  width: min(1680px, calc(100vw - 56px));
+  max-width: 1880px;
+  padding: 0 44px 56px;
+  width: min(1880px, calc(100vw - 72px));
 }
 
 .shooting-shirt-section__utility-bar {
@@ -27,6 +32,9 @@
   border-bottom: 1px solid var(--shooting-shirt-soft-border);
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0 auto;
+  max-width: 100vw;
+  width: 100%;
 }
 
 .shooting-shirt-section__utility-item {
@@ -88,8 +96,8 @@
 .shooting-shirt-section__grid {
   align-items: start;
   display: grid;
-  gap: 56px;
-  grid-template-columns: minmax(0, 1.16fr) minmax(520px, 0.84fr);
+  gap: 72px;
+  grid-template-columns: minmax(0, 1.24fr) minmax(620px, 0.76fr);
 }
 
 .shooting-shirt-section__gallery {
@@ -177,7 +185,7 @@
   font-size: 0.82rem;
   line-height: 1.45;
   margin: 16px 0 0 130px;
-  max-width: 46rem;
+  max-width: 54rem;
 }
 
 .shooting-shirt-section__content-column {
@@ -187,7 +195,7 @@
 
 .shooting-shirt-section__product-meta {
   margin-bottom: 26px;
-  max-width: 46rem;
+  max-width: 52rem;
 }
 
 .shooting-shirt-section__eyebrow {
@@ -205,7 +213,7 @@
   letter-spacing: -0.05em;
   line-height: 0.95;
   margin: 0 0 16px;
-  max-width: 12ch;
+  max-width: 11ch;
 }
 
 .shooting-shirt-section__price {
@@ -218,7 +226,7 @@
   font-size: 1rem;
   line-height: 1.65;
   margin: 0 0 18px;
-  max-width: 44rem;
+  max-width: 48rem;
 }
 
 .shooting-shirt-section__feature-list {
@@ -237,7 +245,7 @@
   background: linear-gradient(180deg, #ffffff 0%, #fdfcf8 100%);
   border: 1px solid var(--shooting-shirt-soft-border);
   box-shadow: 0 22px 48px rgba(17, 17, 17, 0.06);
-  padding: 0 28px 28px;
+  padding: 0 32px 32px;
 }
 
 .shooting-shirt-section__message {
@@ -737,7 +745,6 @@
 }
 
 @media screen and (max-width: 1240px) {
-  .shooting-shirt-section .page-width,
   .shooting-shirt-section__inner {
     padding: 0 26px 44px;
     width: min(100vw - 40px, 1480px);
@@ -791,7 +798,6 @@
 }
 
 @media screen and (max-width: 768px) {
-  .shooting-shirt-section .page-width,
   .shooting-shirt-section__inner {
     padding: 0 18px 32px;
     width: calc(100vw - 24px);
