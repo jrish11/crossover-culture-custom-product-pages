@@ -1,5 +1,5 @@
-{{ 'shooting-shirt-order-form.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'shooting-shirt-order-form.js' | asset_url }}" defer></script>
+{{ 'custom-shooting-shirt.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-shooting-shirt.js' | asset_url }}" defer></script>
 
 {% liquid
   assign current_variant = product.selected_or_first_available_variant

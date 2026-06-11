@@ -1,7 +1,7 @@
 {
   "sections": {
     "main": {
-      "type": "shooting-shirt-order-form",
+      "type": "custom-shooting-shirt",
       "settings": {
         "utility_bar_delivery": "Ready in 30 days (Imported)",
         "minimum_order": "6 shirts per order",
