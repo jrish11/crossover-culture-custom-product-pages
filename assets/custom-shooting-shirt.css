@@ -676,6 +676,124 @@
   text-align: center;
 }
 
+.shooting-shirt-section__dropdown {
+  border: 1px solid var(--shooting-shirt-soft-border);
+  margin-top: 18px;
+}
+
+.shooting-shirt-section__dropdown-summary {
+  align-items: center;
+  background: var(--shooting-shirt-surface);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  min-height: 44px;
+  padding: 0 14px;
+}
+
+.shooting-shirt-section__dropdown-summary::-webkit-details-marker {
+  display: none;
+}
+
+.shooting-shirt-section__dropdown-label {
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.shooting-shirt-section__dropdown-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.shooting-shirt-section__dropdown[open] .shooting-shirt-section__dropdown-icon {
+  transform: rotate(45deg);
+}
+
+.shooting-shirt-section__dropdown-content {
+  border-top: 1px solid var(--shooting-shirt-soft-border);
+  padding: 14px;
+}
+
+.catalog-size-guide {
+  display: grid;
+  gap: 14px;
+}
+
+.catalog-size-guide__grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.catalog-size-guide__card {
+  border: 1px solid var(--shooting-shirt-soft-border);
+}
+
+.catalog-size-guide__heading {
+  border-bottom: 1px solid var(--shooting-shirt-soft-border);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin: 0;
+  padding: 12px 14px;
+  text-transform: uppercase;
+}
+
+.catalog-size-guide__table-shell {
+  overflow-x: auto;
+}
+
+.catalog-size-guide__table {
+  border-collapse: collapse;
+  min-width: 100%;
+  width: 100%;
+}
+
+.catalog-size-guide__table th,
+.catalog-size-guide__table td {
+  border: 1px solid var(--shooting-shirt-soft-border);
+  font-size: 0.72rem;
+  line-height: 1.3;
+  padding: 8px 10px;
+  text-align: center;
+}
+
+.catalog-size-guide__table thead th {
+  background: var(--shooting-shirt-primary);
+  color: var(--shooting-shirt-white);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.catalog-size-guide__table thead tr + tr th {
+  background: var(--shooting-shirt-surface-strong);
+  color: var(--shooting-shirt-primary);
+}
+
+.catalog-size-guide__table tbody th {
+  background: var(--shooting-shirt-surface);
+  font-weight: 800;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.catalog-size-guide__table td {
+  white-space: nowrap;
+}
+
+.catalog-size-guide__note {
+  color: var(--shooting-shirt-muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+  line-height: 1.45;
+  margin: 0;
+}
+
 .shooting-shirt-section__upload-copy {
   display: grid;
   gap: 8px;
@@ -785,6 +903,10 @@
   .shooting-shirt-section__order-summary {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .catalog-size-guide__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 @media screen and (max-width: 980px) {
@@ -871,6 +993,12 @@
 
   .shooting-shirt-section__wheel-shell {
     margin: 0 auto;
+  }
+
+  .catalog-size-guide__table th,
+  .catalog-size-guide__table td {
+    font-size: 0.68rem;
+    padding: 7px 8px;
   }
 }
 
