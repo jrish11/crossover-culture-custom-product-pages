@@ -74,12 +74,14 @@
     const colorApplyCopy = section.querySelector('[data-color-apply-copy]');
     const activeColorDisplay = section.querySelector('[data-active-color-display]');
     const colorTargetButtons = Array.from(section.querySelectorAll('[data-color-target-button]'));
-    const colorSwatches = Array.from(section.querySelectorAll('[data-color-swatch]'));
-    const swatchGroups = Array.from(section.querySelectorAll('[data-color-group]'));
+    const colorSelects = Array.from(section.querySelectorAll('[data-color-select]'));
+    const colorSelectGroups = Array.from(section.querySelectorAll('[data-color-select-group]'));
     const resetColorsButton = section.querySelector('[data-reset-colors]');
     const addToCartButton = section.querySelector('[data-add-to-cart]');
     const wordingSummary = section.querySelector('[data-summary-wording]');
     const totalPiecesSummary = section.querySelector('[data-summary-total-pieces]');
+    const fontSelect = section.querySelector('[data-font-select]');
+    const fontSummary = section.querySelector('[data-summary-font]');
     const colorPropertyInputs = {
       Shirt: section.querySelector('[data-color-property="Shirt"]'),
       Artwork: section.querySelector('[data-color-property="Artwork"]')
@@ -140,13 +142,17 @@
       totalPiecesSummary.textContent = `${total} piece${total === 1 ? '' : 's'}`;
     };
 
-    const refreshSwatches = () => {
+    const refreshColorSelects = () => {
       const current = colorState[activeColorTarget];
-      colorSwatches.forEach((swatch) => {
-        const sameTarget = swatch.dataset.colorTargetScope === activeColorTarget;
-        const isMatch = sameTarget && swatch.dataset.colorValue === current.hex && swatch.dataset.colorName === current.name;
-        swatch.classList.toggle('is-active', isMatch);
-        swatch.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
+
+      colorSelects.forEach((select) => {
+        const sameTarget = select.dataset.colorTargetScope === activeColorTarget;
+        if (!sameTarget) {
+          return;
+        }
+
+        const optionValues = Array.from(select.options).map((option) => option.value);
+        select.value = optionValues.includes(current.hex) ? current.hex : '';
       });
     };
 
@@ -159,8 +165,8 @@
         button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
       });
 
-      swatchGroups.forEach((group) => {
-        group.hidden = group.dataset.colorGroup !== activeColorTarget;
+      colorSelectGroups.forEach((group) => {
+        group.hidden = group.dataset.colorSelectGroup !== activeColorTarget;
       });
 
       activeColorDisplay.textContent = formatColorLabel(current.hex, current.name);
@@ -168,7 +174,7 @@
       colorHexInput.value = current.hex;
       colorPicker.value = isValidHex(current.hex) ? current.hex : '#000000';
       colorPreview.style.backgroundColor = isValidHex(current.hex) ? current.hex : '#FFFFFF';
-      refreshSwatches();
+      refreshColorSelects();
     };
 
     const commitColorState = (target, rawHex, forcedName) => {
@@ -293,6 +299,13 @@
     wordingInput.addEventListener('input', updateWordingCount);
     updateWordingCount();
 
+    if (fontSelect && fontSummary) {
+      fontSummary.textContent = fontSelect.value;
+      fontSelect.addEventListener('change', () => {
+        fontSummary.textContent = fontSelect.value;
+      });
+    }
+
     colorTargetButtons.forEach((button) => {
       button.addEventListener('click', () => {
         activeColorTarget = button.dataset.colorTarget || 'Shirt';
@@ -312,12 +325,20 @@
       commitColorState(activeColorTarget, colorHexInput.value);
     });
 
-    colorSwatches.forEach((swatch) => {
-      swatch.addEventListener('click', () => {
+    colorSelects.forEach((select) => {
+      select.addEventListener('change', () => {
+        const selectedOption = select.options[select.selectedIndex];
+        const colorName = selectedOption?.dataset.colorName || 'Custom';
+
+        if (!select.value) {
+          commitColorState(select.dataset.colorTargetScope || activeColorTarget, colorHexInput.value, 'Custom');
+          return;
+        }
+
         commitColorState(
-          swatch.dataset.colorTargetScope || activeColorTarget,
-          swatch.dataset.colorValue || '#FFFFFF',
-          swatch.dataset.colorName || 'Custom'
+          select.dataset.colorTargetScope || activeColorTarget,
+          select.value,
+          colorName
         );
       });
     });

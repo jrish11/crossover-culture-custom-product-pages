@@ -10,6 +10,7 @@
   if min_pieces < 6
     assign min_pieces = 6
   endif
+  assign font_options = 'DIN-CDB,MP-PRO,Athletic,Birchwood,Booster,Digital,Phosphate,Brush,D-Bold' | split: ','
   assign shirt_colors = 'White:#FFFFFF,Black:#111111,Iron Grey:#6E7175,Team Navy:#203A72,Team Royal:#2454C6,Forest Green:#355B3E,Maroon:#6F263D,Texas Orange:#C5662E,Neon Yellow:#DCE300' | split: ','
   assign artwork_colors = 'Black:#111111,White:#FFFFFF,Grey:#A7ADB3,Maroon:#6F263D,Team Red:#BF2B2B,Purple:#52426F,Team Navy:#203A72,Team Royal:#2454C6,Atomic Blue:#4F8FB4,Forest Green:#355B3E,Bright Green:#739B46,Gold Yellow:#B89641,Orange:#CB6A2D,Brown:#6A5B52' | split: ','
   assign title_downcase = product.title | downcase
@@ -204,6 +205,26 @@
             data-team-wording
           >
         </section>
+
+        <section class="shooting-shirt-section__panel shooting-shirt-section__panel--font">
+          <div class="shooting-shirt-section__field-header">
+            <label class="shooting-shirt-section__field-label" for="FontSelect-{{ section.id }}">4. Wording Font</label>
+            <span class="shooting-shirt-section__field-meta">For the editable top line only</span>
+          </div>
+          <div class="shooting-shirt-section__font-picker">
+            <select
+              id="FontSelect-{{ section.id }}"
+              class="shooting-shirt-section__select-input"
+              name="properties[Wording Font]"
+              data-font-select
+            >
+              {% for font_name in font_options %}
+                <option value="{{ font_name }}"{% if font_name == 'Athletic' %} selected{% endif %}>{{ font_name }}</option>
+              {% endfor %}
+            </select>
+            <p class="shooting-shirt-section__font-note">This controls the editable team wording line. The example stays one line, like “Panthers”.</p>
+          </div>
+        </section>
       </div>
 
       <section class="shooting-shirt-section__panel shooting-shirt-section__panel--sizes">
@@ -315,50 +336,40 @@
             <div class="shooting-shirt-section__palette-area">
               <p class="shooting-shirt-section__color-apply" data-color-apply-copy>Applies to the shirt body and sleeves.</p>
 
-              <div class="shooting-shirt-section__swatch-group" data-color-group="Shirt">
-                <p class="shooting-shirt-section__swatch-group-label">Recommended shirt colors</p>
-                <div class="shooting-shirt-section__mini-swatches" role="list" aria-label="Recommended shirt colors">
+              <div class="shooting-shirt-section__stock-select-group" data-color-select-group="Shirt">
+                <label class="shooting-shirt-section__swatch-group-label" for="StockShirtColor-{{ section.id }}">Stock Team Shirt Colors</label>
+                <select
+                  id="StockShirtColor-{{ section.id }}"
+                  class="shooting-shirt-section__select-input"
+                  data-color-select
+                  data-color-target-scope="Shirt"
+                >
+                  <option value="">Custom from wheel / HEX</option>
                   {% for color_entry in shirt_colors %}
                     {% assign color_parts = color_entry | split: ':' %}
                     {% assign color_name = color_parts[0] %}
                     {% assign color_hex = color_parts[1] %}
-                    <button
-                      type="button"
-                      class="shooting-shirt-section__mini-swatch{% if forloop.first %} is-active{% endif %}"
-                      data-color-swatch
-                      data-color-target-scope="Shirt"
-                      data-color-name="{{ color_name }}"
-                      data-color-value="{{ color_hex }}"
-                      aria-label="{{ color_name }}"
-                      aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
-                    >
-                      <span class="shooting-shirt-section__mini-swatch-fill" style="background-color: {{ color_hex }};"></span>
-                    </button>
+                    <option value="{{ color_hex }}" data-color-name="{{ color_name }}"{% if forloop.first %} selected{% endif %}>{{ color_name }} · {{ color_hex }}</option>
                   {% endfor %}
-                </div>
+                </select>
               </div>
 
-              <div class="shooting-shirt-section__swatch-group" data-color-group="Artwork" hidden>
-                <p class="shooting-shirt-section__swatch-group-label">Recommended words + logo colors</p>
-                <div class="shooting-shirt-section__mini-swatches" role="list" aria-label="Recommended wording and logo colors">
+              <div class="shooting-shirt-section__stock-select-group" data-color-select-group="Artwork" hidden>
+                <label class="shooting-shirt-section__swatch-group-label" for="StockArtworkColor-{{ section.id }}">Stock Team Words + CC Logo Colors</label>
+                <select
+                  id="StockArtworkColor-{{ section.id }}"
+                  class="shooting-shirt-section__select-input"
+                  data-color-select
+                  data-color-target-scope="Artwork"
+                >
+                  <option value="">Custom from wheel / HEX</option>
                   {% for color_entry in artwork_colors %}
                     {% assign color_parts = color_entry | split: ':' %}
                     {% assign color_name = color_parts[0] %}
                     {% assign color_hex = color_parts[1] %}
-                    <button
-                      type="button"
-                      class="shooting-shirt-section__mini-swatch"
-                      data-color-swatch
-                      data-color-target-scope="Artwork"
-                      data-color-name="{{ color_name }}"
-                      data-color-value="{{ color_hex }}"
-                      aria-label="{{ color_name }}"
-                      aria-pressed="false"
-                    >
-                      <span class="shooting-shirt-section__mini-swatch-fill" style="background-color: {{ color_hex }};"></span>
-                    </button>
+                    <option value="{{ color_hex }}" data-color-name="{{ color_name }}"{% if color_name == 'Black' %} selected{% endif %}>{{ color_name }} · {{ color_hex }}</option>
                   {% endfor %}
-                </div>
+                </select>
               </div>
 
               <div class="shooting-shirt-section__hex-shell">
@@ -395,7 +406,7 @@
 
       <section class="shooting-shirt-section__panel shooting-shirt-section__panel--upload">
         <div class="shooting-shirt-section__field-header">
-          <span class="shooting-shirt-section__field-label">4. Logo Upload</span>
+          <span class="shooting-shirt-section__field-label">5. Logo Upload</span>
           <span class="shooting-shirt-section__field-meta">SVG, AI, EPS only</span>
         </div>
         <div class="shooting-shirt-section__upload-copy">
@@ -415,7 +426,7 @@
 
       <section class="shooting-shirt-section__panel shooting-shirt-section__panel--notes">
         <div class="shooting-shirt-section__field-header">
-          <label class="shooting-shirt-section__field-label" for="OrderNotes-{{ section.id }}">5. Order Notes</label>
+          <label class="shooting-shirt-section__field-label" for="OrderNotes-{{ section.id }}">6. Order Notes</label>
           <span class="shooting-shirt-section__field-meta">Optional</span>
         </div>
         <textarea
@@ -445,6 +456,10 @@
           <div class="shooting-shirt-section__order-summary-item">
             <span class="shooting-shirt-section__order-summary-label">Words + CC Logo</span>
             <span class="shooting-shirt-section__order-summary-value" data-summary-color="Artwork">#111111 (Black)</span>
+          </div>
+          <div class="shooting-shirt-section__order-summary-item">
+            <span class="shooting-shirt-section__order-summary-label">Font</span>
+            <span class="shooting-shirt-section__order-summary-value" data-summary-font>Athletic</span>
           </div>
           <div class="shooting-shirt-section__order-summary-item">
             <span class="shooting-shirt-section__order-summary-label">Total Pieces</span>

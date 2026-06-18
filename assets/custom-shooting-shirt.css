@@ -316,6 +316,10 @@
   background: linear-gradient(180deg, #ffffff 0%, #fcfbf8 100%);
 }
 
+.shooting-shirt-section__panel--font {
+  background: linear-gradient(180deg, #ffffff 0%, #fcfbf8 100%);
+}
+
 .shooting-shirt-section__panel--sizes {
   grid-area: sizes;
 }
@@ -388,6 +392,7 @@
 }
 
 .shooting-shirt-section__text-input,
+.shooting-shirt-section__select-input,
 .shooting-shirt-section__file-input,
 .shooting-shirt-section__textarea,
 .shooting-shirt-section__quantity-input {
@@ -408,12 +413,36 @@
   resize: vertical;
 }
 
+.shooting-shirt-section__select-input {
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--shooting-shirt-primary) 50%),
+    linear-gradient(135deg, var(--shooting-shirt-primary) 50%, transparent 50%);
+  background-position:
+    calc(100% - 20px) calc(50% - 2px),
+    calc(100% - 14px) calc(50% - 2px);
+  background-repeat: no-repeat;
+  background-size: 6px 6px, 6px 6px;
+  padding-right: 40px;
+}
+
+.shooting-shirt-section__font-picker {
+  display: grid;
+  gap: 10px;
+}
+
+.shooting-shirt-section__font-note {
+  color: var(--shooting-shirt-muted);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  margin: 0;
+}
+
 .shooting-shirt-section__text-input:focus,
+.shooting-shirt-section__select-input:focus,
 .shooting-shirt-section__file-input:focus,
 .shooting-shirt-section__textarea:focus,
 .shooting-shirt-section__quantity-input:focus,
 .shooting-shirt-section__thumbnail:focus,
-.shooting-shirt-section__mini-swatch:focus,
 .shooting-shirt-section__wheel-input:focus,
 .shooting-shirt-section__cta:focus,
 .shooting-shirt-section__cta-link:focus,
@@ -527,7 +556,7 @@
   margin: 0;
 }
 
-.shooting-shirt-section__swatch-group {
+.shooting-shirt-section__stock-select-group {
   display: grid;
   gap: 8px;
 }
@@ -539,44 +568,6 @@
   letter-spacing: 0.08em;
   margin: 0;
   text-transform: uppercase;
-}
-
-.shooting-shirt-section__mini-swatches {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.shooting-shirt-section__mini-swatch {
-  align-items: center;
-  background: transparent;
-  border: 1px solid var(--shooting-shirt-border);
-  border-radius: 50%;
-  cursor: pointer;
-  display: inline-flex;
-  height: 34px;
-  justify-content: center;
-  padding: 0;
-  transition: transform 0.2s ease, border-color 0.2s ease;
-  width: 34px;
-}
-
-.shooting-shirt-section__mini-swatch:hover,
-.shooting-shirt-section__mini-swatch:focus-visible {
-  border-color: var(--shooting-shirt-primary);
-  transform: translateY(-1px);
-}
-
-.shooting-shirt-section__mini-swatch.is-active {
-  border-color: var(--shooting-shirt-primary);
-}
-
-.shooting-shirt-section__mini-swatch-fill {
-  border: 1px solid rgba(17, 17, 17, 0.12);
-  border-radius: 50%;
-  display: block;
-  height: 20px;
-  width: 20px;
 }
 
 .shooting-shirt-section__hex-shell {
@@ -709,7 +700,7 @@
 .shooting-shirt-section__order-summary {
   display: grid;
   gap: 12px;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 }
 
 .shooting-shirt-section__order-summary-item {
