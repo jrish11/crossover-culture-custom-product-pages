@@ -42,6 +42,10 @@
   margin: 10px 0 0 54px;
 }
 
+.travel-gear-section .shooting-shirt-section__utility-bar {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .travel-gear-section .shooting-shirt-section__meta-column {
   gap: 14px;
 }
@@ -118,13 +122,17 @@
 .travel-gear-section__select-input {
   appearance: none;
   background: var(--shooting-shirt-white);
+  background-image: linear-gradient(45deg, transparent 50%, var(--shooting-shirt-primary) 50%), linear-gradient(135deg, var(--shooting-shirt-primary) 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(1em + 7px), calc(100% - 12px) calc(1em + 7px);
+  background-repeat: no-repeat;
+  background-size: 6px 6px, 6px 6px;
   border: 1px solid var(--shooting-shirt-border);
   border-radius: 0;
   color: var(--shooting-shirt-primary);
   font: inherit;
   font-size: 0.92rem;
   min-height: 48px;
-  padding: 12px 14px;
+  padding: 12px 34px 12px 14px;
   width: 100%;
 }
 
@@ -232,6 +240,173 @@
   grid-template-columns: minmax(0, 1fr) 54px;
 }
 
+.travel-gear-section__guide-dropdown {
+  border-top: 1px solid var(--shooting-shirt-soft-border);
+  margin-top: 14px;
+  padding-top: 14px;
+}
+
+.travel-gear-section__guide-summary {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  list-style: none;
+}
+
+.travel-gear-section__guide-summary::-webkit-details-marker {
+  display: none;
+}
+
+.travel-gear-section__guide-summary::after {
+  content: "+";
+  font-size: 1rem;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.travel-gear-section__guide-dropdown[open] .travel-gear-section__guide-summary::after {
+  transform: rotate(45deg);
+}
+
+.travel-gear-section__guide-summary span:first-child {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.travel-gear-section__guide-summary-meta {
+  color: var(--shooting-shirt-muted);
+  font-size: 0.7rem;
+  line-height: 1.3;
+}
+
+.travel-gear-section__guide-body {
+  border-top: 1px solid var(--shooting-shirt-soft-border);
+  margin-top: 12px;
+  padding-top: 14px;
+}
+
+.travel-gear-section__font-guide-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.travel-gear-section__font-card,
+.travel-gear-section__size-guide-card {
+  border: 1px solid var(--shooting-shirt-soft-border);
+  padding: 10px;
+}
+
+.travel-gear-section__font-card-title,
+.travel-gear-section__size-guide-title {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.travel-gear-section__font-preview {
+  color: #929292;
+  margin: 0;
+}
+
+.travel-gear-section__font-preview:not(.travel-gear-section__font-preview--numbers) {
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
+.travel-gear-section__font-preview--numbers {
+  font-size: 1.55rem;
+  line-height: 1;
+  margin-top: 4px;
+}
+
+.travel-gear-section__font-preview--din-cdb,
+.travel-gear-section__font-preview--mp-pro,
+.travel-gear-section__font-preview--athletic,
+.travel-gear-section__font-preview--d-bold {
+  font-family: Impact, "Arial Narrow Bold", sans-serif;
+  letter-spacing: 0.03em;
+}
+
+.travel-gear-section__font-preview--birchwood {
+  font-family: "Baskerville", Georgia, serif;
+  letter-spacing: 0.02em;
+}
+
+.travel-gear-section__font-preview--booster,
+.travel-gear-section__font-preview--phosphate {
+  -webkit-text-stroke: 1px #9a9a9a;
+  color: transparent;
+  font-family: Impact, "Arial Narrow Bold", sans-serif;
+}
+
+.travel-gear-section__font-preview--digital {
+  font-family: "Courier New", monospace;
+  letter-spacing: 0.08em;
+}
+
+.travel-gear-section__font-preview--brush {
+  font-family: "Brush Script MT", "Segoe Script", cursive;
+}
+
+.travel-gear-section__guide-body--size {
+  display: grid;
+  gap: 12px;
+}
+
+.travel-gear-section__size-guide-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.travel-gear-section__guide-table-shell {
+  overflow-x: auto;
+}
+
+.travel-gear-section__guide-table {
+  border-collapse: collapse;
+  min-width: 100%;
+  width: 100%;
+}
+
+.travel-gear-section__guide-table th,
+.travel-gear-section__guide-table td {
+  border: 1px solid var(--shooting-shirt-soft-border);
+  font-size: 0.68rem;
+  line-height: 1.3;
+  padding: 7px 8px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.travel-gear-section__guide-table thead th {
+  background: var(--shooting-shirt-primary);
+  color: var(--shooting-shirt-white);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.travel-gear-section__guide-table tbody th {
+  background: var(--shooting-shirt-surface);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.travel-gear-section__guide-note {
+  color: var(--shooting-shirt-muted);
+  font-size: 0.72rem;
+  line-height: 1.45;
+  margin: 0;
+}
+
 .travel-gear-section .shooting-shirt-section__upload-headline {
   font-size: 0.78rem;
 }
@@ -273,6 +448,11 @@
   .travel-gear-section__order-summary {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+
+  .travel-gear-section__font-guide-grid,
+  .travel-gear-section__size-guide-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media screen and (max-width: 980px) {
@@ -281,6 +461,11 @@
   }
 
   .travel-gear-section__identity-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .travel-gear-section__font-guide-grid,
+  .travel-gear-section__size-guide-grid {
     grid-template-columns: minmax(0, 1fr);
   }
 }

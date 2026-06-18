@@ -31,7 +31,7 @@
   assign lead_spec = spec_points.first
 
   assign artwork_colors = 'Black:#111111,White:#FFFFFF,Grey:#A7ADB3,Maroon:#6F263D,Team Red:#C63737,Red:#D73B32,Purple:#52426F,Team Navy:#203A72,Team Royal:#4056B4,Atomic Blue:#4F8FB4,Bright Blue:#78AFCF,Forest Green:#4F6E54,Orange:#C46A3A,Gold Yellow:#B08D2F,Yellow:#B7A82F,Brown:#6A5B52' | split: ','
-  assign font_options = 'Athletic,Varsity,Block,Modern Sans' | split: ','
+  assign font_options = 'DIN-CDB,MP-PRO,ATHLETIC,BIRCHWOOD,BOOSTER,DIGITAL,PHOSPHATE,BRUSH,D-BOLD' | split: ','
 %}
 
 <section
@@ -40,18 +40,6 @@
   data-min-pieces="{{ min_pieces }}"
 >
   <div class="shooting-shirt-section__utility-bar" aria-label="Travel gear order details">
-    <div class="shooting-shirt-section__utility-item">
-      <span class="shooting-shirt-section__utility-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M4 7.5 8.5 3H20v11.5L15.5 19H4V7.5Z" stroke="currentColor" stroke-width="1.7"/>
-          <path d="m8.5 3 7 7M6.5 10.5h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-        </svg>
-      </span>
-      <div class="shooting-shirt-section__utility-copy">
-        <p class="shooting-shirt-section__utility-title">Custom Travel Gear</p>
-        <p class="shooting-shirt-section__utility-text">{{ section.settings.utility_bar_delivery }}</p>
-      </div>
-    </div>
     <div class="shooting-shirt-section__utility-item">
       <span class="shooting-shirt-section__utility-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none">
@@ -225,11 +213,30 @@
                 data-font-select
               >
                 {% for font_name in font_options %}
-                  <option value="{{ font_name }}"{% if font_name == 'Athletic' %} selected{% endif %}>{{ font_name }}</option>
+                  <option value="{{ font_name }}"{% if font_name == 'ATHLETIC' %} selected{% endif %}>{{ font_name }}</option>
                 {% endfor %}
               </select>
             </div>
           </div>
+
+          <details class="travel-gear-section__guide-dropdown">
+            <summary class="travel-gear-section__guide-summary">
+              <span>View font guide</span>
+              <span class="travel-gear-section__guide-summary-meta">9 options</span>
+            </summary>
+            <div class="travel-gear-section__guide-body">
+              <div class="travel-gear-section__font-guide-grid">
+                {% for font_name in font_options %}
+                  {% assign font_key = font_name | downcase | replace: ' ', '-' %}
+                  <article class="travel-gear-section__font-card">
+                    <p class="travel-gear-section__font-card-title">{{ forloop.index }}. {{ font_name }}</p>
+                    <p class="travel-gear-section__font-preview travel-gear-section__font-preview--{{ font_key }}">ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
+                    <p class="travel-gear-section__font-preview travel-gear-section__font-preview--{{ font_key }} travel-gear-section__font-preview--numbers">0123456789</p>
+                  </article>
+                {% endfor %}
+              </div>
+            </div>
+          </details>
         </section>
       </div>
 
@@ -319,6 +326,112 @@
             </div>
           </div>
         </div>
+
+        <details class="travel-gear-section__guide-dropdown travel-gear-section__guide-dropdown--size">
+          <summary class="travel-gear-section__guide-summary">
+            <span>View sizing &amp; fit guide</span>
+            <span class="travel-gear-section__guide-summary-meta">Chest, waist, hip</span>
+          </summary>
+          <div class="travel-gear-section__guide-body travel-gear-section__guide-body--size">
+            <div class="travel-gear-section__size-guide-grid">
+              <article class="travel-gear-section__size-guide-card">
+                <p class="travel-gear-section__size-guide-title">Men&apos;s</p>
+                <div class="travel-gear-section__guide-table-shell">
+                  <table class="travel-gear-section__guide-table">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>SM</th>
+                        <th>MD</th>
+                        <th>LG</th>
+                        <th>XL</th>
+                        <th>XXL</th>
+                        <th>3XL</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><th>Chest</th><td>34-36</td><td>38-40</td><td>42-44</td><td>46-48</td><td>50-52</td><td>54-56</td></tr>
+                      <tr><th>Waist</th><td>28-29</td><td>30-32</td><td>34-36</td><td>38-40</td><td>42-44</td><td>46-48</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </article>
+
+              <article class="travel-gear-section__size-guide-card">
+                <p class="travel-gear-section__size-guide-title">Women&apos;s</p>
+                <div class="travel-gear-section__guide-table-shell">
+                  <table class="travel-gear-section__guide-table">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>XS</th>
+                        <th>SM</th>
+                        <th>MD</th>
+                        <th>LG</th>
+                        <th>XL</th>
+                        <th>XXL</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><th>Bust</th><td>31-33</td><td>33.5-35.5</td><td>36-38</td><td>38.5-40.5</td><td>41-43</td><td>43+</td></tr>
+                      <tr><th>Waist</th><td>23-25</td><td>25.5-27.5</td><td>28-30</td><td>30.5-32.5</td><td>33-35</td><td>35+</td></tr>
+                      <tr><th>Hip</th><td>33-35</td><td>35.5-37.5</td><td>38-40</td><td>40.5-42.5</td><td>43-45</td><td>45+</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </article>
+
+              <article class="travel-gear-section__size-guide-card">
+                <p class="travel-gear-section__size-guide-title">Boys</p>
+                <div class="travel-gear-section__guide-table-shell">
+                  <table class="travel-gear-section__guide-table">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>YXS</th>
+                        <th>YSM</th>
+                        <th>YMD</th>
+                        <th>YLG</th>
+                        <th>YXL</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><th>Age</th><td>6-7</td><td>8</td><td>10-12</td><td>14-16</td><td>18-20</td></tr>
+                      <tr><th>Chest</th><td>24</td><td>26.5</td><td>27.5-28.5</td><td>30.5-32</td><td>33.5-35</td></tr>
+                      <tr><th>Waist</th><td>23</td><td>24.5</td><td>25.5-28</td><td>29.5-31</td><td>32.5</td></tr>
+                      <tr><th>Hip</th><td>25</td><td>27.75</td><td>29-30.5</td><td>33.5-35</td><td>36.5</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </article>
+
+              <article class="travel-gear-section__size-guide-card">
+                <p class="travel-gear-section__size-guide-title">Girls</p>
+                <div class="travel-gear-section__guide-table-shell">
+                  <table class="travel-gear-section__guide-table">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>YXS</th>
+                        <th>YSM</th>
+                        <th>YMD</th>
+                        <th>YLG</th>
+                        <th>YXL</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><th>Age</th><td>6-6X</td><td>7-8</td><td>10-12</td><td>14-16</td><td>18-20</td></tr>
+                      <tr><th>Chest</th><td>24-24.75</td><td>26-27</td><td>28.5-30</td><td>31.5-33.5</td><td>35.5-37.5</td></tr>
+                      <tr><th>Waist</th><td>23-23.5</td><td>23.5-24.75</td><td>25-26</td><td>28-30</td><td>32-34</td></tr>
+                      <tr><th>Hip</th><td>25-25.75</td><td>27.5-28.5</td><td>30-32</td><td>34-36</td><td>38-40</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </article>
+            </div>
+            <p class="travel-gear-section__guide-note">Production garments have a size allowance of approximately +/- one half inch.</p>
+          </div>
+        </details>
       </section>
 
       <section class="shooting-shirt-section__panel shooting-shirt-section__panel--colors">
