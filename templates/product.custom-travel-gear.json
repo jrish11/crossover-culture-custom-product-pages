@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "main": {
+      "type": "custom-travel-gear",
+      "settings": {
+        "utility_bar_delivery": "Ready in 30 days (Imported)",
+        "minimum_order": "6 pieces per order",
+        "contact_url": "/pages/contact",
+        "min_pieces": 6,
+        "quarter_zip_intro_copy": "Build your quarter-zip order with separate garment and logo colors, team wording, a full size breakdown, and one vector artwork upload in one streamlined form.",
+        "crew_intro_copy": "Build your crew order with separate garment and logo colors, team wording, a full size breakdown, and one vector artwork upload in one streamlined form."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

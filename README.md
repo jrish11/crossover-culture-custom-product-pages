@@ -2,9 +2,9 @@
 
 ## Project overview
 
-This repository contains a Shopify theme implementation for a custom team uniform ordering flow for Crossover Culture. It replaces the standard retail product template on selected products with a denser, product-page-style team order experience designed for coaches, team managers, and program directors.
+This repository contains Shopify theme implementations for custom team-order product flows for Crossover Culture. These templates replace the standard retail product template on selected products with denser, product-page-style ordering experiences designed for coaches, team managers, and program directors.
 
-The current build focuses on a shorter, cleaner order flow:
+The custom team uniform build focuses on a shorter, cleaner order flow:
 
 - team name
 - main uniform color
@@ -19,33 +19,65 @@ The current build focuses on a shorter, cleaner order flow:
 
 The section submits the order through Shopify's AJAX cart endpoint using `fetch` plus `FormData`, which allows text line item properties and the vector logo upload to be added without redirecting the customer away from the product page.
 
+The repository also contains:
+
+- `custom-shooting-shirt` for Enlisted-style shooting shirts
+- `custom-travel-gear` for Enlisted travel gear, with one shared template that adapts to:
+  - Enlisted 1/4 Zip
+  - Enlisted Polo
+  - Enlisted Crew
+
 ## File structure
 
 ```text
 crossover-culture-team-order-system/
 ├── README.md
 ├── assets/
+│   ├── custom-shooting-shirt.css
+│   ├── custom-shooting-shirt.js
 │   ├── custom-team-uniform.css
-│   └── custom-team-uniform.js
+│   ├── custom-team-uniform.js
+│   ├── custom-travel-gear.css
+│   └── custom-travel-gear.js
 ├── sections/
-│   └── custom-team-uniform.liquid
+│   ├── custom-shooting-shirt.liquid
+│   ├── custom-team-uniform.liquid
+│   └── custom-travel-gear.liquid
 ├── snippets/
 │   ├── team-feature-icons.liquid
 │   └── team-size-guide.liquid
 └── templates/
-    └── product.custom-team-uniform.json
+    ├── product.custom-shooting-shirt.json
+    ├── product.custom-team-uniform.json
+    └── product.custom-travel-gear.json
 ```
 
 ## What each file does
 
 - `sections/custom-team-uniform.liquid`
   Renders the full product layout, including the utility bar, gallery, streamlined order form, collapsed size guide, collapsed font reference, shared logo upload, and schema settings.
+- `sections/custom-shooting-shirt.liquid`
+  Renders the shooting-shirt order flow with wording, separate shirt and artwork colors, size breakdown, and artwork upload.
+- `sections/custom-travel-gear.liquid`
+  Renders the travel-gear order flow and automatically swaps the pricing guide, fit ranges, specs, and base-color references for the Enlisted 1/4 Zip, Enlisted Polo, and Enlisted Crew.
 - `templates/product.custom-team-uniform.json`
   Creates the alternate product template that renders the custom team order section.
+- `templates/product.custom-shooting-shirt.json`
+  Creates the alternate product template that renders the shooting-shirt order section.
+- `templates/product.custom-travel-gear.json`
+  Creates the alternate product template that renders the travel-gear order section.
 - `assets/custom-team-uniform.css`
   Provides fully scoped styles under `.team-order-section` so the layout stays isolated from the rest of the theme.
 - `assets/custom-team-uniform.js`
   Handles gallery swapping, team name counting, color targeting, roster row management, vector upload checks, and AJAX add-to-cart submission.
+- `assets/custom-shooting-shirt.css`
+  Provides the shared full-width apparel order layout used by the shooting-shirt flow and reused by the travel-gear flow.
+- `assets/custom-shooting-shirt.js`
+  Handles the shooting-shirt gallery, color selection, size breakdown, upload validation, and AJAX add-to-cart submission.
+- `assets/custom-travel-gear.css`
+  Adds travel-gear-specific catalog reference card styles on top of the shared apparel layout.
+- `assets/custom-travel-gear.js`
+  Handles the travel-gear gallery, decoration tier summary, color selection, size breakdown, upload validation, and AJAX add-to-cart submission.
 - `snippets/team-size-guide.liquid`
   Renders the size guide content used inside the collapsed dropdown.
 - `snippets/team-feature-icons.liquid`
@@ -57,9 +89,17 @@ crossover-culture-team-order-system/
 2. On the theme you want to edit, click `... -> Edit code`.
 3. Create or replace the following files using the contents from this repository:
    - `sections/custom-team-uniform.liquid`
+   - `sections/custom-shooting-shirt.liquid`
+   - `sections/custom-travel-gear.liquid`
    - `templates/product.custom-team-uniform.json`
+   - `templates/product.custom-shooting-shirt.json`
+   - `templates/product.custom-travel-gear.json`
    - `assets/custom-team-uniform.css`
    - `assets/custom-team-uniform.js`
+   - `assets/custom-shooting-shirt.css`
+   - `assets/custom-shooting-shirt.js`
+   - `assets/custom-travel-gear.css`
+   - `assets/custom-travel-gear.js`
    - `snippets/team-size-guide.liquid`
    - `snippets/team-feature-icons.liquid`
 4. Save each file after pasting the contents.
@@ -68,9 +108,14 @@ crossover-culture-team-order-system/
 
 1. In Shopify Admin, go to `Products`.
 2. Open the uniform product that should use this order flow.
-3. In the `Theme template` selector, choose `custom-team-uniform`.
+3. In the `Theme template` selector, choose the matching template:
+   - `custom-team-uniform`
+   - `custom-shooting-shirt`
+   - `custom-travel-gear`
 4. Save the product.
 5. Repeat for every uniform product that should use this experience.
+
+For the travel-gear template, the section detects the product title and automatically switches between the Enlisted 1/4 Zip, Enlisted Polo, and Enlisted Crew catalog details. Keep those keywords in the product title so the correct price guide and size ranges appear.
 
 ## How to configure the section in the theme editor
 
