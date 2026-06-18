@@ -5,6 +5,7 @@
   assign current_variant = product.selected_or_first_available_variant
   assign featured_image = product.featured_image | default: product.images.first
   assign contact_link = section.settings.contact_url | default: '/pages/contact'
+  assign display_price = product.price | money | append: ' each'
   assign min_pieces = section.settings.min_pieces | default: 6
   if min_pieces < 6
     assign min_pieces = 6
@@ -31,7 +32,6 @@
 <section
   class="shooting-shirt-section"
   data-section-id="{{ section.id }}"
-  data-cart-add-url="{{ routes.cart_add_url }}.js"
   data-min-pieces="{{ min_pieces }}"
 >
   <div class="shooting-shirt-section__utility-bar" aria-label="Shooting shirt order details">
@@ -86,15 +86,27 @@
   </div>
 
   <div class="shooting-shirt-section__inner">
-    <form class="shooting-shirt-section__order-canvas" data-shooting-shirt-form enctype="multipart/form-data" novalidate>
+    <form
+      class="shooting-shirt-section__order-canvas"
+      data-shooting-shirt-form
+      action="{{ routes.cart_add_url }}"
+      method="post"
+      enctype="multipart/form-data"
+      accept-charset="UTF-8"
+      novalidate
+    >
       <input type="hidden" name="id" value="{{ current_variant.id }}">
       <input type="hidden" name="quantity" value="1">
+      <input type="hidden" name="properties[Requested Unit Price]" value="{{ display_price }}">
       <input type="hidden" name="properties[Product Style]" value="{{ product_style }}">
       <input type="hidden" name="properties[Sleeve Type]" value="{{ sleeve_type }}">
       <input type="hidden" name="properties[Shirt Color]" value="#FFFFFF (White)" data-color-property="Shirt">
       <input type="hidden" name="properties[Words + CC Logo Color]" value="#111111 (Black)" data-color-property="Artwork">
       <input type="hidden" name="properties[Size Breakdown]" value="" data-size-breakdown-property>
       <input type="hidden" name="properties[Total Pieces]" value="0" data-total-pieces-property>
+      <input type="hidden" name="properties[_Company]" value="Crossover Culture">
+      <input type="hidden" name="properties[_Order Flow]" value="Shooting Shirt Customizer">
+      <input type="hidden" name="properties[_Source Product]" value="{{ product.title }}">
 
       <div class="shooting-shirt-section__message shooting-shirt-section__message--error" data-form-message="error" role="alert" hidden></div>
       <div class="shooting-shirt-section__message shooting-shirt-section__message--success" data-form-message="success" role="status" hidden></div>
@@ -152,7 +164,7 @@
         <div class="shooting-shirt-section__product-meta">
           <p class="shooting-shirt-section__eyebrow">Premium Team Shooting Shirt Ordering</p>
           <h1 class="shooting-shirt-section__title">{{ product.title }}</h1>
-          <p class="shooting-shirt-section__price">{{ product.price | money }} each</p>
+          <p class="shooting-shirt-section__price">{{ display_price }}</p>
           <p class="shooting-shirt-section__intro">{{ section.settings.intro_copy }}</p>
           <ul class="shooting-shirt-section__feature-list">
             <li>Choose one shirt color and one separate words plus CC logo color.</li>

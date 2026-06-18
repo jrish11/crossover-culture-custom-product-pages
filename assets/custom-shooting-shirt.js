@@ -56,7 +56,6 @@
 
   const initializeSection = (section) => {
     const minPieces = Math.max(parseInt(section.dataset.minPieces || '6', 10) || 6, 6);
-    const cartAddUrl = section.dataset.cartAddUrl || '/cart/add.js';
 
     const mainImage = section.querySelector('[data-main-image]');
     const thumbnails = Array.from(section.querySelectorAll('[data-gallery-thumb]'));
@@ -69,7 +68,6 @@
     const uploadInput = section.querySelector('[data-vector-upload]');
     const uploadName = section.querySelector('[data-upload-name]');
     const errorMessage = section.querySelector('[data-form-message="error"]');
-    const successMessage = section.querySelector('[data-form-message="success"]');
     const colorPicker = section.querySelector('[data-color-picker]');
     const colorHexInput = section.querySelector('[data-color-hex]');
     const colorPreview = section.querySelector('[data-color-preview]');
@@ -106,19 +104,10 @@
       if (type === 'error') {
         errorMessage.textContent = message;
         errorMessage.hidden = false;
-        successMessage.hidden = true;
-        return;
-      }
-
-      if (type === 'success') {
-        successMessage.textContent = message;
-        successMessage.hidden = false;
-        errorMessage.hidden = true;
         return;
       }
 
       errorMessage.hidden = true;
-      successMessage.hidden = true;
     };
 
     const clearFieldErrors = () => {
@@ -263,39 +252,25 @@
       return isValid;
     };
 
-    const submitOrder = async () => {
+    const syncDerivedProperties = () => {
+      const sizeBreakdown = buildSizeBreakdown();
+      sizeBreakdownProperty.value = sizeBreakdown.join(' | ');
+      totalPiecesProperty.value = String(
+        quantityInputs.reduce((sum, input) => sum + (Math.max(parseInt(input.value || '0', 10) || 0, 0)), 0)
+      );
+      colorPropertyInputs.Shirt.value = formatColorLabel(colorState.Shirt.hex, colorState.Shirt.name);
+      colorPropertyInputs.Artwork.value = formatColorLabel(colorState.Artwork.hex, colorState.Artwork.name);
+    };
+
+    const submitOrder = () => {
       if (!validateForm()) {
         return;
       }
 
-      sizeBreakdownProperty.value = buildSizeBreakdown().join(' | ');
-
+      syncDerivedProperties();
       addToCartButton.disabled = true;
       addToCartButton.textContent = 'Adding Shooting Shirt Order...';
-
-      const formData = new FormData(form);
-
-      try {
-        const response = await fetch(cartAddUrl, {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json'
-          },
-          body: formData
-        });
-
-        const responseData = await response.json();
-        if (!response.ok) {
-          throw new Error(responseData.description || 'Unable to add the shooting shirt order to cart.');
-        }
-
-        setMessage('success', 'Shooting shirt order added to cart with color selections, size breakdown, and artwork upload.');
-      } catch (error) {
-        setMessage('error', error.message || 'Unable to add the shooting shirt order to cart.');
-      } finally {
-        addToCartButton.disabled = false;
-        addToCartButton.textContent = 'Add Shooting Shirt Order To Cart';
-      }
+      HTMLFormElement.prototype.submit.call(form);
     };
 
     if (mainImage && thumbnails.length) {
