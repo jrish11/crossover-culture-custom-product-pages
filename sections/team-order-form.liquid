@@ -4,7 +4,6 @@
 {% liquid
   assign current_variant = product.selected_or_first_available_variant
   assign featured_image = product.featured_image | default: product.images.first
-  assign contact_link = section.settings.contact_url | default: '/pages/contact'
   assign min_players = section.settings.min_players | default: 6
   if min_players < 6
     assign min_players = 6
@@ -18,57 +17,6 @@
   data-section-id="{{ section.id }}"
   data-min-players="{{ min_players }}"
 >
-  <div class="team-order-section__utility-bar" aria-label="Team order details">
-    <div class="team-order-section__utility-item">
-      <span class="team-order-section__utility-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M4 7.5 8.5 3H20v11.5L15.5 19H4V7.5Z" stroke="currentColor" stroke-width="1.7"/>
-          <path d="m8.5 3 7 7M6.5 10.5h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-        </svg>
-      </span>
-      <div class="team-order-section__utility-copy">
-        <p class="team-order-section__utility-title">Custom Team Orders</p>
-        <p class="team-order-section__utility-text">{{ section.settings.utility_bar_delivery }}</p>
-      </div>
-    </div>
-    <div class="team-order-section__utility-item">
-      <span class="team-order-section__utility-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M12 3.75c4 0 7.25 3.25 7.25 7.25 0 5.4-7.25 9.25-7.25 9.25S4.75 16.4 4.75 11c0-4 3.25-7.25 7.25-7.25Z" stroke="currentColor" stroke-width="1.7"/>
-          <path d="m8.25 8.25 7.5 7.5M15.75 8.25l-7.5 7.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-        </svg>
-      </span>
-      <div class="team-order-section__utility-copy">
-        <p class="team-order-section__utility-title">No Returns</p>
-        <p class="team-order-section__utility-text">All sales are final</p>
-      </div>
-    </div>
-    <div class="team-order-section__utility-item">
-      <span class="team-order-section__utility-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M12 4.5 18.5 8v8L12 19.5 5.5 16V8L12 4.5Z" stroke="currentColor" stroke-width="1.7"/>
-          <path d="M5.5 8 12 12l6.5-4M12 12v7.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-        </svg>
-      </span>
-      <div class="team-order-section__utility-copy">
-        <p class="team-order-section__utility-title">Minimum Order</p>
-        <p class="team-order-section__utility-text">{{ section.settings.minimum_order }}</p>
-      </div>
-    </div>
-    <a class="team-order-section__utility-item team-order-section__utility-item--link" href="{{ contact_link }}">
-      <span class="team-order-section__utility-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M7.5 17.5 4 20V6.75A2.75 2.75 0 0 1 6.75 4h10.5A2.75 2.75 0 0 1 20 6.75v7.5A2.75 2.75 0 0 1 17.25 17H7.5Z" stroke="currentColor" stroke-width="1.7"/>
-          <path d="M8.25 9.25h7.5M8.25 12.5h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-        </svg>
-      </span>
-      <div class="team-order-section__utility-copy">
-        <p class="team-order-section__utility-title">Need Help?</p>
-        <p class="team-order-section__utility-text">Contact our team</p>
-      </div>
-    </a>
-  </div>
-
   <div class="team-order-section__inner page-width">
     <div class="team-order-section__grid">
       <div class="team-order-section__gallery-column">
