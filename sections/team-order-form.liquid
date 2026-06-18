@@ -1,5 +1,5 @@
-{{ 'custom-team-uniform.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'custom-team-uniform.js' | asset_url }}" defer></script>
+{{ 'team-order-form.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'team-order-form.js' | asset_url }}" defer></script>
 
 {% liquid
   assign current_variant = product.selected_or_first_available_variant
@@ -16,7 +16,6 @@
 <section
   class="team-order-section"
   data-section-id="{{ section.id }}"
-  data-cart-add-url="{{ routes.cart_add_url }}.js"
   data-min-players="{{ min_players }}"
 >
   <div class="team-order-section__utility-bar" aria-label="Team order details">
@@ -134,15 +133,27 @@
           </ul>
         </div>
 
-        <form class="team-order-section__form-card" data-team-order-form enctype="multipart/form-data" novalidate>
+        <form
+          class="team-order-section__form-card"
+          data-team-order-form
+          action="{{ routes.cart_add_url }}"
+          method="post"
+          enctype="multipart/form-data"
+          accept-charset="UTF-8"
+          novalidate
+        >
           <input type="hidden" name="id" value="{{ current_variant.id }}">
           <input type="hidden" name="quantity" value="1">
           <input type="hidden" name="properties[Style]" value="Home" data-style-value>
-          <input type="hidden" name="properties[Player Count]" value="5" data-player-count-property>
+          <input type="hidden" name="properties[Player Count]" value="0" data-player-count-property>
           <input type="hidden" name="properties[Roster]" value="" data-roster-property>
           <input type="hidden" name="properties[Main Color]" value="#FFFFFF (White)" data-color-property="Main">
           <input type="hidden" name="properties[Number Color]" value="#111111 (Black)" data-color-property="Number">
           <input type="hidden" name="properties[Alt Color]" value="#003DA5 (Royal Blue)" data-color-property="Alt">
+          <input type="hidden" name="properties[Requested Unit Price]" value="Starting at {{ product.price | money }}/player">
+          <input type="hidden" name="properties[_Company]" value="Crossover Culture">
+          <input type="hidden" name="properties[_Order Flow]" value="Team Uniform Customizer">
+          <input type="hidden" name="properties[_Source Product]" value="{{ product.title }}">
 
           <div class="team-order-section__message team-order-section__message--error" data-form-message="error" role="alert" hidden></div>
           <div class="team-order-section__message team-order-section__message--success" data-form-message="success" role="status" hidden></div>

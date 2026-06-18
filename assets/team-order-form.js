@@ -114,7 +114,6 @@
   const initializeSection = (section) => {
     const sectionId = section.dataset.sectionId || 'section';
     const minPlayers = Math.max(parseInt(section.dataset.minPlayers || '6', 10) || 6, 6);
-    const cartAddUrl = section.dataset.cartAddUrl || '/cart/add.js';
 
     const mainImage = section.querySelector('[data-main-image]');
     const thumbnails = Array.from(section.querySelectorAll('[data-gallery-thumb]'));
@@ -310,26 +309,32 @@
       refreshSwatches();
     };
 
+    const syncColorProperties = () => {
+      Object.keys(colorState).forEach((target) => {
+        const current = colorState[target];
+        const value = isValidHex(current.hex) ? formatColorLabel(current.hex, current.name) : '';
+        colorPropertyInputs[target].value = value;
+        colorSummaryValues[target].textContent = value || 'Invalid HEX';
+      });
+    };
+
     const commitColorState = (target, rawHex, forcedName) => {
       const normalizedHex = normalizeHex(rawHex);
-      const valid = isValidHex(normalizedHex);
-      const name = forcedName || (valid ? getColorName(normalizedHex) : 'Custom');
+      const name = forcedName || (isValidHex(normalizedHex) ? getColorName(normalizedHex) : 'Custom');
 
       colorState[target].hex = normalizedHex;
       colorState[target].name = name;
-      colorPropertyInputs[target].value = valid ? formatColorLabel(normalizedHex, name) : '';
-      colorSummaryValues[target].textContent = valid ? formatColorLabel(normalizedHex, name) : 'Invalid HEX';
+      syncColorProperties();
       refreshColorEditor();
     };
 
     const resetColors = () => {
       Object.keys(DEFAULT_COLORS).forEach((target) => {
         colorState[target] = { ...DEFAULT_COLORS[target] };
-        colorPropertyInputs[target].value = formatColorLabel(DEFAULT_COLORS[target].hex, DEFAULT_COLORS[target].name);
-        colorSummaryValues[target].textContent = formatColorLabel(DEFAULT_COLORS[target].hex, DEFAULT_COLORS[target].name);
       });
 
       activeColorTarget = 'Main';
+      syncColorProperties();
       refreshColorEditor();
     };
 
@@ -356,9 +361,17 @@
       return `${index + 1}. ${lastName} #${number} ${size}`;
     });
 
+    const syncRosterProperties = () => {
+      const rosterEntries = buildRosterEntries();
+      rosterPropertyInput.value = rosterEntries.join(' | ');
+      playerCountPropertyInput.value = String(rosterEntries.length);
+      return rosterEntries;
+    };
+
     const validateForm = () => {
       clearFieldErrors();
       setMessage(null);
+      syncColorProperties();
 
       let isValid = true;
 
@@ -414,41 +427,17 @@
       return isValid;
     };
 
-    const submitOrder = async () => {
+    const submitOrder = () => {
       if (!validateForm()) {
         return;
       }
 
-      const rosterEntries = buildRosterEntries();
-      rosterPropertyInput.value = rosterEntries.join(' | ');
-      playerCountPropertyInput.value = String(rosterEntries.length);
+      syncRosterProperties();
+      syncColorProperties();
 
       addToCartButton.disabled = true;
       addToCartButton.textContent = 'Adding Team Order...';
-
-      const formData = new FormData(form);
-
-      try {
-        const response = await fetch(cartAddUrl, {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json'
-          },
-          body: formData
-        });
-
-        const responseData = await response.json();
-        if (!response.ok) {
-          throw new Error(responseData.description || 'Unable to add the team order to cart.');
-        }
-
-        setMessage('success', 'Team order added to cart with roster details, font selection, and shared logo upload.');
-      } catch (error) {
-        setMessage('error', error.message || 'Unable to add the team order to cart.');
-      } finally {
-        addToCartButton.disabled = false;
-        addToCartButton.textContent = '🛒 Add Team Order To Cart';
-      }
+      HTMLFormElement.prototype.submit.call(form);
     };
 
     if (mainImage && thumbnails.length) {
@@ -516,6 +505,7 @@
       attachRowHandlers(row);
     });
     updateRowIndexes();
+    syncColorProperties();
     refreshColorEditor();
 
     addPlayerButton.addEventListener('click', addPlayerRow);
