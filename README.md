@@ -180,7 +180,7 @@ Configured through `product.custom-polo.json` / `custom-polo`:
 
 ## Runtime Behavior
 
-All three flows:
+All four flows:
 
 - submit through the native Shopify product form
 - store custom selections as line item properties
