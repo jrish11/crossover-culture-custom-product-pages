@@ -129,7 +129,6 @@
     const styleButtons = Array.from(section.querySelectorAll('[data-style-button]'));
     const uploadInput = section.querySelector('[data-vector-upload]');
     const errorMessage = section.querySelector('[data-form-message="error"]');
-    const successMessage = section.querySelector('[data-form-message="success"]');
     const colorPicker = section.querySelector('[data-color-picker]');
     const colorHexInput = section.querySelector('[data-color-hex]');
     const colorPreview = section.querySelector('[data-color-preview]');
@@ -162,19 +161,10 @@
       if (type === 'error') {
         errorMessage.textContent = message;
         errorMessage.hidden = false;
-        successMessage.hidden = true;
-        return;
-      }
-
-      if (type === 'success') {
-        successMessage.textContent = message;
-        successMessage.hidden = false;
-        errorMessage.hidden = true;
         return;
       }
 
       errorMessage.hidden = true;
-      successMessage.hidden = true;
     };
 
     const clearFieldErrors = () => {

@@ -94,7 +94,6 @@
   grid-template-columns: minmax(0, 1.06fr) minmax(400px, 0.94fr);
   grid-template-areas:
     "error error"
-    "success success"
     "gallery meta"
     "sizes colors"
     "upload notes"
@@ -116,13 +115,6 @@
   border-color: rgba(204, 0, 0, 0.18);
   color: var(--shooting-shirt-error);
   grid-area: error;
-}
-
-.shooting-shirt-section__message--success {
-  background: rgba(26, 92, 56, 0.08);
-  border-color: rgba(26, 92, 56, 0.18);
-  color: var(--shooting-shirt-success);
-  grid-area: success;
 }
 
 .shooting-shirt-section__gallery-column {

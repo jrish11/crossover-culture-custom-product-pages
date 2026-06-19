@@ -186,12 +186,6 @@
   color: var(--team-order-error);
 }
 
-.team-order-section__message--success {
-  background: rgba(26, 92, 56, 0.08);
-  border-color: rgba(26, 92, 56, 0.18);
-  color: var(--team-order-success);
-}
-
 .team-order-section__form-section {
   border-top: 1px solid var(--team-order-soft-border);
   padding-top: 14px;
