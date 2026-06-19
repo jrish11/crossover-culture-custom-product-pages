@@ -15,8 +15,8 @@
 
 .team-order-section .page-width {
   margin: 0 auto;
-  max-width: 1460px;
-  padding: 0 28px 40px;
+  max-width: 1380px;
+  padding: 0 22px 36px;
 }
 
 .team-order-section .visually-hidden {
@@ -31,27 +31,27 @@
 }
 
 .team-order-section__inner {
-  padding-top: 28px;
+  padding-top: 22px;
 }
 
 .team-order-section__grid {
   align-items: start;
   display: grid;
-  gap: 34px;
-  grid-template-columns: minmax(0, 59%) minmax(400px, 41%);
+  gap: 22px;
+  grid-template-columns: minmax(0, 56%) minmax(400px, 44%);
 }
 
 .team-order-section__gallery {
   display: grid;
-  gap: 18px;
-  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 12px;
+  grid-template-columns: 58px minmax(0, 1fr);
 }
 
 .team-order-section__thumbnails {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding-top: 22px;
+  gap: 10px;
+  padding-top: 6px;
 }
 
 .team-order-section__thumbnail {
@@ -61,7 +61,7 @@
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
-  min-height: 108px;
+  min-height: 76px;
   padding: 0;
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
@@ -78,23 +78,22 @@
 
 .team-order-section__thumbnail img {
   display: block;
-  height: 108px;
+  height: 76px;
   object-fit: cover;
-  width: 90px;
+  width: 58px;
 }
 
 .team-order-section__main-image-shell {
-  background: linear-gradient(180deg, #ffffff 0%, #faf8f4 100%);
+  background: #ffffff;
   border: 1px solid var(--team-order-soft-border);
-  min-height: 720px;
-  padding: 24px;
+  min-height: 520px;
+  padding: 18px;
 }
 
 .team-order-section__main-image {
-  box-shadow: 0 16px 36px rgba(17, 17, 17, 0.08);
   display: block;
   height: 100%;
-  max-height: 672px;
+  max-height: 470px;
   object-fit: contain;
   width: 100%;
 }
@@ -115,18 +114,18 @@
 
 .team-order-section__gallery-note {
   color: var(--team-order-muted);
-  font-size: 0.76rem;
+  font-size: 0.72rem;
   line-height: 1.45;
-  margin: 12px 0 0 108px;
+  margin: 10px 0 0 70px;
 }
 
 .team-order-section__product-meta {
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .team-order-section__eyebrow {
   color: var(--team-order-muted);
-  font-size: 0.76rem;
+  font-size: 0.62rem;
   font-weight: 800;
   letter-spacing: 0.14em;
   margin: 0 0 10px;
@@ -134,50 +133,51 @@
 }
 
 .team-order-section__title {
-  font-size: clamp(2.3rem, 3vw, 3.9rem);
+  font-size: clamp(2.2rem, 3vw, 3.7rem);
   font-weight: 800;
   letter-spacing: -0.05em;
   line-height: 0.96;
-  margin: 0 0 12px;
+  margin: 0 0 10px;
 }
 
 .team-order-section__price {
-  font-size: 1.14rem;
+  font-size: 1rem;
   font-weight: 800;
-  margin: 0 0 12px;
+  margin: 0 0 10px;
 }
 
 .team-order-section__intro {
-  font-size: 0.93rem;
+  font-size: 0.84rem;
   line-height: 1.5;
-  margin: 0 0 12px;
+  margin: 0 0 10px;
   max-width: 42rem;
 }
 
 .team-order-section__feature-list {
   color: var(--team-order-muted);
   display: grid;
-  gap: 7px;
+  gap: 6px;
   margin: 0;
   padding-left: 18px;
 }
 
 .team-order-section__feature-list li {
+  font-size: 0.76rem;
   line-height: 1.4;
 }
 
 .team-order-section__form-card {
   background: var(--team-order-white);
   border: 1px solid var(--team-order-soft-border);
-  padding: 0 20px 20px;
+  padding: 0 16px 16px;
 }
 
 .team-order-section__message {
   border: 1px solid transparent;
-  font-size: 0.88rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  margin-top: 20px;
-  padding: 12px 14px;
+  margin-top: 14px;
+  padding: 10px 12px;
 }
 
 .team-order-section__message--error {
@@ -194,7 +194,7 @@
 
 .team-order-section__form-section {
   border-top: 1px solid var(--team-order-soft-border);
-  padding-top: 18px;
+  padding-top: 14px;
 }
 
 .team-order-section__form-section--compact {
@@ -205,9 +205,9 @@
 .team-order-section__form-row {
   border-top: 1px solid var(--team-order-soft-border);
   display: grid;
-  gap: 16px;
+  gap: 14px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  padding-top: 18px;
+  padding-top: 14px;
 }
 
 .team-order-section__field-header {
@@ -215,24 +215,24 @@
   display: flex;
   gap: 12px;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .team-order-section__field-label {
   display: block;
-  font-size: 0.78rem;
+  font-size: 0.7rem;
   font-weight: 800;
   letter-spacing: 0.09em;
   text-transform: uppercase;
 }
 
 .team-order-section__field-label--small {
-  font-size: 0.69rem;
+  font-size: 0.6rem;
 }
 
 .team-order-section__field-meta {
   color: var(--team-order-muted);
-  font-size: 0.74rem;
+  font-size: 0.66rem;
   font-weight: 700;
 }
 
@@ -258,7 +258,7 @@
   border-radius: 0;
   color: var(--team-order-primary);
   font: inherit;
-  min-height: 42px;
+  min-height: 40px;
   padding: 10px 12px;
   width: 100%;
 }
@@ -319,10 +319,10 @@
   color: var(--team-order-primary);
   cursor: pointer;
   font: inherit;
-  font-size: 0.75rem;
+  font-size: 0.62rem;
   font-weight: 800;
   letter-spacing: 0.08em;
-  min-height: 34px;
+  min-height: 30px;
   padding: 6px 12px;
   text-transform: uppercase;
 }
@@ -335,7 +335,7 @@
 
 .team-order-section__color-caption {
   color: var(--team-order-muted);
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   font-weight: 700;
   margin: 0;
   text-align: right;
@@ -344,16 +344,16 @@
 .team-order-section__color-layout {
   align-items: center;
   display: grid;
-  gap: 16px;
-  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 14px;
+  grid-template-columns: 68px minmax(0, 1fr);
 }
 
 .team-order-section__wheel-shell {
   cursor: pointer;
   display: block;
-  height: 92px;
+  height: 68px;
   position: relative;
-  width: 92px;
+  width: 68px;
 }
 
 .team-order-section__wheel-visual {
@@ -361,9 +361,9 @@
   border: 1px solid var(--team-order-border);
   border-radius: 50%;
   display: block;
-  height: 92px;
+  height: 68px;
   position: relative;
-  width: 92px;
+  width: 68px;
 }
 
 .team-order-section__wheel-visual::after {
@@ -388,7 +388,7 @@
 
 .team-order-section__color-apply {
   color: var(--team-order-muted);
-  font-size: 0.82rem;
+  font-size: 0.68rem;
   line-height: 1.42;
   margin: 0;
 }
@@ -406,11 +406,11 @@
   border-radius: 50%;
   cursor: pointer;
   display: inline-flex;
-  height: 30px;
+  height: 24px;
   justify-content: center;
   padding: 0;
   transition: transform 0.2s ease, border-color 0.2s ease;
-  width: 30px;
+  width: 24px;
 }
 
 .team-order-section__mini-swatch:hover,
@@ -427,47 +427,48 @@
   border: 1px solid rgba(17, 17, 17, 0.12);
   border-radius: 50%;
   display: block;
-  height: 18px;
-  width: 18px;
+  height: 14px;
+  width: 14px;
 }
 
 .team-order-section__hex-shell {
   display: grid;
   gap: 8px;
-  max-width: 280px;
+  max-width: 240px;
 }
 
 .team-order-section__hex-row {
   align-items: center;
   display: grid;
   gap: 10px;
-  grid-template-columns: 24px minmax(0, 1fr);
+  grid-template-columns: 20px minmax(0, 1fr);
 }
 
 .team-order-section__hex-preview {
   border: 1px solid var(--team-order-border);
   border-radius: 50%;
   display: block;
-  height: 24px;
-  width: 24px;
+  height: 20px;
+  width: 20px;
 }
 
 .team-order-section__color-summary {
   display: grid;
   gap: 10px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
 .team-order-section__color-summary-item {
   background: var(--team-order-surface);
   border: 1px solid var(--team-order-soft-border);
-  padding: 9px 10px;
+  min-height: 62px;
+  padding: 12px;
 }
 
 .team-order-section__color-summary-label {
   display: block;
-  font-size: 0.66rem;
+  font-size: 0.58rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   margin-bottom: 6px;
@@ -477,7 +478,7 @@
 .team-order-section__color-summary-value {
   color: var(--team-order-muted);
   display: block;
-  font-size: 0.74rem;
+  font-size: 0.82rem;
   line-height: 1.35;
 }
 
@@ -494,11 +495,11 @@
   color: var(--team-order-primary);
   cursor: pointer;
   font: inherit;
-  font-size: 0.82rem;
+  font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.08em;
-  min-height: 42px;
-  padding: 10px 14px;
+  min-height: 40px;
+  padding: 10px 12px;
   text-transform: uppercase;
 }
 
@@ -522,21 +523,21 @@
 .team-order-section__roster-table th,
 .team-order-section__roster-table td {
   border-bottom: 1px solid var(--team-order-soft-border);
-  padding: 7px 8px;
+  padding: 6px 8px;
   text-align: left;
   vertical-align: top;
 }
 
 .team-order-section__roster-table th {
   background: var(--team-order-surface);
-  font-size: 0.67rem;
+  font-size: 0.58rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .team-order-section__roster-index {
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   font-weight: 800;
   text-align: center;
   width: 40px;
@@ -544,7 +545,7 @@
 
 .team-order-section__roster-table td .team-order-section__text-input,
 .team-order-section__roster-table td .team-order-section__select-input {
-  font-size: 0.81rem;
+  font-size: 0.76rem;
   min-height: 34px;
   padding: 6px 8px;
 }
@@ -581,7 +582,7 @@
   display: grid;
   gap: 10px;
   grid-template-columns: minmax(220px, 240px) minmax(0, 1fr);
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .team-order-section__add-player {
@@ -591,10 +592,10 @@
   color: var(--team-order-primary);
   cursor: pointer;
   font: inherit;
-  font-size: 0.76rem;
+  font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.08em;
-  min-height: 38px;
+  min-height: 36px;
   padding: 8px 12px;
   text-transform: uppercase;
   width: 100%;
@@ -615,7 +616,7 @@
   display: flex;
   justify-content: space-between;
   list-style: none;
-  min-height: 42px;
+  min-height: 36px;
   padding: 0 14px;
 }
 
@@ -629,7 +630,7 @@
 }
 
 .team-order-section__dropdown-label {
-  font-size: 0.76rem;
+  font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -647,7 +648,7 @@
 
 .team-order-section__dropdown-content {
   border-top: 1px solid var(--team-order-soft-border);
-  padding: 14px;
+  padding: 12px;
 }
 
 .catalog-size-guide {
@@ -810,7 +811,7 @@
   display: grid;
   gap: 12px;
   grid-template-columns: minmax(0, 1fr) minmax(210px, 240px) minmax(120px, 1fr);
-  padding: 12px;
+  padding: 10px 12px;
 }
 
 .team-order-section__upload-headline,
@@ -820,14 +821,14 @@
 }
 
 .team-order-section__upload-headline {
-  font-size: 0.84rem;
+  font-size: 0.78rem;
   font-weight: 700;
 }
 
 .team-order-section__upload-note,
 .team-order-section__upload-filename {
   color: var(--team-order-muted);
-  font-size: 0.76rem;
+  font-size: 0.68rem;
   line-height: 1.4;
 }
 
@@ -840,8 +841,8 @@
   border-top: 1px solid var(--team-order-soft-border);
   display: grid;
   gap: 10px;
-  margin-top: 18px;
-  padding-top: 18px;
+  margin-top: 14px;
+  padding-top: 14px;
 }
 
 .team-order-section__cta {
@@ -851,12 +852,12 @@
   cursor: pointer;
   display: inline-flex;
   font: inherit;
-  font-size: 0.87rem;
+  font-size: 0.76rem;
   font-weight: 800;
   justify-content: center;
   letter-spacing: 0.06em;
-  min-height: 46px;
-  padding: 12px 16px;
+  min-height: 42px;
+  padding: 10px 14px;
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
@@ -874,7 +875,7 @@
 
 .team-order-section__cta-link {
   color: var(--team-order-primary);
-  font-size: 0.8rem;
+  font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-align: center;
@@ -884,18 +885,18 @@
 
 .team-order-section__rules {
   color: var(--team-order-muted);
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   line-height: 1.45;
   margin: 12px 0 0;
 }
 
 @media screen and (max-width: 1240px) {
   .team-order-section__grid {
-    grid-template-columns: minmax(0, 54%) minmax(0, 46%);
+    grid-template-columns: minmax(0, 52%) minmax(0, 48%);
   }
 
   .team-order-section__title {
-    font-size: clamp(2rem, 3vw, 3.2rem);
+    font-size: clamp(2rem, 3vw, 3rem);
   }
 
   .team-order-section__upload-row {
@@ -937,16 +938,16 @@
 
 @media screen and (max-width: 768px) {
   .team-order-section .page-width {
-    padding: 0 18px 32px;
+    padding: 0 14px 30px;
   }
 
   .team-order-section__main-image-shell {
-    min-height: 460px;
+    min-height: 380px;
     padding: 16px;
   }
 
   .team-order-section__main-image {
-    max-height: 420px;
+    max-height: 340px;
   }
 
   .team-order-section__form-row,
@@ -991,7 +992,7 @@
   }
 
   .team-order-section__form-card {
-    padding: 0 14px 16px;
+    padding: 0 12px 14px;
   }
 
   .team-order-section__title {

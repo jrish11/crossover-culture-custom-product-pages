@@ -136,7 +136,7 @@
 
     const updateFontSummary = () => {
       if (fontSelect && fontSummary) {
-        fontSummary.textContent = fontSelect.value || 'Athletic';
+        fontSummary.textContent = fontSelect.value || 'ATHLETIC';
       }
     };
 

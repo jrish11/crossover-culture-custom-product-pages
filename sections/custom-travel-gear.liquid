@@ -364,7 +364,9 @@
                     <thead>
                       <tr>
                         <th></th>
-                        <th>XS</th>
+                        {% if gear_key == 'crew' %}
+                          <th>XS</th>
+                        {% endif %}
                         <th>SM</th>
                         <th>MD</th>
                         <th>LG</th>
@@ -373,9 +375,39 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr><th>Bust</th><td>31-33</td><td>33.5-35.5</td><td>36-38</td><td>38.5-40.5</td><td>41-43</td><td>43+</td></tr>
-                      <tr><th>Waist</th><td>23-25</td><td>25.5-27.5</td><td>28-30</td><td>30.5-32.5</td><td>33-35</td><td>35+</td></tr>
-                      <tr><th>Hip</th><td>33-35</td><td>35.5-37.5</td><td>38-40</td><td>40.5-42.5</td><td>43-45</td><td>45+</td></tr>
+                      <tr>
+                        <th>Bust</th>
+                        {% if gear_key == 'crew' %}
+                          <td>31-33</td>
+                        {% endif %}
+                        <td>33.5-35.5</td>
+                        <td>36-38</td>
+                        <td>38.5-40.5</td>
+                        <td>41-43</td>
+                        <td>43+</td>
+                      </tr>
+                      <tr>
+                        <th>Waist</th>
+                        {% if gear_key == 'crew' %}
+                          <td>23-25</td>
+                        {% endif %}
+                        <td>25.5-27.5</td>
+                        <td>28-30</td>
+                        <td>30.5-32.5</td>
+                        <td>33-35</td>
+                        <td>35+</td>
+                      </tr>
+                      <tr>
+                        <th>Hip</th>
+                        {% if gear_key == 'crew' %}
+                          <td>33-35</td>
+                        {% endif %}
+                        <td>35.5-37.5</td>
+                        <td>38-40</td>
+                        <td>40.5-42.5</td>
+                        <td>43-45</td>
+                        <td>45+</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -583,7 +615,7 @@
           </div>
           <div class="shooting-shirt-section__order-summary-item">
             <span class="shooting-shirt-section__order-summary-label">Team Font</span>
-            <span class="shooting-shirt-section__order-summary-value" data-summary-font>Athletic</span>
+            <span class="shooting-shirt-section__order-summary-value" data-summary-font>ATHLETIC</span>
           </div>
           <div class="shooting-shirt-section__order-summary-item">
             <span class="shooting-shirt-section__order-summary-label">Garment Color</span>
@@ -620,7 +652,6 @@
   "tag": "section",
   "class": "travel-gear-section",
   "settings": [
-    { "type": "text", "id": "utility_bar_delivery", "label": "Delivery Time", "default": "Ready in 30 days (Imported)" },
     { "type": "text", "id": "minimum_order", "label": "Minimum Order Text", "default": "6 pieces per order" },
     { "type": "url", "id": "contact_url", "label": "Contact Page URL" },
     { "type": "number", "id": "min_pieces", "label": "Minimum Pieces", "default": 6 },

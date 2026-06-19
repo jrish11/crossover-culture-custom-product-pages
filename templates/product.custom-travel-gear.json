@@ -3,7 +3,6 @@
     "main": {
       "type": "custom-travel-gear",
       "settings": {
-        "utility_bar_delivery": "Ready in 30 days (Imported)",
         "minimum_order": "6 pieces per order",
         "contact_url": "/pages/contact",
         "min_pieces": 6,
