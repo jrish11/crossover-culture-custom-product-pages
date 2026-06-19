@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repo contains Shopify theme files for three custom product-ordering flows:
+This repo contains Shopify theme files for four custom product-ordering flows:
 
 - `team-order-form`
   Custom team uniform ordering
@@ -12,6 +12,9 @@ This repo contains Shopify theme files for three custom product-ordering flows:
   Custom travel gear ordering for:
   - Enlisted 1/4 Zip
   - Enlisted Crew
+- `custom-polo`
+  Custom polo ordering for:
+  - Enlisted Polo
 
 These templates use native Shopify product form submission to `{{ routes.cart_add_url }}`. They do not use AJAX add-to-cart.
 
@@ -25,11 +28,13 @@ custom product/
 ├── assets/
 │   ├── custom-shooting-shirt.css
 │   ├── custom-shooting-shirt.js
+│   ├── custom-polo.css
 │   ├── custom-travel-gear.css
 │   ├── custom-travel-gear.js
 │   ├── team-order-form.css
 │   └── team-order-form.js
 ├── sections/
+│   ├── custom-polo.liquid
 │   ├── custom-shooting-shirt.liquid
 │   ├── custom-travel-gear.liquid
 │   └── team-order-form.liquid
@@ -37,6 +42,7 @@ custom product/
 │   ├── team-feature-icons.liquid
 │   └── team-size-guide.liquid
 └── templates/
+    ├── product.custom-polo.json
     ├── product.custom-shooting-shirt.json
     ├── product.custom-team-uniform.json
     └── product.custom-travel-gear.json
@@ -62,12 +68,18 @@ custom product/
   Travel-gear-specific styling on top of the shared apparel layout.
 - `assets/custom-travel-gear.js`
   Travel gear color, size, validation, and submit behavior.
+- `sections/custom-polo.liquid`
+  Main polo product section.
+- `assets/custom-polo.css`
+  Polo-specific layout adjustments on top of the shared apparel layout.
 - `templates/product.custom-team-uniform.json`
   Product template that mounts `team-order-form`.
 - `templates/product.custom-shooting-shirt.json`
   Product template that mounts `custom-shooting-shirt`.
 - `templates/product.custom-travel-gear.json`
   Product template that mounts `custom-travel-gear`.
+- `templates/product.custom-polo.json`
+  Product template that mounts `custom-polo`.
 
 ## Shopify Installation
 
@@ -77,13 +89,16 @@ custom product/
    - `sections/team-order-form.liquid`
    - `sections/custom-shooting-shirt.liquid`
    - `sections/custom-travel-gear.liquid`
+   - `sections/custom-polo.liquid`
    - `templates/product.custom-team-uniform.json`
    - `templates/product.custom-shooting-shirt.json`
    - `templates/product.custom-travel-gear.json`
+   - `templates/product.custom-polo.json`
    - `assets/team-order-form.css`
    - `assets/team-order-form.js`
    - `assets/custom-shooting-shirt.css`
    - `assets/custom-shooting-shirt.js`
+   - `assets/custom-polo.css`
    - `assets/custom-travel-gear.css`
    - `assets/custom-travel-gear.js`
    - `snippets/team-size-guide.liquid`
@@ -102,8 +117,11 @@ Assign each product to the matching template in the Shopify product admin:
   Use only for:
   - Enlisted 1/4 Zip
   - Enlisted Crew
+- `custom-polo`
+  Use for:
+  - Enlisted Polo
 
-Do not assign `custom-travel-gear` to Polo products. Polo support is not included in the current repo state.
+Do not assign `custom-travel-gear` to polo products. Polo has its own dedicated template.
 
 ## Travel Gear Mapping Rules
 
@@ -146,6 +164,15 @@ Configured through `product.custom-travel-gear.json` / `custom-travel-gear`:
 - `Minimum Pieces`
 - `1/4 Zip Intro Copy`
 - `Crew Intro Copy`
+
+### Polo
+
+Configured through `product.custom-polo.json` / `custom-polo`:
+
+- `Minimum Order Text`
+- `Contact Page URL`
+- `Minimum Pieces`
+- `Intro Copy`
 
 ## Runtime Behavior
 
@@ -206,6 +233,19 @@ Total Pieces: 7
 Artwork Upload: [uploaded vector file]
 ```
 
+### Polo
+
+```text
+Team Wording: Panthers
+Team Font: ATHLETIC
+Garment Type: Polo
+Garment Color: #111111 (Black)
+Logo / Artwork Color: #FFFFFF (White)
+Size Breakdown: Mens L x 4 | Womens WM x 2
+Total Pieces: 6
+Artwork Upload: [uploaded vector file]
+```
+
 ## Cart Theme Requirement
 
 The theme cart must render line item properties and uploaded file links. If the cart hides `item.properties`, the custom order details will still submit, but the customer and staff will not see them in the cart UI.
@@ -216,6 +256,7 @@ The theme cart must render line item properties and uploaded file links. If the 
    - `custom-team-uniform`
    - `custom-shooting-shirt`
    - `custom-travel-gear`
+   - `custom-polo`
 2. Confirm the gallery thumbnails swap the main image.
 3. Confirm all required fields block submission when empty.
 4. Confirm invalid upload types are rejected.
@@ -223,7 +264,8 @@ The theme cart must render line item properties and uploaded file links. If the 
 6. Confirm cart line item properties render correctly.
 7. Confirm desktop, tablet, and mobile layouts.
 8. Confirm the travel-gear template is assigned only to 1/4 Zip and Crew products.
-9. Confirm the women’s sizing display matches the actual size inputs for both travel-gear products.
+9. Confirm the polo template is assigned only to polo products.
+10. Confirm the women’s sizing display matches the actual size inputs for both travel-gear products and the polo product.
 
 ## Current Repo Notes
 

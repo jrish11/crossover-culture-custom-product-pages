@@ -81,6 +81,7 @@
     const swatchGroups = Array.from(section.querySelectorAll('[data-color-group]'));
     const resetColorsButton = section.querySelector('[data-reset-colors]');
     const addToCartButton = section.querySelector('[data-add-to-cart]');
+    const submittingLabel = addToCartButton?.dataset.submittingLabel || 'Adding Travel Gear Order...';
     const wordingSummary = section.querySelector('[data-summary-wording]');
     const totalPiecesSummary = section.querySelector('[data-summary-total-pieces]');
     const colorPropertyInputs = {
@@ -102,6 +103,14 @@
     };
 
     let activeColorTarget = 'Base';
+
+    const getApplyCopy = (target) => {
+      const matchingButton = colorTargetButtons.find((button) => button.dataset.colorTarget === target);
+      return matchingButton?.dataset.colorApplyCopy || DEFAULT_COLORS[target].apply;
+    };
+
+    colorState.Base.apply = getApplyCopy('Base');
+    colorState.Artwork.apply = getApplyCopy('Artwork');
 
     const setMessage = (type, message) => {
       if (type === 'error') {
@@ -205,7 +214,7 @@
 
     const resetColors = () => {
       Object.keys(DEFAULT_COLORS).forEach((target) => {
-        colorState[target] = { ...DEFAULT_COLORS[target] };
+        colorState[target] = { ...DEFAULT_COLORS[target], apply: getApplyCopy(target) };
         colorPropertyInputs[target].value = formatColorLabel(DEFAULT_COLORS[target].hex, DEFAULT_COLORS[target].name);
         colorSummaryValues[target].textContent = formatColorLabel(DEFAULT_COLORS[target].hex, DEFAULT_COLORS[target].name);
         orderSummaryColors[target].textContent = formatColorLabel(DEFAULT_COLORS[target].hex, DEFAULT_COLORS[target].name);
@@ -277,7 +286,7 @@
 
       sizeBreakdownProperty.value = buildSizeBreakdown().join(' | ');
       addToCartButton.disabled = true;
-      addToCartButton.textContent = 'Adding Travel Gear Order...';
+      addToCartButton.textContent = submittingLabel;
       HTMLFormElement.prototype.submit.call(form);
     };
 
