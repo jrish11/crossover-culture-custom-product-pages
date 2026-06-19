@@ -1,7 +1,7 @@
 {{ 'custom-shooting-shirt.css' | asset_url | stylesheet_tag }}
 {{ 'custom-travel-gear.css' | asset_url | stylesheet_tag }}
 {{ 'custom-polo.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'custom-travel-gear.js' | asset_url }}" defer></script>
+<script src="{{ 'custom-polo.js' | asset_url }}" defer></script>
 
 {% liquid
   assign current_variant = product.selected_or_first_available_variant
@@ -70,7 +70,7 @@
   <div class="shooting-shirt-section__inner">
     <form
       class="shooting-shirt-section__order-canvas travel-gear-section__order-canvas"
-      data-travel-gear-form
+      data-polo-form
       action="{{ routes.cart_add_url }}"
       method="post"
       enctype="multipart/form-data"

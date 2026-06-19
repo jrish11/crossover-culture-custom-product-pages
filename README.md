@@ -29,6 +29,7 @@ custom product/
 │   ├── custom-shooting-shirt.css
 │   ├── custom-shooting-shirt.js
 │   ├── custom-polo.css
+│   ├── custom-polo.js
 │   ├── custom-travel-gear.css
 │   ├── custom-travel-gear.js
 │   ├── team-order-form.css
@@ -72,6 +73,8 @@ custom product/
   Main polo product section.
 - `assets/custom-polo.css`
   Polo-specific layout adjustments on top of the shared apparel layout.
+- `assets/custom-polo.js`
+  Polo gallery, color, size, validation, and submit behavior.
 - `templates/product.custom-team-uniform.json`
   Product template that mounts `team-order-form`.
 - `templates/product.custom-shooting-shirt.json`
@@ -99,6 +102,7 @@ custom product/
    - `assets/custom-shooting-shirt.css`
    - `assets/custom-shooting-shirt.js`
    - `assets/custom-polo.css`
+   - `assets/custom-polo.js`
    - `assets/custom-travel-gear.css`
    - `assets/custom-travel-gear.js`
    - `snippets/team-size-guide.liquid`
