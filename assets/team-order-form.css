@@ -196,6 +196,10 @@
   padding-top: 0;
 }
 
+.team-order-section__form-section--font-guide {
+  grid-column: 1 / -1;
+}
+
 .team-order-section__form-row {
   border-top: 1px solid var(--team-order-soft-border);
   display: grid;
@@ -724,7 +728,7 @@
 .team-order-section__font-reference {
   display: grid;
   gap: 10px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
 }
 
 .team-order-section__font-intro {
@@ -746,12 +750,19 @@
   letter-spacing: 0.08em;
   margin: 0 0 8px;
   text-transform: uppercase;
+  white-space: nowrap;
+  word-break: normal;
 }
 
 .team-order-section__font-card-alpha,
 .team-order-section__font-card-numeric {
   color: #8d8d8d;
   margin: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-wrap: normal;
+  white-space: nowrap;
+  word-break: normal;
 }
 
 .team-order-section__font-card-alpha {

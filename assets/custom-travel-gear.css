@@ -296,7 +296,7 @@
 .travel-gear-section__font-guide-grid {
   display: grid;
   gap: 10px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
 }
 
 .travel-gear-section__font-card,
@@ -312,11 +312,18 @@
   letter-spacing: 0.08em;
   margin: 0 0 8px;
   text-transform: uppercase;
+  white-space: nowrap;
+  word-break: normal;
 }
 
 .travel-gear-section__font-preview {
   color: #929292;
   margin: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-wrap: normal;
+  white-space: nowrap;
+  word-break: normal;
 }
 
 .travel-gear-section__font-preview:not(.travel-gear-section__font-preview--numbers) {
@@ -474,7 +481,6 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .travel-gear-section__font-guide-grid,
   .travel-gear-section__size-guide-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -489,7 +495,6 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .travel-gear-section__font-guide-grid,
   .travel-gear-section__size-guide-grid {
     grid-template-columns: minmax(0, 1fr);
   }
