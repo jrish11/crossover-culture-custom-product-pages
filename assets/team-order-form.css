@@ -765,12 +765,23 @@
   margin-top: 4px;
 }
 
-.team-order-section__font-card--din-cdb .team-order-section__font-card-numeric,
-.team-order-section__font-card--mp-pro .team-order-section__font-card-numeric,
-.team-order-section__font-card--d-bold .team-order-section__font-card-numeric,
-.team-order-section__font-card--athletic .team-order-section__font-card-numeric {
+.team-order-section__font-card--din-cdb .team-order-section__font-card-alpha,
+.team-order-section__font-card--din-cdb .team-order-section__font-card-numeric {
   font-family: Impact, "Arial Narrow Bold", sans-serif;
   letter-spacing: 0.03em;
+}
+
+.team-order-section__font-card--mp-pro .team-order-section__font-card-alpha,
+.team-order-section__font-card--mp-pro .team-order-section__font-card-numeric {
+  font-family: "Arial Black", "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: 0.01em;
+}
+
+.team-order-section__font-card--athletic .team-order-section__font-card-alpha,
+.team-order-section__font-card--athletic .team-order-section__font-card-numeric {
+  font-family: Impact, "Arial Black", sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.015em;
 }
 
 .team-order-section__font-card--birchwood .team-order-section__font-card-alpha,
@@ -780,12 +791,19 @@
 }
 
 .team-order-section__font-card--booster .team-order-section__font-card-alpha,
-.team-order-section__font-card--booster .team-order-section__font-card-numeric,
-.team-order-section__font-card--phosphate .team-order-section__font-card-alpha,
-.team-order-section__font-card--phosphate .team-order-section__font-card-numeric {
+.team-order-section__font-card--booster .team-order-section__font-card-numeric {
   -webkit-text-stroke: 1px #9a9a9a;
   color: transparent;
   font-family: Impact, "Arial Narrow Bold", sans-serif;
+  letter-spacing: 0.04em;
+}
+
+.team-order-section__font-card--phosphate .team-order-section__font-card-alpha,
+.team-order-section__font-card--phosphate .team-order-section__font-card-numeric {
+  -webkit-text-stroke: 0.85px #9a9a9a;
+  color: transparent;
+  font-family: "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
+  letter-spacing: 0.02em;
 }
 
 .team-order-section__font-card--digital .team-order-section__font-card-alpha,
@@ -797,6 +815,13 @@
 .team-order-section__font-card--brush .team-order-section__font-card-alpha,
 .team-order-section__font-card--brush .team-order-section__font-card-numeric {
   font-family: "Brush Script MT", "Segoe Script", cursive;
+}
+
+.team-order-section__font-card--d-bold .team-order-section__font-card-alpha,
+.team-order-section__font-card--d-bold .team-order-section__font-card-numeric {
+  font-family: "Verdana", "Trebuchet MS", sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.005em;
 }
 
 .team-order-section__upload-row {

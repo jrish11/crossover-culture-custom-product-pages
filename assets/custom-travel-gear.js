@@ -83,6 +83,7 @@
     const submittingLabel = addToCartButton?.dataset.submittingLabel || 'Adding Travel Gear Order...';
     const wordingSummary = section.querySelector('[data-summary-wording]');
     const totalPiecesSummary = section.querySelector('[data-summary-total-pieces]');
+    const requiresTeamWording = Boolean(wordingInput);
     const colorPropertyInputs = {
       Base: section.querySelector('[data-color-property="Base"]'),
       Artwork: section.querySelector('[data-color-property="Artwork"]')
@@ -128,9 +129,17 @@
     };
 
     const updateWordingCount = () => {
+      if (!wordingInput) {
+        return;
+      }
+
       const length = wordingInput.value.length;
-      wordingCount.textContent = `${length}/24`;
-      wordingSummary.textContent = wordingInput.value.trim() || 'Not entered yet';
+      if (wordingCount) {
+        wordingCount.textContent = `${length}/24`;
+      }
+      if (wordingSummary) {
+        wordingSummary.textContent = wordingInput.value.trim() || 'Not entered yet';
+      }
     };
 
     const updateFontSummary = () => {
@@ -238,7 +247,7 @@
       const sizeEntries = buildSizeBreakdown();
       const totalPieces = parseInt(totalPiecesProperty.value || '0', 10) || 0;
 
-      if (!wordingInput.value.trim()) {
+      if (requiresTeamWording && !wordingInput.value.trim()) {
         wordingInput.classList.add('shooting-shirt-section__field-error');
         isValid = false;
       }
@@ -263,7 +272,8 @@
       }
 
       if (!isValid) {
-        setMessage('error', `Please enter the team wording, confirm at least ${minPieces} total pieces, choose valid colors, and upload one vector artwork file before adding to cart.`);
+        const wordingLead = requiresTeamWording ? 'Please enter the team wording, ' : 'Please ';
+        setMessage('error', `${wordingLead}confirm at least ${minPieces} total pieces, choose valid colors, and upload one vector artwork file before adding to cart.`);
       }
 
       return isValid;
@@ -297,8 +307,10 @@
       });
     }
 
-    wordingInput.addEventListener('input', updateWordingCount);
-    updateWordingCount();
+    if (wordingInput) {
+      wordingInput.addEventListener('input', updateWordingCount);
+      updateWordingCount();
+    }
 
     if (fontSelect) {
       fontSelect.addEventListener('change', updateFontSummary);

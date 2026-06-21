@@ -32,6 +32,10 @@
 
   assign artwork_colors = 'Black:#111111,White:#FFFFFF,Grey:#A7ADB3,Maroon:#6F263D,Team Red:#C63737,Red:#D73B32,Purple:#52426F,Team Navy:#203A72,Team Royal:#4056B4,Atomic Blue:#4F8FB4,Bright Blue:#78AFCF,Forest Green:#4F6E54,Orange:#C46A3A,Gold Yellow:#B08D2F,Yellow:#B7A82F,Brown:#6A5B52' | split: ','
   assign font_options = 'DIN-CDB,MP-PRO,ATHLETIC,BIRCHWOOD,BOOSTER,DIGITAL,PHOSPHATE,BRUSH,D-BOLD' | split: ','
+  assign show_team_wording = false
+  if gear_key == 'crew'
+    assign show_team_wording = true
+  endif
 %}
 
 <section
@@ -184,23 +188,25 @@
             <span class="shooting-shirt-section__field-label">1. Team Identity</span>
           </div>
 
-          <div class="travel-gear-section__identity-grid">
-            <div class="travel-gear-section__field-stack">
-              <div class="shooting-shirt-section__field-header">
-                <label class="shooting-shirt-section__field-label shooting-shirt-section__field-label--small" for="TeamWording-{{ section.id }}">Team Wording</label>
-                <span class="shooting-shirt-section__field-meta" data-wording-count>0/24</span>
+          <div class="travel-gear-section__identity-grid{% unless show_team_wording %} travel-gear-section__identity-grid--single{% endunless %}">
+            {% if show_team_wording %}
+              <div class="travel-gear-section__field-stack">
+                <div class="shooting-shirt-section__field-header">
+                  <label class="shooting-shirt-section__field-label shooting-shirt-section__field-label--small" for="TeamWording-{{ section.id }}">Team Wording</label>
+                  <span class="shooting-shirt-section__field-meta" data-wording-count>0/24</span>
+                </div>
+                <input
+                  id="TeamWording-{{ section.id }}"
+                  class="shooting-shirt-section__text-input"
+                  type="text"
+                  name="properties[Team Wording]"
+                  maxlength="24"
+                  autocomplete="off"
+                  placeholder="Example: Panthers"
+                  data-team-wording
+                >
               </div>
-              <input
-                id="TeamWording-{{ section.id }}"
-                class="shooting-shirt-section__text-input"
-                type="text"
-                name="properties[Team Wording]"
-                maxlength="24"
-                autocomplete="off"
-                placeholder="Example: Panthers"
-                data-team-wording
-              >
-            </div>
+            {% endif %}
 
             <div class="travel-gear-section__field-stack">
               <label class="shooting-shirt-section__field-label shooting-shirt-section__field-label--small" for="TeamFont-{{ section.id }}">Team Font</label>
@@ -607,10 +613,12 @@
         </div>
 
         <div class="shooting-shirt-section__order-summary travel-gear-section__order-summary">
-          <div class="shooting-shirt-section__order-summary-item">
-            <span class="shooting-shirt-section__order-summary-label">Team Wording</span>
-            <span class="shooting-shirt-section__order-summary-value" data-summary-wording>Not entered yet</span>
-          </div>
+          {% if show_team_wording %}
+            <div class="shooting-shirt-section__order-summary-item">
+              <span class="shooting-shirt-section__order-summary-label">Team Wording</span>
+              <span class="shooting-shirt-section__order-summary-value" data-summary-wording>Not entered yet</span>
+            </div>
+          {% endif %}
           <div class="shooting-shirt-section__order-summary-item">
             <span class="shooting-shirt-section__order-summary-label">Team Font</span>
             <span class="shooting-shirt-section__order-summary-value" data-summary-font>ATHLETIC</span>

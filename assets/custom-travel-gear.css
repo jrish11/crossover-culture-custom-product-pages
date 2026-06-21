@@ -114,6 +114,10 @@
   grid-template-columns: minmax(0, 1.7fr) minmax(180px, 0.9fr);
 }
 
+.travel-gear-section__identity-grid--single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .travel-gear-section__field-stack {
   display: grid;
   gap: 8px;
@@ -326,12 +330,20 @@
   margin-top: 4px;
 }
 
-.travel-gear-section__font-preview--din-cdb,
-.travel-gear-section__font-preview--mp-pro,
-.travel-gear-section__font-preview--athletic,
-.travel-gear-section__font-preview--d-bold {
+.travel-gear-section__font-preview--din-cdb {
   font-family: Impact, "Arial Narrow Bold", sans-serif;
   letter-spacing: 0.03em;
+}
+
+.travel-gear-section__font-preview--mp-pro {
+  font-family: "Arial Black", "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: 0.01em;
+}
+
+.travel-gear-section__font-preview--athletic {
+  font-family: Impact, "Arial Black", sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.015em;
 }
 
 .travel-gear-section__font-preview--birchwood {
@@ -339,11 +351,18 @@
   letter-spacing: 0.02em;
 }
 
-.travel-gear-section__font-preview--booster,
-.travel-gear-section__font-preview--phosphate {
+.travel-gear-section__font-preview--booster {
   -webkit-text-stroke: 1px #9a9a9a;
   color: transparent;
   font-family: Impact, "Arial Narrow Bold", sans-serif;
+  letter-spacing: 0.04em;
+}
+
+.travel-gear-section__font-preview--phosphate {
+  -webkit-text-stroke: 0.85px #9a9a9a;
+  color: transparent;
+  font-family: "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
+  letter-spacing: 0.02em;
 }
 
 .travel-gear-section__font-preview--digital {
@@ -353,6 +372,12 @@
 
 .travel-gear-section__font-preview--brush {
   font-family: "Brush Script MT", "Segoe Script", cursive;
+}
+
+.travel-gear-section__font-preview--d-bold {
+  font-family: "Verdana", "Trebuchet MS", sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.005em;
 }
 
 .travel-gear-section__guide-body--size {
