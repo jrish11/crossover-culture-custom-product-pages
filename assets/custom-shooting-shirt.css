@@ -1,0 +1,926 @@
+.shooting-shirt-section {
+  --shooting-shirt-primary: #111111;
+  --shooting-shirt-accent: #dce300;
+  --shooting-shirt-border: #d1ccc3;
+  --shooting-shirt-soft-border: #e8e2d8;
+  --shooting-shirt-surface: #faf7f1;
+  --shooting-shirt-surface-strong: #f3ede2;
+  --shooting-shirt-muted: #68645d;
+  --shooting-shirt-error: #cc0000;
+  --shooting-shirt-success: #1a5c38;
+  --shooting-shirt-white: #ffffff;
+  color: var(--shooting-shirt-primary);
+  display: block;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  max-width: none;
+  overflow: hidden;
+  position: relative;
+  width: 100vw;
+}
+
+.shooting-shirt-section__inner {
+  margin: 0 auto;
+  max-width: 1380px;
+  padding: 28px 28px 44px;
+  width: min(1380px, calc(100vw - 40px));
+}
+
+.shooting-shirt-section__utility-bar {
+  background: var(--shooting-shirt-white);
+  border-top: 1px solid var(--shooting-shirt-soft-border);
+  border-bottom: 1px solid var(--shooting-shirt-soft-border);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  width: 100%;
+}
+
+.shooting-shirt-section__utility-item {
+  align-items: center;
+  color: inherit;
+  column-gap: 14px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  min-height: 68px;
+  padding: 14px 18px;
+  text-decoration: none;
+}
+
+.shooting-shirt-section__utility-item + .shooting-shirt-section__utility-item {
+  border-left: 1px solid var(--shooting-shirt-soft-border);
+}
+
+.shooting-shirt-section__utility-item--link:hover,
+.shooting-shirt-section__utility-item--link:focus-visible {
+  background: var(--shooting-shirt-surface);
+}
+
+.shooting-shirt-section__utility-icon {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  width: 24px;
+}
+
+.shooting-shirt-section__utility-icon svg {
+  display: block;
+  height: 24px;
+  width: 24px;
+}
+
+.shooting-shirt-section__utility-title,
+.shooting-shirt-section__utility-text {
+  margin: 0;
+}
+
+.shooting-shirt-section__utility-title {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.shooting-shirt-section__utility-text {
+  color: var(--shooting-shirt-muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
+  margin-top: 3px;
+}
+
+.shooting-shirt-section__order-canvas {
+  align-items: start;
+  display: grid;
+  gap: 18px 20px;
+  grid-template-columns: minmax(0, 1.06fr) minmax(400px, 0.94fr);
+  grid-template-areas:
+    "error error"
+    "gallery meta"
+    "sizes colors"
+    "upload notes"
+    "summary summary"
+    "cta cta"
+    "rules rules";
+}
+
+.shooting-shirt-section__message {
+  border: 1px solid transparent;
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin: 0;
+  padding: 14px 16px;
+}
+
+.shooting-shirt-section__message--error {
+  background: rgba(204, 0, 0, 0.06);
+  border-color: rgba(204, 0, 0, 0.18);
+  color: var(--shooting-shirt-error);
+  grid-area: error;
+}
+
+.shooting-shirt-section__gallery-column {
+  grid-area: gallery;
+  min-width: 0;
+}
+
+.shooting-shirt-section__gallery {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 58px minmax(0, 1fr);
+}
+
+.shooting-shirt-section__thumbnails {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 6px;
+}
+
+.shooting-shirt-section__thumbnail {
+  align-items: center;
+  background: var(--shooting-shirt-white);
+  border: 1px solid var(--shooting-shirt-border);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  min-height: 76px;
+  padding: 0;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.shooting-shirt-section__thumbnail:hover,
+.shooting-shirt-section__thumbnail:focus-visible {
+  border-color: var(--shooting-shirt-primary);
+  transform: translateY(-1px);
+}
+
+.shooting-shirt-section__thumbnail.is-active {
+  border-color: var(--shooting-shirt-primary);
+}
+
+.shooting-shirt-section__thumbnail img {
+  display: block;
+  height: 76px;
+  object-fit: cover;
+  width: 58px;
+}
+
+.shooting-shirt-section__main-image-shell {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid var(--shooting-shirt-soft-border);
+  display: flex;
+  justify-content: center;
+  min-height: 520px;
+  overflow: hidden;
+  padding: 20px;
+}
+
+.shooting-shirt-section__main-image {
+  display: block;
+  height: auto;
+  max-height: 470px;
+  max-width: 100%;
+  object-fit: contain;
+  width: 100%;
+}
+
+.shooting-shirt-section__main-image--fallback {
+  align-items: center;
+  background: var(--shooting-shirt-surface);
+  color: rgba(17, 17, 17, 0.24);
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.shooting-shirt-section__fallback-svg {
+  max-height: 340px;
+  max-width: 340px;
+  width: 100%;
+}
+
+.shooting-shirt-section__gallery-note {
+  color: var(--shooting-shirt-muted);
+  font-size: 0.72rem;
+  line-height: 1.45;
+  margin: 10px 0 0 70px;
+  max-width: 50rem;
+}
+
+.shooting-shirt-section__meta-column {
+  display: grid;
+  gap: 14px;
+  grid-area: meta;
+  min-width: 0;
+}
+
+.shooting-shirt-section__product-meta {
+  display: grid;
+  gap: 10px;
+}
+
+.shooting-shirt-section__eyebrow {
+  color: var(--shooting-shirt-muted);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.shooting-shirt-section__title {
+  font-size: clamp(2.2rem, 3vw, 3.7rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 0.94;
+  margin: 0;
+  max-width: 9ch;
+}
+
+.shooting-shirt-section__price {
+  font-size: 1rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.shooting-shirt-section__intro {
+  font-size: 0.86rem;
+  line-height: 1.52;
+  margin: 0;
+}
+
+.shooting-shirt-section__feature-list {
+  color: var(--shooting-shirt-muted);
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.shooting-shirt-section__feature-list li {
+  font-size: 0.76rem;
+  line-height: 1.42;
+}
+
+.shooting-shirt-section__summary-bar {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.shooting-shirt-section__summary-chip,
+.shooting-shirt-section__panel,
+.shooting-shirt-section__color-summary-item,
+.shooting-shirt-section__sizes-panel,
+.shooting-shirt-section__order-summary-item {
+  background: var(--shooting-shirt-white);
+  border: 1px solid var(--shooting-shirt-soft-border);
+}
+
+.shooting-shirt-section__summary-chip {
+  display: grid;
+  gap: 4px;
+  min-height: 62px;
+  padding: 12px 14px;
+}
+
+.shooting-shirt-section__summary-label,
+.shooting-shirt-section__color-summary-label,
+.shooting-shirt-section__order-summary-label {
+  color: var(--shooting-shirt-muted);
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.shooting-shirt-section__summary-value {
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.shooting-shirt-section__panel {
+  padding: 14px;
+}
+
+.shooting-shirt-section__panel--wording {
+  background: #ffffff;
+}
+
+.shooting-shirt-section__panel--font {
+  background: #ffffff;
+}
+
+.shooting-shirt-section__panel--sizes {
+  grid-area: sizes;
+}
+
+.shooting-shirt-section__panel--colors {
+  grid-area: colors;
+}
+
+.shooting-shirt-section__panel--upload {
+  grid-area: upload;
+}
+
+.shooting-shirt-section__panel--notes {
+  grid-area: notes;
+}
+
+.shooting-shirt-section__panel--summary {
+  grid-area: summary;
+}
+
+.shooting-shirt-section__cta-section {
+  grid-area: cta;
+}
+
+.shooting-shirt-section__rules {
+  color: var(--shooting-shirt-muted);
+  font-size: 0.72rem;
+  grid-area: rules;
+  line-height: 1.5;
+  margin: -8px 0 0;
+}
+
+.shooting-shirt-section__field-header {
+  align-items: baseline;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.shooting-shirt-section__field-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.shooting-shirt-section__field-label--small {
+  font-size: 0.6rem;
+}
+
+.shooting-shirt-section__field-meta {
+  color: var(--shooting-shirt-muted);
+  font-size: 0.66rem;
+  font-weight: 700;
+}
+
+.shooting-shirt-section__reset-link {
+  background: transparent;
+  border: 0;
+  color: var(--shooting-shirt-muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 0;
+  text-transform: uppercase;
+}
+
+.shooting-shirt-section__text-input,
+.shooting-shirt-section__select-input,
+.shooting-shirt-section__file-input,
+.shooting-shirt-section__textarea,
+.shooting-shirt-section__quantity-input {
+  appearance: none;
+  background: var(--shooting-shirt-white);
+  border: 1px solid var(--shooting-shirt-border);
+  border-radius: 0;
+  color: var(--shooting-shirt-primary);
+  font: inherit;
+  font-size: 0.86rem;
+  min-height: 42px;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.shooting-shirt-section__textarea {
+  min-height: 116px;
+  resize: vertical;
+}
+
+.shooting-shirt-section__select-input {
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--shooting-shirt-primary) 50%),
+    linear-gradient(135deg, var(--shooting-shirt-primary) 50%, transparent 50%);
+  background-position:
+    calc(100% - 20px) calc(50% - 2px),
+    calc(100% - 14px) calc(50% - 2px);
+  background-repeat: no-repeat;
+  background-size: 6px 6px, 6px 6px;
+  padding-right: 40px;
+}
+
+.shooting-shirt-section__font-picker {
+  display: grid;
+  gap: 10px;
+}
+
+.shooting-shirt-section__font-note {
+  color: var(--shooting-shirt-muted);
+  font-size: 0.72rem;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.shooting-shirt-section__text-input:focus,
+.shooting-shirt-section__select-input:focus,
+.shooting-shirt-section__file-input:focus,
+.shooting-shirt-section__textarea:focus,
+.shooting-shirt-section__quantity-input:focus,
+.shooting-shirt-section__thumbnail:focus,
+.shooting-shirt-section__wheel-input:focus,
+.shooting-shirt-section__cta:focus,
+.shooting-shirt-section__cta-link:focus,
+.shooting-shirt-section__color-target:focus,
+.shooting-shirt-section__reset-link:focus {
+  outline: none;
+}
+
+.shooting-shirt-section__field-error {
+  border-color: var(--shooting-shirt-error);
+  color: var(--shooting-shirt-error);
+}
+
+.shooting-shirt-section__color-studio {
+  background: var(--shooting-shirt-white);
+  border: 1px solid var(--shooting-shirt-soft-border);
+  padding: 14px;
+}
+
+.shooting-shirt-section__color-topline {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.shooting-shirt-section__color-targets {
+  display: inline-grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(108px, 1fr));
+}
+
+.shooting-shirt-section__color-target {
+  background: var(--shooting-shirt-white);
+  border: 1px solid var(--shooting-shirt-border);
+  color: var(--shooting-shirt-primary);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  min-height: 30px;
+  padding: 7px 10px;
+  text-transform: uppercase;
+}
+
+.shooting-shirt-section__color-target.is-active {
+  background: var(--shooting-shirt-primary);
+  border-color: var(--shooting-shirt-primary);
+  color: var(--shooting-shirt-white);
+}
+
+.shooting-shirt-section__color-caption {
+  color: var(--shooting-shirt-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  margin: 0;
+  text-align: right;
+}
+
+.shooting-shirt-section__color-layout {
+  align-items: start;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 68px minmax(0, 1fr);
+}
+
+.shooting-shirt-section__wheel-shell {
+  cursor: pointer;
+  display: block;
+  height: 68px;
+  position: relative;
+  width: 68px;
+}
+
+.shooting-shirt-section__wheel-visual {
+  background: conic-gradient(#ff0000, #ff7a00, #ffd500, #4dff00, #00d5ff, #004dff, #7a00ff, #ff00d5, #ff0000);
+  border: 1px solid var(--shooting-shirt-border);
+  border-radius: 50%;
+  display: block;
+  height: 68px;
+  position: relative;
+  width: 68px;
+}
+
+.shooting-shirt-section__wheel-visual::after {
+  background: radial-gradient(circle, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.96) 68%);
+  border-radius: 50%;
+  content: "";
+  inset: 0;
+  position: absolute;
+}
+
+.shooting-shirt-section__wheel-input {
+  cursor: pointer;
+  inset: 0;
+  opacity: 0;
+  position: absolute;
+}
+
+.shooting-shirt-section__palette-area {
+  display: grid;
+  gap: 12px;
+}
+
+.shooting-shirt-section__color-apply {
+  color: var(--shooting-shirt-muted);
+  font-size: 0.68rem;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.shooting-shirt-section__stock-select-group {
+  display: grid;
+  gap: 8px;
+}
+
+.shooting-shirt-section__swatch-group-label {
+  color: var(--shooting-shirt-muted);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.shooting-shirt-section__mini-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.shooting-shirt-section__mini-swatch {
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--shooting-shirt-border);
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-flex;
+  height: 24px;
+  justify-content: center;
+  padding: 0;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  width: 24px;
+}
+
+.shooting-shirt-section__mini-swatch:hover,
+.shooting-shirt-section__mini-swatch:focus-visible {
+  border-color: var(--shooting-shirt-primary);
+  transform: translateY(-1px);
+}
+
+.shooting-shirt-section__mini-swatch.is-active {
+  border-color: var(--shooting-shirt-primary);
+}
+
+.shooting-shirt-section__mini-swatch-fill {
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  border-radius: 50%;
+  display: block;
+  height: 14px;
+  width: 14px;
+}
+
+.shooting-shirt-section__hex-shell {
+  display: grid;
+  gap: 8px;
+  max-width: 240px;
+}
+
+.shooting-shirt-section__hex-row {
+  align-items: center;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 24px minmax(0, 1fr);
+}
+
+.shooting-shirt-section__hex-preview {
+  border: 1px solid var(--shooting-shirt-border);
+  border-radius: 50%;
+  display: block;
+  height: 24px;
+  width: 24px;
+}
+
+.shooting-shirt-section__color-summary {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 12px;
+}
+
+.shooting-shirt-section__color-summary-item {
+  display: grid;
+  gap: 5px;
+  min-height: 62px;
+  padding: 12px;
+}
+
+.shooting-shirt-section__color-summary-value,
+.shooting-shirt-section__order-summary-value {
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.shooting-shirt-section__sizes-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.shooting-shirt-section__sizes-panel {
+  padding: 12px;
+}
+
+.shooting-shirt-section__sizes-panel-head {
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.shooting-shirt-section__sizes-title {
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.shooting-shirt-section__sizes-note {
+  color: var(--shooting-shirt-muted);
+  font-size: 0.62rem;
+  font-weight: 700;
+}
+
+.shooting-shirt-section__sizes-list {
+  display: grid;
+  gap: 10px;
+}
+
+.shooting-shirt-section__size-row {
+  align-items: center;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: minmax(0, 1fr) 54px;
+}
+
+.shooting-shirt-section__size-name {
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.shooting-shirt-section__quantity-input {
+  min-height: 36px;
+  padding: 8px 10px;
+  text-align: center;
+}
+
+.shooting-shirt-section__upload-copy {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.shooting-shirt-section__upload-headline,
+.shooting-shirt-section__upload-note {
+  margin: 0;
+}
+
+.shooting-shirt-section__upload-headline {
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.shooting-shirt-section__upload-note {
+  color: var(--shooting-shirt-muted);
+  font-size: 0.68rem;
+  line-height: 1.45;
+}
+
+.shooting-shirt-section__upload-filename {
+  color: var(--shooting-shirt-muted);
+  font-size: 0.68rem;
+  line-height: 1.4;
+  margin: 10px 0 0;
+}
+
+.shooting-shirt-section__order-summary {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.shooting-shirt-section__order-summary-item {
+  display: grid;
+  gap: 5px;
+  min-height: 62px;
+  padding: 12px;
+}
+
+.shooting-shirt-section__cta-group {
+  display: grid;
+  gap: 10px;
+}
+
+.shooting-shirt-section__cta {
+  align-items: center;
+  border: 1px solid var(--shooting-shirt-primary);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 800;
+  justify-content: center;
+  letter-spacing: 0.08em;
+  min-height: 42px;
+  padding: 10px 14px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.shooting-shirt-section__cta--primary {
+  background: var(--shooting-shirt-primary);
+  color: var(--shooting-shirt-white);
+}
+
+.shooting-shirt-section__cta--primary[disabled] {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.shooting-shirt-section__cta-link {
+  color: var(--shooting-shirt-primary);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+@media screen and (max-width: 1240px) {
+  .shooting-shirt-section__inner {
+    padding: 24px 22px 40px;
+    width: min(1380px, calc(100vw - 28px));
+  }
+
+  .shooting-shirt-section__order-canvas {
+    gap: 18px;
+    grid-template-columns: minmax(0, 1fr) minmax(380px, 0.94fr);
+  }
+
+  .shooting-shirt-section__main-image-shell {
+    min-height: 500px;
+    padding: 20px;
+  }
+
+  .shooting-shirt-section__sizes-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .shooting-shirt-section__order-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+@media screen and (max-width: 980px) {
+  .shooting-shirt-section__order-canvas {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "error"
+      "success"
+      "gallery"
+      "meta"
+      "colors"
+      "sizes"
+      "upload"
+      "notes"
+      "summary"
+      "cta"
+      "rules";
+  }
+
+  .shooting-shirt-section__gallery {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .shooting-shirt-section__thumbnails {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-top: 0;
+  }
+
+  .shooting-shirt-section__thumbnail {
+    flex: 0 0 auto;
+  }
+
+  .shooting-shirt-section__gallery-note {
+    margin-left: 0;
+  }
+
+  .shooting-shirt-section__main-image-shell {
+    min-height: 420px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .shooting-shirt-section__inner {
+    padding: 20px 14px 34px;
+    width: calc(100vw - 20px);
+  }
+
+  .shooting-shirt-section__utility-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .shooting-shirt-section__summary-bar,
+  .shooting-shirt-section__color-summary,
+  .shooting-shirt-section__order-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .shooting-shirt-section__panel {
+    padding: 14px;
+  }
+
+  .shooting-shirt-section__main-image-shell {
+    min-height: 380px;
+    padding: 16px;
+  }
+
+  .shooting-shirt-section__main-image {
+    max-height: 340px;
+  }
+
+  .shooting-shirt-section__color-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .shooting-shirt-section__color-topline {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .shooting-shirt-section__color-caption {
+    text-align: left;
+  }
+
+  .shooting-shirt-section__wheel-shell {
+    margin: 0 auto;
+  }
+
+}
+
+@media screen and (max-width: 480px) {
+  .shooting-shirt-section__utility-item {
+    min-height: auto;
+    padding: 14px 16px;
+  }
+
+  .shooting-shirt-section__utility-item + .shooting-shirt-section__utility-item {
+    border-left: 0;
+  }
+
+  .shooting-shirt-section__field-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .shooting-shirt-section__color-targets,
+  .shooting-shirt-section__size-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .shooting-shirt-section__title {
+    font-size: 2rem;
+  }
+
+  .shooting-shirt-section__main-image-shell {
+    min-height: 340px;
+  }
+}

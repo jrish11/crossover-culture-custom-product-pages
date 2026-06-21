@@ -1,0 +1,544 @@
+{{ 'custom-shooting-shirt.css' | asset_url | stylesheet_tag }}
+{{ 'custom-travel-gear.css' | asset_url | stylesheet_tag }}
+{{ 'custom-polo.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-polo.js' | asset_url }}" defer></script>
+
+{% liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign featured_image = product.featured_image | default: product.images.first
+  assign contact_link = section.settings.contact_url | default: '/pages/contact'
+  assign min_pieces = section.settings.min_pieces | default: 6
+  if min_pieces < 6
+    assign min_pieces = 6
+  endif
+
+  assign product_style = 'Enlisted'
+  assign garment_label = 'Polo'
+  assign display_price = '$35.00 each'
+  assign intro_copy = section.settings.intro_copy
+  assign base_colors = 'Black:#111111,Light Grey:#E5E5E5,Charcoal:#676767,Team Red:#C63737,Team Navy:#203A72,Team Royal:#4056B4' | split: ','
+  assign spec_points = '80% cotton / 20% polyester.,Moisture wicking.,Sport shoulder for maximum movement.,Button collar.' | split: ','
+  assign lead_spec = spec_points.first
+  assign artwork_colors = 'Black:#111111,White:#FFFFFF,Grey:#A7ADB3,Maroon:#6F263D,Team Red:#C63737,Red:#D73B32,Purple:#52426F,Team Navy:#203A72,Team Royal:#4056B4,Atomic Blue:#4F8FB4,Bright Blue:#78AFCF,Forest Green:#4F6E54,Orange:#C46A3A,Gold Yellow:#B08D2F,Yellow:#B7A82F,Brown:#6A5B52' | split: ','
+  assign font_options = 'DIN-CDB,MP-PRO,ATHLETIC,BIRCHWOOD,BOOSTER,DIGITAL,PHOSPHATE,BRUSH,D-BOLD' | split: ','
+%}
+
+<section
+  class="custom-polo-section travel-gear-section shooting-shirt-section"
+  data-section-id="{{ section.id }}"
+  data-min-pieces="{{ min_pieces }}"
+>
+  <div class="shooting-shirt-section__utility-bar" aria-label="Polo order details">
+    <div class="shooting-shirt-section__utility-item">
+      <span class="shooting-shirt-section__utility-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 3.75c4 0 7.25 3.25 7.25 7.25 0 5.4-7.25 9.25-7.25 9.25S4.75 16.4 4.75 11c0-4 3.25-7.25 7.25-7.25Z" stroke="currentColor" stroke-width="1.7"/>
+          <path d="m8.25 8.25 7.5 7.5M15.75 8.25l-7.5 7.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <div class="shooting-shirt-section__utility-copy">
+        <p class="shooting-shirt-section__utility-title">No Returns</p>
+        <p class="shooting-shirt-section__utility-text">All custom polo orders are final</p>
+      </div>
+    </div>
+    <div class="shooting-shirt-section__utility-item">
+      <span class="shooting-shirt-section__utility-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 4.5 18.5 8v8L12 19.5 5.5 16V8L12 4.5Z" stroke="currentColor" stroke-width="1.7"/>
+          <path d="M5.5 8 12 12l6.5-4M12 12v7.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <div class="shooting-shirt-section__utility-copy">
+        <p class="shooting-shirt-section__utility-title">Minimum Order</p>
+        <p class="shooting-shirt-section__utility-text">{{ section.settings.minimum_order }}</p>
+      </div>
+    </div>
+    <a class="shooting-shirt-section__utility-item shooting-shirt-section__utility-item--link" href="{{ contact_link }}">
+      <span class="shooting-shirt-section__utility-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M7.5 17.5 4 20V6.75A2.75 2.75 0 0 1 6.75 4h10.5A2.75 2.75 0 0 1 20 6.75v7.5A2.75 2.75 0 0 1 17.25 17H7.5Z" stroke="currentColor" stroke-width="1.7"/>
+          <path d="M8.25 9.25h7.5M8.25 12.5h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <div class="shooting-shirt-section__utility-copy">
+        <p class="shooting-shirt-section__utility-title">Need Help?</p>
+        <p class="shooting-shirt-section__utility-text">Contact our team</p>
+      </div>
+    </a>
+  </div>
+
+  <div class="shooting-shirt-section__inner">
+    <form
+      class="shooting-shirt-section__order-canvas travel-gear-section__order-canvas"
+      data-polo-form
+      action="{{ routes.cart_add_url }}"
+      method="post"
+      enctype="multipart/form-data"
+      accept-charset="UTF-8"
+      novalidate
+    >
+      <input type="hidden" name="id" value="{{ current_variant.id }}">
+      <input type="hidden" name="quantity" value="1">
+      <input type="hidden" name="properties[Requested Unit Price]" value="{{ display_price }}">
+      <input type="hidden" name="properties[Product Style]" value="{{ product_style }}">
+      <input type="hidden" name="properties[Garment Type]" value="{{ garment_label }}">
+      <input type="hidden" name="properties[Garment Color]" value="#111111 (Black)" data-color-property="Base">
+      <input type="hidden" name="properties[Logo / Artwork Color]" value="#FFFFFF (White)" data-color-property="Artwork">
+      <input type="hidden" name="properties[Size Breakdown]" value="" data-size-breakdown-property>
+      <input type="hidden" name="properties[Total Pieces]" value="0" data-total-pieces-property>
+      <input type="hidden" name="properties[_Company]" value="Crossover Culture">
+      <input type="hidden" name="properties[_Order Flow]" value="Polo Customizer">
+      <input type="hidden" name="properties[_Source Product]" value="{{ product.title }}">
+
+      <div class="shooting-shirt-section__message shooting-shirt-section__message--error" data-form-message="error" role="alert" hidden></div>
+      <div class="shooting-shirt-section__gallery-column">
+        <div class="shooting-shirt-section__gallery">
+          <div class="shooting-shirt-section__thumbnails" role="tablist" aria-label="Product images">
+            {% for image in product.images %}
+              <button
+                type="button"
+                class="shooting-shirt-section__thumbnail{% if image.id == featured_image.id %} is-active{% endif %}"
+                data-gallery-thumb
+                data-image-src="{{ image | image_url: width: 1800 }}"
+                data-image-alt="{{ image.alt | default: product.title | escape }}"
+                aria-label="View image {{ forloop.index }}"
+                aria-selected="{% if image.id == featured_image.id %}true{% else %}false{% endif %}"
+              >
+                <img
+                  src="{{ image | image_url: width: 220 }}"
+                  alt="{{ image.alt | default: product.title | escape }}"
+                  loading="lazy"
+                  width="90"
+                  height="108"
+                >
+              </button>
+            {% endfor %}
+          </div>
+
+          <div class="shooting-shirt-section__main-image-shell">
+            {% if featured_image %}
+              <img
+                class="shooting-shirt-section__main-image"
+                data-main-image
+                src="{{ featured_image | image_url: width: 1800 }}"
+                alt="{{ featured_image.alt | default: product.title | escape }}"
+                loading="eager"
+                width="{{ featured_image.width }}"
+                height="{{ featured_image.height }}"
+              >
+            {% else %}
+              <div class="shooting-shirt-section__main-image shooting-shirt-section__main-image--fallback" aria-hidden="true">
+                <svg class="shooting-shirt-section__fallback-svg" viewBox="0 0 240 240" fill="none">
+                  <rect x="40" y="48" width="160" height="144" stroke="currentColor" stroke-width="8"/>
+                  <path d="M64 168l40-44 28 28 24-20 20 36" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="92" cy="92" r="14" fill="currentColor"/>
+                </svg>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+        <p class="shooting-shirt-section__gallery-note">Use the product gallery to show front, back, collar, and artwork-placement references before the customer submits the order.</p>
+      </div>
+
+      <div class="shooting-shirt-section__meta-column">
+        <div class="shooting-shirt-section__product-meta">
+          <p class="shooting-shirt-section__eyebrow">Premium Team Polo Ordering</p>
+          <h1 class="shooting-shirt-section__title">{{ product.title }}</h1>
+          <p class="shooting-shirt-section__price">{{ display_price }}</p>
+          <p class="shooting-shirt-section__intro">{{ intro_copy }}</p>
+          <ul class="shooting-shirt-section__feature-list">
+            <li>{{ lead_spec }}</li>
+            <li>Choose one garment color and one separate logo / artwork color.</li>
+            <li>Upload one vector artwork file and submit the full size breakdown in one streamlined order form.</li>
+          </ul>
+        </div>
+
+        <div class="shooting-shirt-section__summary-bar">
+          <div class="shooting-shirt-section__summary-chip">
+            <span class="shooting-shirt-section__summary-label">Style</span>
+            <span class="shooting-shirt-section__summary-value">{{ product_style }}</span>
+          </div>
+          <div class="shooting-shirt-section__summary-chip">
+            <span class="shooting-shirt-section__summary-label">Garment</span>
+            <span class="shooting-shirt-section__summary-value">{{ garment_label }}</span>
+          </div>
+          <div class="shooting-shirt-section__summary-chip">
+            <span class="shooting-shirt-section__summary-label">Minimum</span>
+            <span class="shooting-shirt-section__summary-value">{{ min_pieces }} Pieces</span>
+          </div>
+        </div>
+
+        <section class="shooting-shirt-section__panel shooting-shirt-section__panel--wording travel-gear-section__identity-panel">
+          <div class="shooting-shirt-section__field-header">
+            <span class="shooting-shirt-section__field-label">1. Team Identity</span>
+          </div>
+
+          <div class="travel-gear-section__identity-grid">
+            <div class="travel-gear-section__field-stack">
+              <div class="shooting-shirt-section__field-header">
+                <label class="shooting-shirt-section__field-label shooting-shirt-section__field-label--small" for="TeamWording-{{ section.id }}">Team Wording</label>
+                <span class="shooting-shirt-section__field-meta" data-wording-count>0/24</span>
+              </div>
+              <input
+                id="TeamWording-{{ section.id }}"
+                class="shooting-shirt-section__text-input"
+                type="text"
+                name="properties[Team Wording]"
+                maxlength="24"
+                autocomplete="off"
+                placeholder="Example: Panthers"
+                data-team-wording
+              >
+            </div>
+
+            <div class="travel-gear-section__field-stack">
+              <label class="shooting-shirt-section__field-label shooting-shirt-section__field-label--small" for="TeamFont-{{ section.id }}">Team Font</label>
+              <select
+                id="TeamFont-{{ section.id }}"
+                class="travel-gear-section__select-input"
+                name="properties[Team Font]"
+                data-font-select
+              >
+                {% for font_name in font_options %}
+                  <option value="{{ font_name }}"{% if font_name == 'ATHLETIC' %} selected{% endif %}>{{ font_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <details class="travel-gear-section__guide-dropdown">
+            <summary class="travel-gear-section__guide-summary">
+              <span>View font guide</span>
+              <span class="travel-gear-section__guide-summary-meta">9 options</span>
+            </summary>
+            <div class="travel-gear-section__guide-body">
+              <div class="travel-gear-section__font-guide-grid">
+                {% for font_name in font_options %}
+                  {% assign font_key = font_name | downcase | replace: ' ', '-' %}
+                  <article class="travel-gear-section__font-card">
+                    <p class="travel-gear-section__font-card-title">{{ forloop.index }}. {{ font_name }}</p>
+                    <p class="travel-gear-section__font-preview travel-gear-section__font-preview--{{ font_key }}">ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
+                    <p class="travel-gear-section__font-preview travel-gear-section__font-preview--{{ font_key }} travel-gear-section__font-preview--numbers">0123456789</p>
+                  </article>
+                {% endfor %}
+              </div>
+            </div>
+          </details>
+        </section>
+      </div>
+
+      <section class="shooting-shirt-section__panel shooting-shirt-section__panel--sizes">
+        <div class="shooting-shirt-section__field-header">
+          <span class="shooting-shirt-section__field-label">3. Size Breakdown</span>
+          <span class="shooting-shirt-section__field-meta">Minimum {{ min_pieces }} total pieces</span>
+        </div>
+
+        <div class="shooting-shirt-section__sizes-grid">
+          <div class="shooting-shirt-section__sizes-panel">
+            <div class="shooting-shirt-section__sizes-panel-head">
+              <span class="shooting-shirt-section__sizes-title">Mens</span>
+              <span class="shooting-shirt-section__sizes-note">S-3XL</span>
+            </div>
+            <div class="shooting-shirt-section__sizes-list">
+              {% assign mens_sizes = 'S,M,L,XL,2XL,3XL' | split: ',' %}
+              {% for size in mens_sizes %}
+                <label class="shooting-shirt-section__size-row">
+                  <span class="shooting-shirt-section__size-name">{{ size }}</span>
+                  <input
+                    class="shooting-shirt-section__quantity-input"
+                    type="number"
+                    min="0"
+                    max="99"
+                    placeholder="0"
+                    inputmode="numeric"
+                    data-size-quantity
+                    data-size-label="Mens {{ size }}"
+                  >
+                </label>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="shooting-shirt-section__sizes-panel">
+            <div class="shooting-shirt-section__sizes-panel-head">
+              <span class="shooting-shirt-section__sizes-title">Womens</span>
+              <span class="shooting-shirt-section__sizes-note">S-2XL</span>
+            </div>
+            <div class="shooting-shirt-section__sizes-list">
+              {% assign womens_sizes = 'WS,WM,WL,WXL,W2XL' | split: ',' %}
+              {% for size in womens_sizes %}
+                <label class="shooting-shirt-section__size-row">
+                  <span class="shooting-shirt-section__size-name">{{ size }}</span>
+                  <input
+                    class="shooting-shirt-section__quantity-input"
+                    type="number"
+                    min="0"
+                    max="99"
+                    placeholder="0"
+                    inputmode="numeric"
+                    data-size-quantity
+                    data-size-label="Womens {{ size }}"
+                  >
+                </label>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <details class="travel-gear-section__guide-dropdown travel-gear-section__guide-dropdown--size">
+          <summary class="travel-gear-section__guide-summary">
+            <span>View sizing &amp; fit guide</span>
+            <span class="travel-gear-section__guide-summary-meta">Chest, waist, hip</span>
+          </summary>
+          <div class="travel-gear-section__guide-body travel-gear-section__guide-body--size">
+            <div class="travel-gear-section__size-guide-grid">
+              <article class="travel-gear-section__size-guide-card">
+                <p class="travel-gear-section__size-guide-title">Men&apos;s</p>
+                <div class="travel-gear-section__guide-table-shell">
+                  <table class="travel-gear-section__guide-table">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>SM</th>
+                        <th>MD</th>
+                        <th>LG</th>
+                        <th>XL</th>
+                        <th>XXL</th>
+                        <th>3XL</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><th>Chest</th><td>34-36</td><td>38-40</td><td>42-44</td><td>46-48</td><td>50-52</td><td>54-56</td></tr>
+                      <tr><th>Waist</th><td>28-29</td><td>30-32</td><td>34-36</td><td>38-40</td><td>42-44</td><td>46-48</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </article>
+
+              <article class="travel-gear-section__size-guide-card">
+                <p class="travel-gear-section__size-guide-title">Women&apos;s</p>
+                <div class="travel-gear-section__guide-table-shell">
+                  <table class="travel-gear-section__guide-table">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>SM</th>
+                        <th>MD</th>
+                        <th>LG</th>
+                        <th>XL</th>
+                        <th>XXL</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><th>Bust</th><td>33.5-35.5</td><td>36-38</td><td>38.5-40.5</td><td>41-43</td><td>43+</td></tr>
+                      <tr><th>Waist</th><td>25.5-27.5</td><td>28-30</td><td>30.5-32.5</td><td>33-35</td><td>35+</td></tr>
+                      <tr><th>Hip</th><td>35.5-37.5</td><td>38-40</td><td>40.5-42.5</td><td>43-45</td><td>45+</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </article>
+            </div>
+            <p class="travel-gear-section__guide-note">Production garments have a size allowance of approximately +/- one half inch.</p>
+          </div>
+        </details>
+      </section>
+
+      <section class="shooting-shirt-section__panel shooting-shirt-section__panel--colors">
+        <div class="shooting-shirt-section__field-header">
+          <span class="shooting-shirt-section__field-label">2. Colors</span>
+          <button type="button" class="shooting-shirt-section__reset-link" data-reset-colors>Reset to default</button>
+        </div>
+
+        <div class="shooting-shirt-section__color-studio">
+          <div class="shooting-shirt-section__color-topline">
+            <div class="shooting-shirt-section__color-targets" role="tablist" aria-label="Color application">
+              <button type="button" class="shooting-shirt-section__color-target is-active" data-color-target-button data-color-target="Base" data-color-apply-copy="Applies to the shirt body and collar." aria-pressed="true">Garment</button>
+              <button type="button" class="shooting-shirt-section__color-target" data-color-target-button data-color-target="Artwork" data-color-apply-copy="Applies to the logo, wording, and artwork placements." aria-pressed="false">Logo + Artwork</button>
+            </div>
+            <p class="shooting-shirt-section__color-caption" data-active-color-display>#111111 (Black)</p>
+          </div>
+
+          <div class="shooting-shirt-section__color-layout">
+            <label class="shooting-shirt-section__wheel-shell" aria-label="Choose polo color">
+              <span class="shooting-shirt-section__wheel-visual"></span>
+              <input type="color" class="shooting-shirt-section__wheel-input" value="#111111" data-color-picker>
+            </label>
+
+            <div class="shooting-shirt-section__palette-area">
+              <p class="shooting-shirt-section__color-apply" data-color-apply-copy>Applies to the shirt body and collar.</p>
+
+              <div class="shooting-shirt-section__swatch-group" data-color-group="Base">
+                <p class="shooting-shirt-section__swatch-group-label">Recommended garment colors</p>
+                <div class="shooting-shirt-section__mini-swatches" role="list" aria-label="Recommended garment colors">
+                  {% for color_entry in base_colors %}
+                    {% assign color_parts = color_entry | split: ':' %}
+                    {% assign color_name = color_parts[0] %}
+                    {% assign color_hex = color_parts[1] %}
+                    <button
+                      type="button"
+                      class="shooting-shirt-section__mini-swatch{% if forloop.first %} is-active{% endif %}"
+                      data-color-swatch
+                      data-color-target-scope="Base"
+                      data-color-name="{{ color_name }}"
+                      data-color-value="{{ color_hex }}"
+                      aria-label="{{ color_name }}"
+                      aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+                    >
+                      <span class="shooting-shirt-section__mini-swatch-fill" style="background-color: {{ color_hex }};"></span>
+                    </button>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <div class="shooting-shirt-section__swatch-group" data-color-group="Artwork" hidden>
+                <p class="shooting-shirt-section__swatch-group-label">Recommended logo + artwork colors</p>
+                <div class="shooting-shirt-section__mini-swatches" role="list" aria-label="Recommended logo and artwork colors">
+                  {% for color_entry in artwork_colors %}
+                    {% assign color_parts = color_entry | split: ':' %}
+                    {% assign color_name = color_parts[0] %}
+                    {% assign color_hex = color_parts[1] %}
+                    <button
+                      type="button"
+                      class="shooting-shirt-section__mini-swatch{% if color_name == 'White' %} is-active{% endif %}"
+                      data-color-swatch
+                      data-color-target-scope="Artwork"
+                      data-color-name="{{ color_name }}"
+                      data-color-value="{{ color_hex }}"
+                      aria-label="{{ color_name }}"
+                      aria-pressed="{% if color_name == 'White' %}true{% else %}false{% endif %}"
+                    >
+                      <span class="shooting-shirt-section__mini-swatch-fill" style="background-color: {{ color_hex }};"></span>
+                    </button>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <div class="shooting-shirt-section__hex-shell">
+                <label class="shooting-shirt-section__field-label shooting-shirt-section__field-label--small" for="ColorHex-{{ section.id }}">Custom HEX</label>
+                <div class="shooting-shirt-section__hex-row">
+                  <span class="shooting-shirt-section__hex-preview" data-color-preview aria-hidden="true"></span>
+                  <input
+                    id="ColorHex-{{ section.id }}"
+                    class="shooting-shirt-section__text-input"
+                    type="text"
+                    maxlength="7"
+                    value="#111111"
+                    autocomplete="off"
+                    inputmode="text"
+                    data-color-hex
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="shooting-shirt-section__color-summary">
+            <div class="shooting-shirt-section__color-summary-item" data-color-summary="Base">
+              <span class="shooting-shirt-section__color-summary-label">Garment</span>
+              <span class="shooting-shirt-section__color-summary-value">#111111 (Black)</span>
+            </div>
+            <div class="shooting-shirt-section__color-summary-item" data-color-summary="Artwork">
+              <span class="shooting-shirt-section__color-summary-label">Logo + Artwork</span>
+              <span class="shooting-shirt-section__color-summary-value">#FFFFFF (White)</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="shooting-shirt-section__panel shooting-shirt-section__panel--upload">
+        <div class="shooting-shirt-section__field-header">
+          <span class="shooting-shirt-section__field-label">4. Logo Upload</span>
+          <span class="shooting-shirt-section__field-meta">SVG, AI, EPS only</span>
+        </div>
+        <div class="shooting-shirt-section__upload-copy">
+          <p class="shooting-shirt-section__upload-headline">One production-ready vector file for the order.</p>
+          <p class="shooting-shirt-section__upload-note">This file stays attached to the order so the brand owner can review the exact art before production.</p>
+        </div>
+        <input
+          class="shooting-shirt-section__file-input"
+          type="file"
+          name="properties[Artwork Upload]"
+          accept=".svg,.ai,.eps"
+          data-vector-upload
+          required
+        >
+        <p class="shooting-shirt-section__upload-filename" data-upload-name>No file selected</p>
+      </section>
+
+      <section class="shooting-shirt-section__panel shooting-shirt-section__panel--notes">
+        <div class="shooting-shirt-section__field-header">
+          <label class="shooting-shirt-section__field-label" for="OrderNotes-{{ section.id }}">5. Order Notes</label>
+          <span class="shooting-shirt-section__field-meta">Optional</span>
+        </div>
+        <textarea
+          id="OrderNotes-{{ section.id }}"
+          class="shooting-shirt-section__textarea"
+          name="properties[Order Notes]"
+          rows="6"
+          placeholder="Add any placement notes, artwork notes, or special instructions here."
+        ></textarea>
+      </section>
+
+      <section class="shooting-shirt-section__panel shooting-shirt-section__panel--summary">
+        <div class="shooting-shirt-section__field-header">
+          <span class="shooting-shirt-section__field-label">Order Summary</span>
+          <span class="shooting-shirt-section__field-meta">Saved with the order</span>
+        </div>
+
+        <div class="shooting-shirt-section__order-summary travel-gear-section__order-summary">
+          <div class="shooting-shirt-section__order-summary-item">
+            <span class="shooting-shirt-section__order-summary-label">Team Wording</span>
+            <span class="shooting-shirt-section__order-summary-value" data-summary-wording>Not entered yet</span>
+          </div>
+          <div class="shooting-shirt-section__order-summary-item">
+            <span class="shooting-shirt-section__order-summary-label">Team Font</span>
+            <span class="shooting-shirt-section__order-summary-value" data-summary-font>ATHLETIC</span>
+          </div>
+          <div class="shooting-shirt-section__order-summary-item">
+            <span class="shooting-shirt-section__order-summary-label">Garment Color</span>
+            <span class="shooting-shirt-section__order-summary-value" data-summary-color="Base">#111111 (Black)</span>
+          </div>
+          <div class="shooting-shirt-section__order-summary-item">
+            <span class="shooting-shirt-section__order-summary-label">Logo + Artwork</span>
+            <span class="shooting-shirt-section__order-summary-value" data-summary-color="Artwork">#FFFFFF (White)</span>
+          </div>
+          <div class="shooting-shirt-section__order-summary-item">
+            <span class="shooting-shirt-section__order-summary-label">Total Pieces</span>
+            <span class="shooting-shirt-section__order-summary-value" data-summary-total-pieces>0 pieces</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="shooting-shirt-section__cta-section">
+        <div class="shooting-shirt-section__cta-group">
+          <button
+            type="submit"
+            class="shooting-shirt-section__cta shooting-shirt-section__cta--primary"
+            data-add-to-cart
+            data-submitting-label="Adding Polo Order..."
+          >
+            Add Polo Order To Cart
+          </button>
+          <a class="shooting-shirt-section__cta-link" href="/pages/contact?type=quote">Request Team Quote</a>
+        </div>
+      </div>
+
+      <p class="shooting-shirt-section__rules">Minimum order: {{ min_pieces }} pieces. Team wording, font, garment color, logo / artwork color, size breakdown, notes, and vector artwork upload are submitted with the order for production review.</p>
+    </form>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Polo Order",
+  "tag": "section",
+  "class": "custom-polo-section",
+  "settings": [
+    { "type": "text", "id": "minimum_order", "label": "Minimum Order Text", "default": "6 pieces per order" },
+    { "type": "url", "id": "contact_url", "label": "Contact Page URL" },
+    { "type": "number", "id": "min_pieces", "label": "Minimum Pieces", "default": 6 },
+    { "type": "textarea", "id": "intro_copy", "label": "Intro Copy", "default": "Build your polo order with separate garment and logo colors, team wording, a full size breakdown, and one vector artwork upload in one streamlined form." }
+  ],
+  "presets": [{ "name": "Polo Order" }]
+}
+{% endschema %}

@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "team-order-form",
+      "settings": {
+        "min_players": 6
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
