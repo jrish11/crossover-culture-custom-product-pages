@@ -60,6 +60,7 @@
     const mainImage = section.querySelector('[data-main-image]');
     const thumbnails = Array.from(section.querySelectorAll('[data-gallery-thumb]'));
     const form = section.querySelector('[data-shooting-shirt-form]');
+    const cartQuantityInput = section.querySelector('[data-cart-quantity]');
     const wordingInput = section.querySelector('[data-team-wording]');
     const wordingCount = section.querySelector('[data-wording-count]');
     const totalPiecesProperty = section.querySelector('[data-total-pieces-property]');
@@ -260,10 +261,10 @@
 
     const syncDerivedProperties = () => {
       const sizeBreakdown = buildSizeBreakdown();
+      const totalPieces = quantityInputs.reduce((sum, input) => sum + (Math.max(parseInt(input.value || '0', 10) || 0, 0)), 0);
       sizeBreakdownProperty.value = sizeBreakdown.join(' | ');
-      totalPiecesProperty.value = String(
-        quantityInputs.reduce((sum, input) => sum + (Math.max(parseInt(input.value || '0', 10) || 0, 0)), 0)
-      );
+      totalPiecesProperty.value = String(totalPieces);
+      cartQuantityInput.value = String(Math.max(totalPieces, 1));
       colorPropertyInputs.Shirt.value = formatColorLabel(colorState.Shirt.hex, colorState.Shirt.name);
       colorPropertyInputs.Artwork.value = formatColorLabel(colorState.Artwork.hex, colorState.Artwork.name);
     };

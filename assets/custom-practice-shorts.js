@@ -1,6 +1,6 @@
 (() => {
   const DEFAULT_COLORS = {
-    Base: { hex: '#111111', name: 'Black', apply: 'Main short color.' },
+    Base: { hex: '#111111', name: 'Black', apply: 'Applies to the main short body and waistband.' },
     Artwork: { hex: '#FFFFFF', name: 'White', apply: 'Applies to the CC logo, piping, and words.' }
   };
 
@@ -161,10 +161,12 @@
 
       if (livePricingCopy) {
         if (totalPieces > 0) {
-          livePricingCopy.textContent = `${pricingState.adultPieces} mens / womens + ${pricingState.youthPieces} youth = ${formattedTotal} estimated total.`;
+          livePricingCopy.textContent = sameUnitPrice
+            ? `${totalPieces} total pieces = ${formattedTotal} order total.`
+            : `${pricingState.adultPieces} mens / womens + ${pricingState.youthPieces} youth = ${formattedTotal} estimated total.`;
         } else {
           livePricingCopy.textContent = sameUnitPrice
-            ? 'Estimated total updates as sizes are entered. Checkout quantity syncs to total pieces.'
+            ? 'Order total updates as sizes are entered. Shopify checkout quantity syncs to total pieces.'
             : 'Estimated total updates as sizes are entered.';
         }
       }
