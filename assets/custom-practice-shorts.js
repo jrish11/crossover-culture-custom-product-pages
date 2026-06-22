@@ -26,11 +26,9 @@
   };
 
   const DEFAULT_COLORS = {
-    Base: { hex: '#111111', name: 'Black', apply: 'Applies to the short body and waistband.' },
-    Artwork: { hex: '#FFFFFF', name: 'White', apply: 'Applies to logos, wording, and decoration placements.' }
+    Base: { hex: '#111111', name: 'Black', apply: 'Main short color.' },
+    Artwork: { hex: '#FFFFFF', name: 'White', apply: 'Applies to the CC logo, piping, and words.' }
   };
-
-  const VECTOR_EXTENSIONS = ['svg', 'ai', 'eps'];
 
   const normalizeHex = (value) => {
     const stripped = value.toUpperCase().replace(/[^0-9A-F]/g, '').slice(0, 6);
@@ -45,24 +43,24 @@
 
   const formatColorLabel = (hex, name) => `${hex} (${name})`;
 
-  const getFileExtension = (filename) => {
-    const parts = filename.split('.');
-    return parts.length > 1 ? parts.pop().toLowerCase() : '';
-  };
-
   const initializeSection = (section) => {
     const minPieces = Math.max(parseInt(section.dataset.minPieces || '6', 10) || 6, 6);
+    const adultUnitPriceCents = Math.max(parseInt(section.dataset.adultUnitPriceCents || '0', 10) || 0, 0);
+    const youthUnitPriceCents = Math.max(parseInt(section.dataset.youthUnitPriceCents || '0', 10) || 0, 0);
+    const sameUnitPrice = adultUnitPriceCents === youthUnitPriceCents;
 
     const mainImage = section.querySelector('[data-main-image]');
     const thumbnails = Array.from(section.querySelectorAll('[data-gallery-thumb]'));
     const form = section.querySelector('[data-practice-shorts-form]');
+    const cartQuantityInput = section.querySelector('[data-cart-quantity]');
     const totalPiecesProperty = section.querySelector('[data-total-pieces-property]');
     const sizeBreakdownProperty = section.querySelector('[data-size-breakdown-property]');
+    const adultPiecesProperty = section.querySelector('[data-adult-pieces-property]');
+    const youthPiecesProperty = section.querySelector('[data-youth-pieces-property]');
+    const calculatedTotalProperty = section.querySelector('[data-calculated-total-property]');
     const quantityInputs = Array.from(section.querySelectorAll('[data-size-quantity]'));
-    const uploadInput = section.querySelector('[data-vector-upload]');
-    const uploadName = section.querySelector('[data-upload-name]');
-    const uploadSummary = section.querySelector('[data-summary-upload-status]');
     const sizeBreakdownSummary = section.querySelector('[data-summary-size-breakdown]');
+    const livePricingCopy = section.querySelector('[data-live-pricing-copy]');
     const errorMessage = section.querySelector('[data-form-message="error"]');
     const colorPicker = section.querySelector('[data-color-picker]');
     const colorHexInput = section.querySelector('[data-color-hex]');
@@ -76,6 +74,7 @@
     const addToCartButton = section.querySelector('[data-add-to-cart]');
     const submittingLabel = addToCartButton?.dataset.submittingLabel || 'Adding Practice Shorts Order...';
     const totalPiecesSummary = section.querySelector('[data-summary-total-pieces]');
+    const estimatedTotalSummaries = Array.from(section.querySelectorAll('[data-summary-estimated-total]'));
     const colorPropertyInputs = {
       Base: section.querySelector('[data-color-property="Base"]'),
       Artwork: section.querySelector('[data-color-property="Artwork"]')
@@ -128,11 +127,63 @@
       return entries;
     }, []);
 
+    const formatMoney = (cents) => {
+      const amount = cents / 100;
+      return amount.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD'
+      });
+    };
+
+    const getPricingState = () => quantityInputs.reduce((state, input) => {
+      const quantity = Math.max(parseInt(input.value || '0', 10) || 0, 0);
+      if (quantity <= 0) {
+        return state;
+      }
+
+      if (input.dataset.priceTier === 'Youth') {
+        state.youthPieces += quantity;
+        state.totalCents += quantity * youthUnitPriceCents;
+      } else {
+        state.adultPieces += quantity;
+        state.totalCents += quantity * adultUnitPriceCents;
+      }
+
+      return state;
+    }, {
+      adultPieces: 0,
+      youthPieces: 0,
+      totalCents: 0
+    });
+
     const updateSizeBreakdownSummary = () => {
       const sizeEntries = buildSizeBreakdown();
       const summaryText = sizeEntries.length ? sizeEntries.join(' | ') : 'No sizes entered yet';
       sizeBreakdownProperty.value = sizeEntries.join(' | ');
       sizeBreakdownSummary.textContent = summaryText;
+    };
+
+    const syncPricingState = () => {
+      const pricingState = getPricingState();
+      const totalPieces = pricingState.adultPieces + pricingState.youthPieces;
+      const formattedTotal = formatMoney(pricingState.totalCents);
+
+      adultPiecesProperty.value = String(pricingState.adultPieces);
+      youthPiecesProperty.value = String(pricingState.youthPieces);
+      calculatedTotalProperty.value = formattedTotal;
+      estimatedTotalSummaries.forEach((summary) => {
+        summary.textContent = formattedTotal;
+      });
+
+      if (livePricingCopy) {
+        if (totalPieces > 0) {
+          livePricingCopy.textContent = `${pricingState.adultPieces} mens / womens + ${pricingState.youthPieces} youth = ${formattedTotal} estimated total.`;
+        } else {
+          livePricingCopy.textContent = 'Estimated total updates as sizes are entered.';
+        }
+      }
+
+      cartQuantityInput.value = String(sameUnitPrice && totalPieces > 0 ? totalPieces : 1);
     };
 
     const updateTotalPieces = () => {
@@ -144,6 +195,7 @@
       totalPiecesProperty.value = String(total);
       totalPiecesSummary.textContent = `${total} piece${total === 1 ? '' : 's'}`;
       updateSizeBreakdownSummary();
+      syncPricingState();
     };
 
     const refreshSwatches = () => {
@@ -203,26 +255,6 @@
       refreshColorEditor();
     };
 
-    const syncUploadState = () => {
-      if (!uploadInput.files || !uploadInput.files.length) {
-        uploadName.textContent = 'No file selected';
-        uploadSummary.textContent = 'Not uploaded yet';
-        return false;
-      }
-
-      const file = uploadInput.files[0];
-      const extension = getFileExtension(file.name);
-      if (!VECTOR_EXTENSIONS.includes(extension)) {
-        uploadName.textContent = 'Vector files only: SVG, AI, EPS';
-        uploadSummary.textContent = 'Invalid file type';
-        return false;
-      }
-
-      uploadName.textContent = file.name;
-      uploadSummary.textContent = file.name;
-      return true;
-    };
-
     const validateForm = () => {
       clearFieldErrors();
       setMessage(null);
@@ -245,13 +277,8 @@
         isValid = false;
       }
 
-      if (!syncUploadState()) {
-        uploadInput.classList.add('shooting-shirt-section__field-error');
-        isValid = false;
-      }
-
       if (!isValid) {
-        setMessage('error', `Please confirm at least ${minPieces} total pieces, choose valid colors, and upload one vector artwork file before adding to cart.`);
+        setMessage('error', `Please confirm at least ${minPieces} total pieces and choose valid colors before adding to cart.`);
       }
 
       return isValid;
@@ -263,6 +290,7 @@
       }
 
       sizeBreakdownProperty.value = buildSizeBreakdown().join(' | ');
+      syncPricingState();
       addToCartButton.disabled = true;
       addToCartButton.textContent = submittingLabel;
       HTMLFormElement.prototype.submit.call(form);
@@ -329,12 +357,6 @@
 
     updateTotalPieces();
     refreshColorEditor();
-    syncUploadState();
-
-    uploadInput.addEventListener('change', () => {
-      uploadInput.classList.remove('shooting-shirt-section__field-error');
-      syncUploadState();
-    });
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();

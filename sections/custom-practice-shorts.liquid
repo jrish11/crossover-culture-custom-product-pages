@@ -5,15 +5,24 @@
 {% liquid
   assign current_variant = product.selected_or_first_available_variant
   assign featured_image = product.featured_image | default: product.images.first
-  assign contact_link = section.settings.contact_url | default: '/pages/contact'
   assign min_pieces = section.settings.min_pieces | default: 6
+  assign adult_unit_price = section.settings.adult_unit_price | default: 35
+  assign youth_unit_price = section.settings.youth_unit_price | default: 35
   if min_pieces < 6
     assign min_pieces = 6
   endif
 
   assign product_style = 'Enlisted'
   assign garment_label = 'Practice Shorts'
-  assign display_price = 'Mens / Womens $40.00 each | Youth $30.00 each'
+  assign adult_unit_price_cents = adult_unit_price | times: 100
+  assign youth_unit_price_cents = youth_unit_price | times: 100
+  assign adult_unit_price_display = adult_unit_price_cents | money
+  assign youth_unit_price_display = youth_unit_price_cents | money
+  assign billing_mode = 'Estimated total saved for review'
+  if adult_unit_price_cents == youth_unit_price_cents
+    assign billing_mode = 'Shopify checkout quantity synced to total pieces'
+  endif
+  assign display_price = 'Mens / Womens ' | append: adult_unit_price_display | append: ' each | Youth ' | append: youth_unit_price_display | append: ' each'
   assign short_colors = 'White:#FFFFFF,Black:#111111,Iron Grey:#6E7175,Team Navy:#203A72,Team Royal:#2454C6,Forest Green:#355B3E,Team Red:#BF2B2B,Maroon:#6F263D,Gold Yellow:#B89641' | split: ','
   assign artwork_colors = 'Black:#111111,White:#FFFFFF,Silver Grey:#A7ADB3,Team Navy:#203A72,Team Royal:#2454C6,Forest Green:#355B3E,Team Red:#BF2B2B,Maroon:#6F263D,Gold Yellow:#B89641,Orange:#CB6A2D' | split: ','
 %}
@@ -22,58 +31,9 @@
   class="custom-practice-shorts-section shooting-shirt-section"
   data-section-id="{{ section.id }}"
   data-min-pieces="{{ min_pieces }}"
+  data-adult-unit-price-cents="{{ adult_unit_price_cents }}"
+  data-youth-unit-price-cents="{{ youth_unit_price_cents }}"
 >
-  <div class="shooting-shirt-section__utility-bar" aria-label="Practice shorts order details">
-    <div class="shooting-shirt-section__utility-item">
-      <span class="shooting-shirt-section__utility-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M4 7.5 8.5 3H20v11.5L15.5 19H4V7.5Z" stroke="currentColor" stroke-width="1.7"/>
-          <path d="m8.5 3 7 7M6.5 10.5h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-        </svg>
-      </span>
-      <div class="shooting-shirt-section__utility-copy">
-        <p class="shooting-shirt-section__utility-title">Enlisted Practice Shorts</p>
-        <p class="shooting-shirt-section__utility-text">{{ section.settings.utility_bar_delivery }}</p>
-      </div>
-    </div>
-    <div class="shooting-shirt-section__utility-item">
-      <span class="shooting-shirt-section__utility-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M12 3.75c4 0 7.25 3.25 7.25 7.25 0 5.4-7.25 9.25-7.25 9.25S4.75 16.4 4.75 11c0-4 3.25-7.25 7.25-7.25Z" stroke="currentColor" stroke-width="1.7"/>
-          <path d="m8.25 8.25 7.5 7.5M15.75 8.25l-7.5 7.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-        </svg>
-      </span>
-      <div class="shooting-shirt-section__utility-copy">
-        <p class="shooting-shirt-section__utility-title">No Returns</p>
-        <p class="shooting-shirt-section__utility-text">All custom orders are final</p>
-      </div>
-    </div>
-    <div class="shooting-shirt-section__utility-item">
-      <span class="shooting-shirt-section__utility-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M12 4.5 18.5 8v8L12 19.5 5.5 16V8L12 4.5Z" stroke="currentColor" stroke-width="1.7"/>
-          <path d="M5.5 8 12 12l6.5-4M12 12v7.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-        </svg>
-      </span>
-      <div class="shooting-shirt-section__utility-copy">
-        <p class="shooting-shirt-section__utility-title">Minimum Order</p>
-        <p class="shooting-shirt-section__utility-text">{{ section.settings.minimum_order }}</p>
-      </div>
-    </div>
-    <a class="shooting-shirt-section__utility-item shooting-shirt-section__utility-item--link" href="{{ contact_link }}">
-      <span class="shooting-shirt-section__utility-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M7.5 17.5 4 20V6.75A2.75 2.75 0 0 1 6.75 4h10.5A2.75 2.75 0 0 1 20 6.75v7.5A2.75 2.75 0 0 1 17.25 17H7.5Z" stroke="currentColor" stroke-width="1.7"/>
-          <path d="M8.25 9.25h7.5M8.25 12.5h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-        </svg>
-      </span>
-      <div class="shooting-shirt-section__utility-copy">
-        <p class="shooting-shirt-section__utility-title">Need Help?</p>
-        <p class="shooting-shirt-section__utility-text">Contact our team</p>
-      </div>
-    </a>
-  </div>
-
   <div class="shooting-shirt-section__inner">
     <form
       class="shooting-shirt-section__order-canvas"
@@ -85,14 +45,20 @@
       novalidate
     >
       <input type="hidden" name="id" value="{{ current_variant.id }}">
-      <input type="hidden" name="quantity" value="1">
+      <input type="hidden" name="quantity" value="1" data-cart-quantity>
       <input type="hidden" name="properties[Requested Unit Price]" value="{{ display_price }}">
+      <input type="hidden" name="properties[Mens / Womens Unit Price]" value="{{ adult_unit_price_display }}">
+      <input type="hidden" name="properties[Youth Unit Price]" value="{{ youth_unit_price_display }}">
       <input type="hidden" name="properties[Product Style]" value="{{ product_style }}">
       <input type="hidden" name="properties[Garment Type]" value="{{ garment_label }}">
       <input type="hidden" name="properties[Short Color]" value="#111111 (Black)" data-color-property="Base">
       <input type="hidden" name="properties[Artwork / Decoration Color]" value="#FFFFFF (White)" data-color-property="Artwork">
       <input type="hidden" name="properties[Size Breakdown]" value="" data-size-breakdown-property>
       <input type="hidden" name="properties[Total Pieces]" value="0" data-total-pieces-property>
+      <input type="hidden" name="properties[Mens / Womens Pieces]" value="0" data-adult-pieces-property>
+      <input type="hidden" name="properties[Youth Pieces]" value="0" data-youth-pieces-property>
+      <input type="hidden" name="properties[Calculated Order Total]" value="$0.00" data-calculated-total-property>
+      <input type="hidden" name="properties[Checkout Billing Mode]" value="{{ billing_mode }}">
       <input type="hidden" name="properties[_Company]" value="Crossover Culture">
       <input type="hidden" name="properties[_Order Flow]" value="Practice Shorts Customizer">
       <input type="hidden" name="properties[_Source Product]" value="{{ product.title }}">
@@ -153,6 +119,7 @@
           <p class="shooting-shirt-section__eyebrow">Premium Team Practice Short Ordering</p>
           <h1 class="shooting-shirt-section__title">{{ product.title }}</h1>
           <p class="shooting-shirt-section__price">{{ display_price }}</p>
+          <p class="custom-practice-shorts-section__live-price-copy" data-live-pricing-copy>Estimated total updates as sizes are entered.</p>
           <p class="shooting-shirt-section__intro">{{ section.settings.intro_copy }}</p>
           <ul class="shooting-shirt-section__feature-list">
             <li>100% polyester moisture-wicking mesh with lightweight 4oz fabric and an athletic fit.</li>
@@ -164,15 +131,19 @@
         <div class="shooting-shirt-section__summary-bar custom-practice-shorts-section__price-grid">
           <div class="shooting-shirt-section__summary-chip">
             <span class="shooting-shirt-section__summary-label">Mens</span>
-            <span class="shooting-shirt-section__summary-value">$40.00 | XS-3XL</span>
+            <span class="shooting-shirt-section__summary-value">{{ adult_unit_price_display }} | XS-3XL</span>
           </div>
           <div class="shooting-shirt-section__summary-chip">
             <span class="shooting-shirt-section__summary-label">Womens</span>
-            <span class="shooting-shirt-section__summary-value">$40.00 | XS-2XL</span>
+            <span class="shooting-shirt-section__summary-value">{{ adult_unit_price_display }} | XS-2XL</span>
           </div>
           <div class="shooting-shirt-section__summary-chip">
             <span class="shooting-shirt-section__summary-label">Youth</span>
-            <span class="shooting-shirt-section__summary-value">$30.00 | YXS-YXL</span>
+            <span class="shooting-shirt-section__summary-value">{{ youth_unit_price_display }} | YXS-YXL</span>
+          </div>
+          <div class="shooting-shirt-section__summary-chip">
+            <span class="shooting-shirt-section__summary-label">Estimated Total</span>
+            <span class="shooting-shirt-section__summary-value" data-summary-estimated-total>$0.00</span>
           </div>
           <div class="shooting-shirt-section__summary-chip">
             <span class="shooting-shirt-section__summary-label">Minimum</span>
@@ -206,6 +177,7 @@
                     placeholder="0"
                     inputmode="numeric"
                     data-size-quantity
+                    data-price-tier="Adult"
                     data-size-label="Mens {{ size }}"
                   >
                 </label>
@@ -231,6 +203,7 @@
                     placeholder="0"
                     inputmode="numeric"
                     data-size-quantity
+                    data-price-tier="Adult"
                     data-size-label="Womens {{ size }}"
                   >
                 </label>
@@ -256,6 +229,7 @@
                     placeholder="0"
                     inputmode="numeric"
                     data-size-quantity
+                    data-price-tier="Youth"
                     data-size-label="Youth {{ size }}"
                   >
                 </label>
@@ -274,8 +248,8 @@
         <div class="shooting-shirt-section__color-studio">
           <div class="shooting-shirt-section__color-topline">
             <div class="shooting-shirt-section__color-targets" role="tablist" aria-label="Color application">
-              <button type="button" class="shooting-shirt-section__color-target is-active" data-color-target-button data-color-target="Base" data-color-apply-copy="Applies to the short body and waistband." aria-pressed="true">Short</button>
-              <button type="button" class="shooting-shirt-section__color-target" data-color-target-button data-color-target="Artwork" data-color-apply-copy="Applies to logos, wording, and decoration placements." aria-pressed="false">Artwork + Decoration</button>
+              <button type="button" class="shooting-shirt-section__color-target is-active" data-color-target-button data-color-target="Base" data-color-apply-copy="Main short color." aria-pressed="true">Main Short</button>
+              <button type="button" class="shooting-shirt-section__color-target" data-color-target-button data-color-target="Artwork" data-color-apply-copy="Applies to the CC logo, piping, and words." aria-pressed="false">Logo + Piping + Words</button>
             </div>
             <p class="shooting-shirt-section__color-caption" data-active-color-display>#111111 (Black)</p>
           </div>
@@ -287,7 +261,7 @@
             </label>
 
             <div class="shooting-shirt-section__palette-area">
-              <p class="shooting-shirt-section__color-apply" data-color-apply-copy>Applies to the short body and waistband.</p>
+              <p class="shooting-shirt-section__color-apply" data-color-apply-copy>Main short color.</p>
 
               <div class="shooting-shirt-section__swatch-group" data-color-group="Base">
                 <p class="shooting-shirt-section__swatch-group-label">Recommended short colors</p>
@@ -313,8 +287,8 @@
               </div>
 
               <div class="shooting-shirt-section__swatch-group" data-color-group="Artwork" hidden>
-                <p class="shooting-shirt-section__swatch-group-label">Recommended artwork colors</p>
-                <div class="shooting-shirt-section__mini-swatches" role="list" aria-label="Recommended artwork colors">
+                <p class="shooting-shirt-section__swatch-group-label">Recommended logo, piping, and words colors</p>
+                <div class="shooting-shirt-section__mini-swatches" role="list" aria-label="Recommended logo, piping, and words colors">
                   {% for color_entry in artwork_colors %}
                     {% assign color_parts = color_entry | split: ':' %}
                     {% assign color_name = color_parts[0] %}
@@ -360,36 +334,16 @@
               <span class="shooting-shirt-section__color-summary-value">#111111 (Black)</span>
             </div>
             <div class="shooting-shirt-section__color-summary-item" data-color-summary="Artwork">
-              <span class="shooting-shirt-section__color-summary-label">Artwork</span>
+              <span class="shooting-shirt-section__color-summary-label">Logo + Piping + Words</span>
               <span class="shooting-shirt-section__color-summary-value">#FFFFFF (White)</span>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="shooting-shirt-section__panel shooting-shirt-section__panel--upload">
-        <div class="shooting-shirt-section__field-header">
-          <span class="shooting-shirt-section__field-label">3. Artwork Upload</span>
-          <span class="shooting-shirt-section__field-meta">SVG, AI, EPS only</span>
-        </div>
-        <div class="shooting-shirt-section__upload-copy">
-          <p class="shooting-shirt-section__upload-headline">One production-ready vector file is required for the order.</p>
-          <p class="shooting-shirt-section__upload-note">Final mockups and ship-date confirmation are emailed within 5 business days after the vector artwork is reviewed.</p>
-        </div>
-        <input
-          class="shooting-shirt-section__file-input"
-          type="file"
-          name="properties[Artwork Upload]"
-          accept=".svg,.ai,.eps"
-          data-vector-upload
-          required
-        >
-        <p class="shooting-shirt-section__upload-filename" data-upload-name>No file selected</p>
-      </section>
-
       <section class="shooting-shirt-section__panel shooting-shirt-section__panel--notes">
         <div class="shooting-shirt-section__field-header">
-          <label class="shooting-shirt-section__field-label" for="OrderNotes-{{ section.id }}">4. Order Notes</label>
+          <label class="shooting-shirt-section__field-label" for="OrderNotes-{{ section.id }}">3. Order Notes</label>
           <span class="shooting-shirt-section__field-meta">Optional</span>
         </div>
         <textarea
@@ -413,20 +367,20 @@
             <span class="shooting-shirt-section__order-summary-value" data-summary-color="Base">#111111 (Black)</span>
           </div>
           <div class="shooting-shirt-section__order-summary-item">
-            <span class="shooting-shirt-section__order-summary-label">Artwork Color</span>
+            <span class="shooting-shirt-section__order-summary-label">Logo + Piping + Words</span>
             <span class="shooting-shirt-section__order-summary-value" data-summary-color="Artwork">#FFFFFF (White)</span>
           </div>
           <div class="shooting-shirt-section__order-summary-item">
             <span class="shooting-shirt-section__order-summary-label">Total Pieces</span>
             <span class="shooting-shirt-section__order-summary-value" data-summary-total-pieces>0 pieces</span>
           </div>
+          <div class="shooting-shirt-section__order-summary-item">
+            <span class="shooting-shirt-section__order-summary-label">Estimated Total</span>
+            <span class="shooting-shirt-section__order-summary-value" data-summary-estimated-total>$0.00</span>
+          </div>
           <div class="shooting-shirt-section__order-summary-item custom-practice-shorts-section__order-summary-item--wide">
             <span class="shooting-shirt-section__order-summary-label">Size Breakdown</span>
             <span class="shooting-shirt-section__order-summary-value custom-practice-shorts-section__order-summary-value--wrap" data-summary-size-breakdown>No sizes entered yet</span>
-          </div>
-          <div class="shooting-shirt-section__order-summary-item">
-            <span class="shooting-shirt-section__order-summary-label">Artwork Upload</span>
-            <span class="shooting-shirt-section__order-summary-value custom-practice-shorts-section__order-summary-value--wrap" data-summary-upload-status>Not uploaded yet</span>
           </div>
         </div>
       </section>
@@ -445,7 +399,7 @@
         </div>
       </div>
 
-      <p class="shooting-shirt-section__rules">Minimum order: {{ min_pieces }} pieces. Short color, artwork color, size breakdown, notes, and vector artwork upload are submitted with the order for production review. No team logo add-on pricing is included on this page.</p>
+      <p class="shooting-shirt-section__rules">Minimum order: {{ min_pieces }} pieces. Short color, logo plus piping plus words color, size breakdown, pricing breakdown, and notes are submitted with the order for production review. No team logo add-on pricing is included on this page.</p>
     </form>
   </div>
 </section>
@@ -456,11 +410,10 @@
   "tag": "section",
   "class": "custom-practice-shorts-section",
   "settings": [
-    { "type": "text", "id": "utility_bar_delivery", "label": "Delivery Time", "default": "Ready in 30 days" },
-    { "type": "text", "id": "minimum_order", "label": "Minimum Order Text", "default": "6 pieces per order" },
-    { "type": "url", "id": "contact_url", "label": "Contact Page URL" },
     { "type": "number", "id": "min_pieces", "label": "Minimum Pieces", "default": 6 },
-    { "type": "textarea", "id": "intro_copy", "label": "Intro Copy", "default": "Build your practice short order with separate short and artwork colors, a full size breakdown, and one required vector artwork upload in the same streamlined Crossover Culture order flow." }
+    { "type": "number", "id": "adult_unit_price", "label": "Mens / Womens Unit Price", "default": 35 },
+    { "type": "number", "id": "youth_unit_price", "label": "Youth Unit Price", "default": 35 },
+    { "type": "textarea", "id": "intro_copy", "label": "Intro Copy", "default": "Build your practice short order with separate short and artwork colors, a full size breakdown, and saved pricing details in the same streamlined Crossover Culture order flow." }
   ],
   "presets": [{ "name": "Practice Shorts Order" }]
 }
