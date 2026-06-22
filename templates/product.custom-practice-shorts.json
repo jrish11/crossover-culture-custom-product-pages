@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "main": {
+      "type": "custom-practice-shorts",
+      "settings": {
+        "utility_bar_delivery": "Ready in 30 days",
+        "minimum_order": "6 pieces per order",
+        "contact_url": "/pages/contact",
+        "min_pieces": 6,
+        "intro_copy": "Build your Enlisted Practice Shorts order with separate short and artwork colors, a full size breakdown, and one required vector artwork upload in the same streamlined Crossover Culture order flow."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
