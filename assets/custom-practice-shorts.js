@@ -1,30 +1,4 @@
 (() => {
-  const COLOR_OPTIONS = {
-    Base: [
-      { name: 'White', value: '#FFFFFF' },
-      { name: 'Black', value: '#111111' },
-      { name: 'Iron Grey', value: '#6E7175' },
-      { name: 'Team Navy', value: '#203A72' },
-      { name: 'Team Royal', value: '#2454C6' },
-      { name: 'Forest Green', value: '#355B3E' },
-      { name: 'Team Red', value: '#BF2B2B' },
-      { name: 'Maroon', value: '#6F263D' },
-      { name: 'Gold Yellow', value: '#B89641' }
-    ],
-    Artwork: [
-      { name: 'Black', value: '#111111' },
-      { name: 'White', value: '#FFFFFF' },
-      { name: 'Silver Grey', value: '#A7ADB3' },
-      { name: 'Team Navy', value: '#203A72' },
-      { name: 'Team Royal', value: '#2454C6' },
-      { name: 'Forest Green', value: '#355B3E' },
-      { name: 'Team Red', value: '#BF2B2B' },
-      { name: 'Maroon', value: '#6F263D' },
-      { name: 'Gold Yellow', value: '#B89641' },
-      { name: 'Orange', value: '#CB6A2D' }
-    ]
-  };
-
   const DEFAULT_COLORS = {
     Base: { hex: '#111111', name: 'Black', apply: 'Main short color.' },
     Artwork: { hex: '#FFFFFF', name: 'White', apply: 'Applies to the CC logo, piping, and words.' }
@@ -37,9 +11,21 @@
 
   const isValidHex = (value) => /^#[0-9A-F]{6}$/.test(value);
 
-  const getPalette = (target) => COLOR_OPTIONS[target] || [];
+  const COLOR_NAME_MAP = {
+    '#FFFFFF': 'White',
+    '#111111': 'Black',
+    '#6E7175': 'Iron Grey',
+    '#203A72': 'Team Navy',
+    '#2454C6': 'Team Royal',
+    '#355B3E': 'Forest Green',
+    '#BF2B2B': 'Team Red',
+    '#6F263D': 'Maroon',
+    '#B89641': 'Gold Yellow',
+    '#A7ADB3': 'Silver Grey',
+    '#CB6A2D': 'Orange'
+  };
 
-  const getColorName = (target, hex) => getPalette(target).find((color) => color.value === hex)?.name || 'Custom';
+  const getColorName = (hex) => COLOR_NAME_MAP[hex] || 'Custom';
 
   const formatColorLabel = (hex, name) => `${hex} (${name})`;
 
@@ -65,11 +51,9 @@
     const colorPicker = section.querySelector('[data-color-picker]');
     const colorHexInput = section.querySelector('[data-color-hex]');
     const colorPreview = section.querySelector('[data-color-preview]');
-    const colorApplyCopy = section.querySelector('[data-color-apply-copy]');
+    const colorApplyCopy = section.querySelector('[data-color-apply-text]');
     const activeColorDisplay = section.querySelector('[data-active-color-display]');
     const colorTargetButtons = Array.from(section.querySelectorAll('[data-color-target-button]'));
-    const colorSwatches = Array.from(section.querySelectorAll('[data-color-swatch]'));
-    const swatchGroups = Array.from(section.querySelectorAll('[data-color-group]'));
     const resetColorsButton = section.querySelector('[data-reset-colors]');
     const addToCartButton = section.querySelector('[data-add-to-cart]');
     const submittingLabel = addToCartButton?.dataset.submittingLabel || 'Adding Practice Shorts Order...';
@@ -179,7 +163,9 @@
         if (totalPieces > 0) {
           livePricingCopy.textContent = `${pricingState.adultPieces} mens / womens + ${pricingState.youthPieces} youth = ${formattedTotal} estimated total.`;
         } else {
-          livePricingCopy.textContent = 'Estimated total updates as sizes are entered.';
+          livePricingCopy.textContent = sameUnitPrice
+            ? 'Estimated total updates as sizes are entered. Checkout quantity syncs to total pieces.'
+            : 'Estimated total updates as sizes are entered.';
         }
       }
 
@@ -198,16 +184,6 @@
       syncPricingState();
     };
 
-    const refreshSwatches = () => {
-      const current = colorState[activeColorTarget];
-      colorSwatches.forEach((swatch) => {
-        const sameTarget = swatch.dataset.colorTargetScope === activeColorTarget;
-        const isMatch = sameTarget && swatch.dataset.colorValue === current.hex && swatch.dataset.colorName === current.name;
-        swatch.classList.toggle('is-active', isMatch);
-        swatch.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
-      });
-    };
-
     const refreshColorEditor = () => {
       const current = colorState[activeColorTarget];
 
@@ -217,22 +193,17 @@
         button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
       });
 
-      swatchGroups.forEach((group) => {
-        group.hidden = group.dataset.colorGroup !== activeColorTarget;
-      });
-
       activeColorDisplay.textContent = formatColorLabel(current.hex, current.name);
       colorApplyCopy.textContent = current.apply;
       colorHexInput.value = current.hex;
       colorPicker.value = isValidHex(current.hex) ? current.hex : '#000000';
       colorPreview.style.backgroundColor = isValidHex(current.hex) ? current.hex : '#FFFFFF';
-      refreshSwatches();
     };
 
     const commitColorState = (target, rawHex, forcedName) => {
       const normalizedHex = normalizeHex(rawHex);
       const valid = isValidHex(normalizedHex);
-      const name = forcedName || (valid ? getColorName(target, normalizedHex) : 'Custom');
+      const name = forcedName || (valid ? getColorName(normalizedHex) : 'Custom');
       const label = valid ? formatColorLabel(normalizedHex, name) : 'Invalid HEX';
 
       colorState[target].hex = normalizedHex;
@@ -330,16 +301,6 @@
 
     colorHexInput.addEventListener('blur', () => {
       commitColorState(activeColorTarget, colorHexInput.value);
-    });
-
-    colorSwatches.forEach((swatch) => {
-      swatch.addEventListener('click', () => {
-        commitColorState(
-          swatch.dataset.colorTargetScope || activeColorTarget,
-          swatch.dataset.colorValue || '#FFFFFF',
-          swatch.dataset.colorName || 'Custom'
-        );
-      });
     });
 
     if (resetColorsButton) {
