@@ -117,8 +117,8 @@
 
       if (livePricingCopy) {
         livePricingCopy.textContent = totalPairs > 0
-          ? `${totalPairs} total pair${totalPairs === 1 ? '' : 's'} = ${formattedTotal} order total.`
-          : 'Order total updates as sizes are entered. Shopify checkout quantity syncs to total pairs.';
+          ? `${totalPairs} total pair${totalPairs === 1 ? '' : 's'} = ${formattedTotal} estimated total before tax and discounts.`
+          : 'Estimated total before tax and discounts updates as sizes are entered. Shopify checkout quantity syncs to total pairs.';
       }
     };
 
@@ -150,9 +150,9 @@
       const totalPairs = parseInt(totalPairsProperty.value || '0', 10) || 0;
 
       if (!colorPropertyInput.value) {
-        colorButtons.forEach((button) => {
-          button.classList.add('shooting-shirt-section__field-error');
-        });
+        if (colorSelect) {
+          colorSelect.classList.add('shooting-shirt-section__field-error');
+        }
         isValid = false;
       }
 
@@ -207,6 +207,7 @@
 
     if (colorSelect) {
       colorSelect.addEventListener('change', () => {
+        colorSelect.classList.remove('shooting-shirt-section__field-error');
         const selectedOption = colorSelect.options[colorSelect.selectedIndex];
         colorState = {
           hex: colorSelect.value || DEFAULT_COLOR.hex,

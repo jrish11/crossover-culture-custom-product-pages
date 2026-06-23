@@ -16,12 +16,13 @@
   assign unit_price_cents = unit_price | times: 100
   assign unit_price_display = unit_price_cents | money
   assign display_price = 'Mens / Womens / Youth ' | append: unit_price_display | append: ' each'
-  assign live_pricing_copy = 'Order total updates as sizes are entered. Shopify checkout quantity syncs to total pairs.'
+  assign total_label = 'Estimated Total'
+  assign live_pricing_copy = 'Estimated total before tax and discounts updates as sizes are entered. Shopify checkout quantity syncs to total pairs.'
   assign rules_copy = 'Minimum order: ' | append: min_pieces | append: ' pair'
   if min_pieces != 1
     assign rules_copy = rules_copy | append: 's'
   endif
-  assign rules_copy = rules_copy | append: '. Sock color, required vector logo upload, size breakdown, pricing details, and notes are submitted with the order. Shopify checkout quantity syncs to total pairs.'
+  assign rules_copy = rules_copy | append: '. Sock color, required vector logo upload, size breakdown, pricing details, and notes are submitted with the order. Displayed totals are before tax and discounts. Shopify checkout quantity syncs to total pairs.'
 %}
 
 <section
@@ -51,6 +52,7 @@
       <input type="hidden" name="properties[Size Breakdown]" value="" data-size-breakdown-property>
       <input type="hidden" name="properties[Total Pairs]" value="0" data-total-pairs-property>
       <input type="hidden" name="properties[Calculated Order Total]" value="$0.00" data-calculated-total-property>
+      <input type="hidden" name="properties[Displayed Total Context]" value="Before tax and discounts">
       <input type="hidden" name="properties[Checkout Billing Mode]" value="Shopify checkout quantity synced to total pairs">
       <input type="hidden" name="properties[_Company]" value="Crossover Culture">
       <input type="hidden" name="properties[_Order Flow]" value="Varsity Sock Order">
@@ -135,7 +137,7 @@
             <span class="shooting-shirt-section__summary-value">Black / White</span>
           </div>
           <div class="shooting-shirt-section__summary-chip">
-            <span class="shooting-shirt-section__summary-label">Order Total</span>
+            <span class="shooting-shirt-section__summary-label">{{ total_label }}</span>
             <span class="shooting-shirt-section__summary-value" data-summary-order-total>$0.00</span>
           </div>
           <div class="shooting-shirt-section__summary-chip">
@@ -332,7 +334,7 @@
             <span class="shooting-shirt-section__order-summary-value" data-summary-total-pairs>0 pairs</span>
           </div>
           <div class="shooting-shirt-section__order-summary-item">
-            <span class="shooting-shirt-section__order-summary-label">Order Total</span>
+            <span class="shooting-shirt-section__order-summary-label">{{ total_label }}</span>
             <span class="shooting-shirt-section__order-summary-value" data-summary-order-total>$0.00</span>
           </div>
           <div class="shooting-shirt-section__order-summary-item">
@@ -372,7 +374,7 @@
   "settings": [
     { "type": "number", "id": "unit_price", "label": "Unit Price", "default": 12 },
     { "type": "number", "id": "min_pieces", "label": "Minimum Pairs", "default": 1 },
-    { "type": "textarea", "id": "intro_copy", "label": "Intro Copy", "default": "Build your varsity sock order with one stock color selection, a full size breakdown, and saved pricing details in the same streamlined Crossover Culture order flow." }
+    { "type": "textarea", "id": "intro_copy", "label": "Intro Copy", "default": "Build your varsity sock order with one stock color selection, a full size breakdown, required vector logo upload, and saved pricing details in the same streamlined Crossover Culture order flow." }
   ],
   "presets": [{ "name": "Varsity Sock Order" }]
 }
