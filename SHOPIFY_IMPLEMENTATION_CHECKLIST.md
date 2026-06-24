@@ -92,8 +92,8 @@ Run this on desktop and mobile for every custom product template.
 - Confirm size inputs update total pieces or pairs.
 - Confirm size breakdown text is saved in the order summary.
 - Try submitting empty; required fields should block submission.
-- Upload `.jpg` or another invalid file; the page should reject it.
-- Upload `.svg`, `.ai`, or `.eps`; filename should show in the form summary.
+- On upload-enabled templates, upload `.jpg` or another invalid file; the page should reject it.
+- On upload-enabled templates, upload `.svg`, `.ai`, or `.eps`; filename should show in the form summary.
 - Add to cart after valid entries.
 
 ## 4. Cart, Checkout, Admin QA
@@ -106,7 +106,7 @@ After each valid add-to-cart test, confirm the cart line item displays the custo
 - Total pieces, total pairs, or player count
 - Calculated order total
 - Order notes, when entered
-- Uploaded artwork/logo file link
+- Uploaded artwork/logo file link, when that product flow includes an upload
 
 Continue into checkout and confirm the line-item properties remain visible. In Shopify Admin, open the draft/test order or abandoned checkout record and confirm the same properties are present.
 
@@ -126,5 +126,5 @@ Continue into checkout and confirm the line-item properties remain visible. In S
 - Shopify variants for flat-price templates match the expected configured unit price.
 - Cart theme renders `item.properties` and uploaded file links.
 - No custom order template has recommended color swatches; color selection is wheel/HEX or the varsity sock color-code selector.
-- Every custom order template requires one vector upload.
+- Upload-enabled templates require and validate one vector artwork file.
 - No text overlaps on mobile widths.

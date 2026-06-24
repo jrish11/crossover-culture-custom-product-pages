@@ -333,29 +333,9 @@
         </div>
       </section>
 
-      <section class="shooting-shirt-section__panel shooting-shirt-section__panel--upload">
-        <div class="shooting-shirt-section__field-header">
-          <span class="shooting-shirt-section__field-label">3. Artwork Upload</span>
-          <span class="shooting-shirt-section__field-meta">SVG, AI, EPS only</span>
-        </div>
-        <div class="shooting-shirt-section__upload-copy">
-          <p class="shooting-shirt-section__upload-headline">One production-ready vector file for this fleece order.</p>
-          <p class="shooting-shirt-section__upload-note">This file stays attached to the order so the production team can review the exact art before checkout fulfillment.</p>
-        </div>
-        <input
-          class="shooting-shirt-section__file-input"
-          type="file"
-          name="properties[Artwork Upload]"
-          accept=".svg,.ai,.eps"
-          data-vector-upload
-          required
-        >
-        <p class="shooting-shirt-section__upload-filename" data-upload-name>No file selected</p>
-      </section>
-
       <section class="shooting-shirt-section__panel shooting-shirt-section__panel--notes">
         <div class="shooting-shirt-section__field-header">
-          <label class="shooting-shirt-section__field-label" for="ElevateFleeceOrderNotes-{{ section.id }}">4. Order Notes</label>
+          <label class="shooting-shirt-section__field-label" for="ElevateFleeceOrderNotes-{{ section.id }}">3. Order Notes</label>
           <span class="shooting-shirt-section__field-meta">Optional</span>
         </div>
         <textarea
@@ -394,10 +374,6 @@
             <span class="shooting-shirt-section__order-summary-label">Size Breakdown</span>
             <span class="shooting-shirt-section__order-summary-value" data-summary-size-breakdown>Not entered yet</span>
           </div>
-          <div class="shooting-shirt-section__order-summary-item">
-            <span class="shooting-shirt-section__order-summary-label">Upload Status</span>
-            <span class="shooting-shirt-section__order-summary-value" data-summary-upload>No file selected</span>
-          </div>
         </div>
       </section>
 
@@ -410,7 +386,7 @@
         </div>
       </div>
 
-      <p class="shooting-shirt-section__rules">Minimum order: {{ min_pieces }} pieces. Garment color, logo / artwork color, size breakdown, notes, pricing details, and vector artwork upload are submitted with the order. Shopify checkout quantity syncs to total ordered pieces.</p>
+      <p class="shooting-shirt-section__rules">Minimum order: {{ min_pieces }} pieces. Garment color, logo / artwork color, size breakdown, notes, and pricing details are submitted with the order. Shopify checkout quantity syncs to total ordered pieces.</p>
     </form>
   </div>
 </section>
@@ -424,8 +400,8 @@
     { "type": "text", "id": "minimum_order", "label": "Minimum Order Text", "default": "6 pieces per order" },
     { "type": "url", "id": "contact_url", "label": "Contact Page URL" },
     { "type": "number", "id": "min_pieces", "label": "Minimum Pieces", "default": 6 },
-    { "type": "textarea", "id": "hoodie_intro_copy", "label": "Hoodie Intro Copy", "default": "Build your Elevate Fleece Hoodie order with separate garment and artwork colors, a full XS-3XL size breakdown, one vector artwork upload, and one streamlined order form built for Shopify checkout." },
-    { "type": "textarea", "id": "jogger_intro_copy", "label": "Jogger Intro Copy", "default": "Build your Elevate Fleece Jogger order with separate garment and artwork colors, a full XS-3XL size breakdown, one vector artwork upload, and one streamlined order form built for Shopify checkout." }
+    { "type": "textarea", "id": "hoodie_intro_copy", "label": "Hoodie Intro Copy", "default": "Build your Elevate Fleece Hoodie order with separate garment and artwork colors, a full XS-3XL size breakdown, and one streamlined order form built for Shopify checkout." },
+    { "type": "textarea", "id": "jogger_intro_copy", "label": "Jogger Intro Copy", "default": "Build your Elevate Fleece Jogger order with separate garment and artwork colors, a full XS-3XL size breakdown, and one streamlined order form built for Shopify checkout." }
   ],
   "presets": [{ "name": "Elevate Fleece Order" }]
 }

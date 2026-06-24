@@ -409,10 +409,9 @@ All nine flows:
 
 - submit through the native Shopify product form
 - store custom selections as line item properties
-- require one vector upload
 - validate required fields before submit
 
-Accepted upload extensions:
+Upload-enabled flows validate vector artwork files. Accepted upload extensions:
 
 - `.svg`
 - `.ai`
@@ -472,7 +471,6 @@ Garment Color: #111111 (Black)
 Logo / Artwork Color: #FFFFFF (White)
 Size Breakdown: Mens L x 4 | Womens WM x 2
 Total Pieces: 6
-Artwork Upload: [uploaded vector file]
 ```
 
 ### Practice Shorts
@@ -483,7 +481,6 @@ Artwork + Decoration Color: #FFFFFF (White)
 Size Breakdown: Mens M x 6 | Youth YL x 2
 Total Pieces: 8
 Calculated Order Total: $280.00
-Artwork Upload: [uploaded vector file]
 ```
 
 ### Varsity Sock

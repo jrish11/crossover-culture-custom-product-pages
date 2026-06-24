@@ -48,7 +48,6 @@
 .custom-elevate-fleece-section .shooting-shirt-section__main-image-shell::before,
 .custom-elevate-fleece-section .shooting-shirt-section__sizes-panel::before,
 .custom-elevate-fleece-section .shooting-shirt-section__color-studio::before,
-.custom-elevate-fleece-section .shooting-shirt-section__panel--upload::before,
 .custom-elevate-fleece-section .shooting-shirt-section__panel--notes::before,
 .custom-elevate-fleece-section .shooting-shirt-section__order-summary::before {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.56), rgba(255, 255, 255, 0.06));
@@ -74,7 +73,6 @@
 .custom-elevate-fleece-section .shooting-shirt-section__main-image-shell,
 .custom-elevate-fleece-section .shooting-shirt-section__sizes-panel,
 .custom-elevate-fleece-section .shooting-shirt-section__color-studio,
-.custom-elevate-fleece-section .shooting-shirt-section__panel--upload,
 .custom-elevate-fleece-section .shooting-shirt-section__panel--notes,
 .custom-elevate-fleece-section .shooting-shirt-section__order-summary {
   background: rgba(255, 255, 255, 0.34);
@@ -96,7 +94,6 @@
 
 .custom-elevate-fleece-section .shooting-shirt-section__sizes-panel,
 .custom-elevate-fleece-section .shooting-shirt-section__color-studio,
-.custom-elevate-fleece-section .shooting-shirt-section__panel--upload,
 .custom-elevate-fleece-section .shooting-shirt-section__panel--notes,
 .custom-elevate-fleece-section .shooting-shirt-section__order-summary {
   padding: 18px;
@@ -151,7 +148,6 @@
 
 .custom-elevate-fleece-section__color-wheel,
 .custom-elevate-fleece-section__hex-input,
-.custom-elevate-fleece-section .shooting-shirt-section__file-input,
 .custom-elevate-fleece-section .shooting-shirt-section__textarea,
 .custom-elevate-fleece-section .shooting-shirt-section__quantity-input {
   background: rgba(255, 255, 255, 0.5);
