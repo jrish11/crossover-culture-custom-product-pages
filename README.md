@@ -35,12 +35,14 @@ All new or updated custom product templates should keep the liquid-glass visual 
 - `templates/product.custom-team-uniform.json`
 - `templates/product.custom-shooting-shirt.json`
 - `templates/product.custom-travel-gear.json`
+- `templates/product.custom-unisex-travel-gear.json`
 - `templates/product.custom-polo.json`
 - `templates/product.custom-practice-shorts.json`
 - `templates/product.custom-varsity-sock.json`
 - `sections/team-order-form.liquid`
 - `sections/custom-shooting-shirt.liquid`
 - `sections/custom-travel-gear.liquid`
+- `sections/custom-unisex-travel-gear.liquid`
 - `sections/custom-polo.liquid`
 - `sections/custom-practice-shorts.liquid`
 - `sections/custom-varsity-sock.liquid`
@@ -61,7 +63,7 @@ All new or updated custom product templates should keep the liquid-glass visual 
 
 ## Overview
 
-This repo contains Shopify theme files for six custom product-ordering flows:
+This repo contains Shopify theme files for seven custom product-ordering flows:
 
 - `team-order-form`
   Custom team uniform ordering
@@ -71,6 +73,8 @@ This repo contains Shopify theme files for six custom product-ordering flows:
   Custom travel gear ordering for:
   - Enlisted 1/4 Zip
   - Enlisted Crew
+- `custom-unisex-travel-gear`
+  Custom unisex travel gear ordering with wheel-based garment/logo colors and one unisex adult size run.
 - `custom-polo`
   Custom polo ordering for:
   - Enlisted Polo
@@ -106,6 +110,7 @@ custom product/
 │   ├── custom-practice-shorts.liquid
 │   ├── custom-shooting-shirt.liquid
 │   ├── custom-travel-gear.liquid
+│   ├── custom-unisex-travel-gear.liquid
 │   ├── custom-varsity-sock.liquid
 │   └── team-order-form.liquid
 ├── snippets/
@@ -117,6 +122,7 @@ custom product/
     ├── product.custom-shooting-shirt.json
     ├── product.custom-team-uniform.json
     ├── product.custom-travel-gear.json
+    ├── product.custom-unisex-travel-gear.json
     └── product.custom-varsity-sock.json
 ```
 
@@ -136,10 +142,12 @@ custom product/
   Shooting shirt color, size, validation, and submit behavior.
 - `sections/custom-travel-gear.liquid`
   Main travel gear product section.
+- `sections/custom-unisex-travel-gear.liquid`
+  Main unisex travel gear product section.
 - `assets/custom-travel-gear.css`
-  Travel-gear-specific styling on top of the shared apparel layout.
+  Travel-gear-specific styling on top of the shared apparel layout, including the unisex travel gear sizing override.
 - `assets/custom-travel-gear.js`
-  Travel gear color, size, validation, and submit behavior.
+  Travel gear and unisex travel gear color, size, validation, and submit behavior.
 - `sections/custom-polo.liquid`
   Main polo product section.
 - `assets/custom-polo.css`
@@ -164,6 +172,8 @@ custom product/
   Product template that mounts `custom-shooting-shirt`.
 - `templates/product.custom-travel-gear.json`
   Product template that mounts `custom-travel-gear`.
+- `templates/product.custom-unisex-travel-gear.json`
+  Product template that mounts `custom-unisex-travel-gear`.
 - `templates/product.custom-polo.json`
   Product template that mounts `custom-polo`.
 - `templates/product.custom-practice-shorts.json`
@@ -179,12 +189,14 @@ custom product/
    - `sections/team-order-form.liquid`
    - `sections/custom-shooting-shirt.liquid`
    - `sections/custom-travel-gear.liquid`
+   - `sections/custom-unisex-travel-gear.liquid`
    - `sections/custom-polo.liquid`
    - `sections/custom-practice-shorts.liquid`
    - `sections/custom-varsity-sock.liquid`
    - `templates/product.custom-team-uniform.json`
    - `templates/product.custom-shooting-shirt.json`
    - `templates/product.custom-travel-gear.json`
+   - `templates/product.custom-unisex-travel-gear.json`
    - `templates/product.custom-polo.json`
    - `templates/product.custom-practice-shorts.json`
    - `templates/product.custom-varsity-sock.json`
@@ -216,6 +228,8 @@ Assign each product to the matching template in the Shopify product admin:
   Use only for:
   - Enlisted 1/4 Zip
   - Enlisted Crew
+- `custom-unisex-travel-gear`
+  Use for unisex travel gear or apparel products that should not collect separate Mens, Womens, or Youth quantities.
 - `custom-polo`
   Use for:
   - Enlisted Polo
@@ -268,6 +282,17 @@ Configured through `product.custom-travel-gear.json` / `custom-travel-gear`:
 - `1/4 Zip Intro Copy`
 - `Crew Intro Copy`
 
+### Unisex Travel Gear
+
+Configured through `product.custom-unisex-travel-gear.json` / `custom-unisex-travel-gear`:
+
+- `Minimum Order Text`
+- `Contact Page URL`
+- `Minimum Pieces`
+- `Product Style`
+- `Garment Label`
+- `Intro Copy`
+
 ### Polo
 
 Configured through `product.custom-polo.json` / `custom-polo`:
@@ -296,7 +321,7 @@ Configured through `product.custom-varsity-sock.json` / `custom-varsity-sock`:
 
 ## Runtime Behavior
 
-All six flows:
+All seven flows:
 
 - submit through the native Shopify product form
 - store custom selections as line item properties
@@ -398,6 +423,7 @@ The theme cart must render line item properties and uploaded file links. If the 
    - `custom-team-uniform`
    - `custom-shooting-shirt`
    - `custom-travel-gear`
+   - `custom-unisex-travel-gear`
    - `custom-polo`
    - `custom-practice-shorts`
    - `custom-varsity-sock`

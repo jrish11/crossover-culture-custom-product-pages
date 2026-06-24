@@ -226,6 +226,10 @@
   gap: 10px;
 }
 
+.custom-unisex-travel-gear-section .shooting-shirt-section__sizes-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .travel-gear-section .shooting-shirt-section__sizes-panel {
   padding: 12px;
 }

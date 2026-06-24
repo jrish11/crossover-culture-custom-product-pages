@@ -43,12 +43,14 @@ These are protected custom-order system files and must remain untouched:
 - `templates/product.custom-team-uniform.json`
 - `templates/product.custom-shooting-shirt.json`
 - `templates/product.custom-travel-gear.json`
+- `templates/product.custom-unisex-travel-gear.json`
 - `templates/product.custom-polo.json`
 - `templates/product.custom-practice-shorts.json`
 - `templates/product.custom-varsity-sock.json`
 - `sections/team-order-form.liquid`
 - `sections/custom-shooting-shirt.liquid`
 - `sections/custom-travel-gear.liquid`
+- `sections/custom-unisex-travel-gear.liquid`
 - `sections/custom-polo.liquid`
 - `sections/custom-practice-shorts.liquid`
 - `sections/custom-varsity-sock.liquid`
@@ -115,6 +117,7 @@ The shell currently defaults to these product routes:
 - `/products/custom-team-uniform`
 - `/products/custom-shooting-shirt`
 - `/products/custom-travel-gear`
+- `/products/custom-unisex-travel-gear`
 - `/products/custom-polo`
 
 If the live Shopify store uses different product handles, Atlas should update the section settings in the theme editor if possible, or stop and report the mismatch.

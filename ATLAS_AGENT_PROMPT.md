@@ -41,12 +41,14 @@ Protected files you must not modify:
 - templates/product.custom-team-uniform.json
 - templates/product.custom-shooting-shirt.json
 - templates/product.custom-travel-gear.json
+- templates/product.custom-unisex-travel-gear.json
 - templates/product.custom-polo.json
 - templates/product.custom-practice-shorts.json
 - templates/product.custom-varsity-sock.json
 - sections/team-order-form.liquid
 - sections/custom-shooting-shirt.liquid
 - sections/custom-travel-gear.liquid
+- sections/custom-unisex-travel-gear.liquid
 - sections/custom-polo.liquid
 - sections/custom-practice-shorts.liquid
 - sections/custom-varsity-sock.liquid
