@@ -1128,3 +1128,117 @@
     border-top: 0;
   }
 }
+
+/* Compact checkout flow density. */
+.shooting-shirt-section__inner {
+  padding: 22px 22px 32px;
+}
+
+.shooting-shirt-section__order-canvas {
+  gap: 12px 14px;
+  grid-template-columns: minmax(0, 1.04fr) minmax(360px, 0.96fr);
+}
+
+.shooting-shirt-section__main-image-shell {
+  min-height: clamp(340px, 42vw, 460px);
+  padding: 14px;
+}
+
+.shooting-shirt-section__summary-chip,
+.shooting-shirt-section__order-summary-item,
+.shooting-shirt-section__color-summary-item {
+  min-height: 54px;
+  padding: 10px 12px;
+}
+
+.shooting-shirt-section__color-studio,
+.shooting-shirt-section__sizes-panel,
+.shooting-shirt-section__panel--wording,
+.shooting-shirt-section__panel--font,
+.shooting-shirt-section__panel--upload,
+.shooting-shirt-section__panel--notes,
+.travel-gear-section__identity-panel,
+.travel-gear-section__guide-body,
+.travel-gear-section__font-card,
+.travel-gear-section__size-guide-card {
+  padding: 14px;
+}
+
+.shooting-shirt-section__field-header {
+  margin-bottom: 8px;
+}
+
+.shooting-shirt-section__text-input,
+.shooting-shirt-section__select-input,
+.shooting-shirt-section__file-input,
+.shooting-shirt-section__quantity-input {
+  min-height: 38px;
+  padding: 8px 10px;
+}
+
+.shooting-shirt-section__textarea {
+  min-height: 88px;
+}
+
+.shooting-shirt-section__sizes-grid,
+.shooting-shirt-section__color-layout,
+.shooting-shirt-section__upload-row,
+.shooting-shirt-section__cta-group {
+  gap: 8px;
+}
+
+.shooting-shirt-section__cta {
+  min-height: 40px;
+  padding: 9px 14px;
+}
+
+@media screen and (max-width: 980px) {
+  .shooting-shirt-section__order-canvas {
+    gap: 12px;
+  }
+
+  .shooting-shirt-section__main-image-shell {
+    min-height: 320px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .shooting-shirt-section__inner {
+    padding: 14px 10px 24px;
+  }
+
+  .shooting-shirt-section__main-image-shell {
+    min-height: 280px;
+    padding: 12px;
+  }
+
+  .shooting-shirt-section__summary-bar,
+  .shooting-shirt-section__color-summary,
+  .shooting-shirt-section__order-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .shooting-shirt-section__cta-section {
+    bottom: 8px;
+    position: sticky;
+    z-index: 8;
+  }
+
+  .shooting-shirt-section__cta-group {
+    background: rgba(255, 255, 255, 0.52);
+    backdrop-filter: blur(18px) saturate(135%);
+    -webkit-backdrop-filter: blur(18px) saturate(135%);
+    border: 1px solid rgba(255, 255, 255, 0.62);
+    border-radius: 24px;
+    box-shadow: 0 18px 36px rgba(31, 28, 23, 0.12);
+    padding: 8px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .shooting-shirt-section__summary-bar,
+  .shooting-shirt-section__color-summary,
+  .shooting-shirt-section__order-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

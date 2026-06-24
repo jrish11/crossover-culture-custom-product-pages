@@ -340,3 +340,69 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Compact checkout flow density. */
+.custom-varsity-sock-section .shooting-shirt-section__inner {
+  padding: 22px 22px 32px;
+}
+
+.custom-varsity-sock-section .shooting-shirt-section__order-canvas {
+  gap: 12px 14px;
+}
+
+.custom-varsity-sock-section .shooting-shirt-section__main-image-shell {
+  min-height: clamp(320px, 40vw, 440px);
+  padding: 14px;
+}
+
+.custom-varsity-sock-section .shooting-shirt-section__color-studio,
+.custom-varsity-sock-section .shooting-shirt-section__sizes-panel,
+.custom-varsity-sock-section .shooting-shirt-section__panel--upload,
+.custom-varsity-sock-section .custom-varsity-sock-section__accordion-body {
+  padding: 14px;
+}
+
+.custom-varsity-sock-section .shooting-shirt-section__summary-chip,
+.custom-varsity-sock-section .shooting-shirt-section__color-summary-item,
+.custom-varsity-sock-section .shooting-shirt-section__order-summary-item {
+  min-height: 54px;
+  padding: 10px 12px;
+}
+
+.custom-varsity-sock-section__sizes-grid,
+.custom-varsity-sock-section__color-studio,
+.custom-varsity-sock-section__upload-copy,
+.custom-varsity-sock-section__accordion-body {
+  gap: 8px;
+}
+
+.custom-varsity-sock-section .shooting-shirt-section__quantity-input,
+.custom-varsity-sock-section .shooting-shirt-section__file-input,
+.custom-varsity-sock-section .shooting-shirt-section__select-input {
+  min-height: 38px;
+  padding: 8px 10px;
+}
+
+.custom-varsity-sock-section .shooting-shirt-section__textarea {
+  min-height: 88px;
+}
+
+@media screen and (max-width: 768px) {
+  .custom-varsity-sock-section .shooting-shirt-section__inner {
+    padding: 14px 10px 24px;
+  }
+
+  .custom-varsity-sock-section .shooting-shirt-section__main-image-shell {
+    min-height: 280px;
+  }
+
+  .custom-varsity-sock-section__order-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .custom-varsity-sock-section__order-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

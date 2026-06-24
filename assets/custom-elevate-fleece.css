@@ -288,3 +288,70 @@
     border-top: 0;
   }
 }
+
+/* Compact checkout flow density. */
+.custom-elevate-fleece-section .shooting-shirt-section__inner {
+  padding: 22px 22px 32px;
+}
+
+.custom-elevate-fleece-section .shooting-shirt-section__order-canvas {
+  gap: 12px 14px;
+}
+
+.custom-elevate-fleece-section .shooting-shirt-section__main-image-shell {
+  min-height: clamp(320px, 40vw, 440px);
+  padding: 14px;
+}
+
+.custom-elevate-fleece-section .shooting-shirt-section__color-studio,
+.custom-elevate-fleece-section .shooting-shirt-section__sizes-panel,
+.custom-elevate-fleece-section .shooting-shirt-section__panel--notes {
+  padding: 14px;
+}
+
+.custom-elevate-fleece-section .shooting-shirt-section__summary-chip,
+.custom-elevate-fleece-section .shooting-shirt-section__color-summary-item,
+.custom-elevate-fleece-section .shooting-shirt-section__order-summary-item {
+  min-height: 54px;
+  padding: 10px 12px;
+}
+
+.custom-elevate-fleece-section__editor-grid,
+.custom-elevate-fleece-section__picker-grid,
+.custom-elevate-fleece-section__sizes-grid {
+  gap: 8px;
+}
+
+.custom-elevate-fleece-section .shooting-shirt-section__quantity-input,
+.custom-elevate-fleece-section__hex-input {
+  min-height: 38px;
+  padding: 8px 10px;
+}
+
+.custom-elevate-fleece-section .shooting-shirt-section__textarea {
+  min-height: 88px;
+}
+
+.custom-elevate-fleece-section .shooting-shirt-section__cta {
+  min-height: 40px;
+}
+
+@media (max-width: 720px) {
+  .custom-elevate-fleece-section .shooting-shirt-section__inner {
+    padding: 14px 10px 24px;
+  }
+
+  .custom-elevate-fleece-section .shooting-shirt-section__main-image-shell {
+    min-height: 280px;
+  }
+
+  .custom-elevate-fleece-section__order-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .custom-elevate-fleece-section__order-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

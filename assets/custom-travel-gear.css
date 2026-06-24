@@ -622,3 +622,107 @@
     border-top: 0;
   }
 }
+
+/* Compact checkout flow density for travel, polo, and unisex gear pages. */
+.travel-gear-section .shooting-shirt-section__inner {
+  padding: 22px 22px 32px;
+}
+
+.travel-gear-section__order-canvas {
+  gap: 12px 14px;
+  grid-template-columns: minmax(0, 1.04fr) minmax(360px, 0.96fr);
+}
+
+.travel-gear-section .shooting-shirt-section__main-image-shell {
+  min-height: clamp(320px, 40vw, 440px);
+  padding: 14px;
+}
+
+.travel-gear-section .shooting-shirt-section__summary-chip,
+.travel-gear-section .shooting-shirt-section__order-summary-item {
+  min-height: 54px;
+  padding: 10px 12px;
+}
+
+.travel-gear-section .shooting-shirt-section__color-studio,
+.travel-gear-section .shooting-shirt-section__sizes-panel,
+.travel-gear-section .shooting-shirt-section__panel--wording,
+.travel-gear-section .shooting-shirt-section__panel--font,
+.travel-gear-section .shooting-shirt-section__panel--upload,
+.travel-gear-section .shooting-shirt-section__panel--notes,
+.travel-gear-section__identity-panel,
+.travel-gear-section__guide-body,
+.travel-gear-section__font-card,
+.travel-gear-section__size-guide-card {
+  padding: 14px;
+}
+
+.travel-gear-section .shooting-shirt-section__text-input,
+.travel-gear-section .shooting-shirt-section__select-input,
+.travel-gear-section .shooting-shirt-section__file-input,
+.travel-gear-section .shooting-shirt-section__quantity-input {
+  min-height: 38px;
+  padding: 8px 10px;
+}
+
+.travel-gear-section .shooting-shirt-section__textarea {
+  min-height: 88px;
+}
+
+.travel-gear-section .shooting-shirt-section__sizes-grid,
+.travel-gear-section .shooting-shirt-section__color-layout,
+.travel-gear-section .shooting-shirt-section__upload-row,
+.travel-gear-section .shooting-shirt-section__cta-group,
+.travel-gear-section__identity-grid,
+.travel-gear-section__size-guide-grid {
+  gap: 8px;
+}
+
+.travel-gear-section .shooting-shirt-section__cta {
+  min-height: 40px;
+  padding: 9px 14px;
+}
+
+@media screen and (max-width: 980px) {
+  .travel-gear-section__order-canvas {
+    gap: 12px;
+  }
+
+  .travel-gear-section .shooting-shirt-section__main-image-shell {
+    min-height: 300px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .travel-gear-section .shooting-shirt-section__inner {
+    padding: 14px 10px 24px;
+  }
+
+  .travel-gear-section .shooting-shirt-section__summary-bar,
+  .travel-gear-section .shooting-shirt-section__order-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .travel-gear-section .shooting-shirt-section__cta-section {
+    bottom: 8px;
+    position: sticky;
+    z-index: 8;
+  }
+
+  .travel-gear-section .shooting-shirt-section__cta-group {
+    background: rgba(255, 255, 255, 0.52);
+    backdrop-filter: blur(18px) saturate(135%);
+    -webkit-backdrop-filter: blur(18px) saturate(135%);
+    border: 1px solid rgba(255, 255, 255, 0.62);
+    border-radius: 24px;
+    box-shadow: 0 18px 36px rgba(31, 28, 23, 0.12);
+    padding: 8px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .travel-gear-section .shooting-shirt-section__summary-bar,
+  .travel-gear-section .shooting-shirt-section__order-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
