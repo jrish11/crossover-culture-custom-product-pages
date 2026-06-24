@@ -220,52 +220,30 @@
           </div>
 
           <div class="shooting-shirt-section__color-layout">
+            <label class="shooting-shirt-section__wheel-shell" aria-label="Choose Origin Fleece color">
+              <span class="shooting-shirt-section__wheel-visual"></span>
+              <input type="color" class="shooting-shirt-section__wheel-input" value="#111111" data-color-picker>
+            </label>
+
             <div class="shooting-shirt-section__palette-area custom-origin-fleece-section__palette-area">
               <p class="shooting-shirt-section__color-apply" data-color-apply-copy>Applies to the main fleece body.</p>
 
-              <div class="shooting-shirt-section__swatch-group" data-color-group="Base">
-                <p class="shooting-shirt-section__swatch-group-label">Stock base colors</p>
-                <div class="shooting-shirt-section__mini-swatches" role="list" aria-label="Stock base colors">
-                  {% for color_entry in base_colors %}
-                    {% assign color_parts = color_entry | split: ':' %}
-                    {% assign color_name = color_parts[0] %}
-                    {% assign color_hex = color_parts[1] %}
-                    <button
-                      type="button"
-                      class="shooting-shirt-section__mini-swatch{% if forloop.first %} is-active{% endif %}"
-                      data-color-swatch
-                      data-color-target-scope="Base"
-                      data-color-name="{{ color_name }}"
-                      data-color-value="{{ color_hex }}"
-                      aria-label="{{ color_name }}"
-                      aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
-                    >
-                      <span class="shooting-shirt-section__mini-swatch-fill" style="background-color: {{ color_hex }};"></span>
-                    </button>
-                  {% endfor %}
-                </div>
-              </div>
+              <p class="shooting-shirt-section__swatch-group-label">Select any production color using the wheel or enter a HEX value.</p>
 
-              <div class="shooting-shirt-section__swatch-group" data-color-group="Artwork" hidden>
-                <p class="shooting-shirt-section__swatch-group-label">Team artwork colors</p>
-                <div class="shooting-shirt-section__mini-swatches" role="list" aria-label="Team artwork colors">
-                  {% for color_entry in artwork_colors %}
-                    {% assign color_parts = color_entry | split: ':' %}
-                    {% assign color_name = color_parts[0] %}
-                    {% assign color_hex = color_parts[1] %}
-                    <button
-                      type="button"
-                      class="shooting-shirt-section__mini-swatch{% if color_name == 'White' %} is-active{% endif %}"
-                      data-color-swatch
-                      data-color-target-scope="Artwork"
-                      data-color-name="{{ color_name }}"
-                      data-color-value="{{ color_hex }}"
-                      aria-label="{{ color_name }}"
-                      aria-pressed="{% if color_name == 'White' %}true{% else %}false{% endif %}"
-                    >
-                      <span class="shooting-shirt-section__mini-swatch-fill" style="background-color: {{ color_hex }};"></span>
-                    </button>
-                  {% endfor %}
+              <div class="shooting-shirt-section__hex-shell">
+                <label class="shooting-shirt-section__field-label shooting-shirt-section__field-label--small" for="OriginFleeceColorHex-{{ section.id }}">Custom HEX</label>
+                <div class="shooting-shirt-section__hex-row">
+                  <span class="shooting-shirt-section__hex-preview" data-color-preview aria-hidden="true"></span>
+                  <input
+                    id="OriginFleeceColorHex-{{ section.id }}"
+                    class="shooting-shirt-section__text-input"
+                    type="text"
+                    maxlength="7"
+                    value="#111111"
+                    autocomplete="off"
+                    inputmode="text"
+                    data-color-hex
+                  >
                 </div>
               </div>
             </div>
