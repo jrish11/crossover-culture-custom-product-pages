@@ -164,6 +164,8 @@
         const isMatch = sameTarget && swatch.dataset.colorValue === current.hex && swatch.dataset.colorName === current.name;
         swatch.classList.toggle('is-active', isMatch);
         swatch.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
+        const fill = swatch.querySelector('.shooting-shirt-section__mini-swatch-fill');
+        if (fill) fill.style.backgroundColor = swatch.dataset.colorValue || '';
       });
     };
 
