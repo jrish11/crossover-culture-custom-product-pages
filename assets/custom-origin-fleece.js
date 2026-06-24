@@ -42,12 +42,23 @@
 
   const VECTOR_EXTENSIONS = ['svg', 'ai', 'eps'];
 
+  const normalizeHex = (value) => {
+    const stripped = value.toUpperCase().replace(/[^0-9A-F]/g, '').slice(0, 6);
+    return stripped ? `#${stripped}` : '#';
+  };
+
+  const isValidHex = (value) => /^#[0-9A-F]{6}$/.test(value);
+
   const getFileExtension = (filename) => {
     const parts = filename.split('.');
     return parts.length > 1 ? parts.pop().toLowerCase() : '';
   };
 
   const formatColorLabel = (hex, name) => `${hex} (${name})`;
+
+  const getPalette = (target) => COLOR_OPTIONS[target] || [];
+
+  const getColorName = (target, hex) => getPalette(target).find((color) => color.value === hex)?.name || 'Custom';
 
   const formatMoney = (cents) => {
     const amount = cents / 100;
@@ -75,11 +86,13 @@
     const uploadName = section.querySelector('[data-upload-name]');
     const uploadSummary = section.querySelector('[data-summary-upload]');
     const errorMessage = section.querySelector('[data-form-message="error"]');
+    const colorPicker = section.querySelector('[data-color-picker]');
+    const colorHexInput = section.querySelector('[data-color-hex]');
+    const colorPreview = section.querySelector('[data-color-preview]');
     const colorApplyCopy = section.querySelector('[data-color-apply-copy]');
     const activeColorDisplay = section.querySelector('[data-active-color-display]');
     const colorTargetButtons = Array.from(section.querySelectorAll('[data-color-target-button]'));
     const colorSwatches = Array.from(section.querySelectorAll('[data-color-swatch]'));
-    const swatchGroups = Array.from(section.querySelectorAll('[data-color-group]'));
     const resetColorsButton = section.querySelector('[data-reset-colors]');
     const addToCartButton = section.querySelector('[data-add-to-cart]');
     const submittingLabel = addToCartButton?.dataset.submittingLabel || 'Adding Fleece Order...';
@@ -164,6 +177,8 @@
         const isMatch = sameTarget && swatch.dataset.colorValue === current.hex && swatch.dataset.colorName === current.name;
         swatch.classList.toggle('is-active', isMatch);
         swatch.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
+        const fill = swatch.querySelector('.shooting-shirt-section__mini-swatch-fill');
+        if (fill) fill.style.backgroundColor = swatch.dataset.colorValue || '';
       });
     };
 
@@ -175,25 +190,23 @@
         button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
       });
 
-      swatchGroups.forEach((group) => {
-        group.hidden = group.dataset.colorGroup !== activeColorTarget;
-      });
-
       activeColorDisplay.textContent = formatColorLabel(current.hex, current.name);
       colorApplyCopy.textContent = current.apply;
+      colorHexInput.value = current.hex;
+      colorPicker.value = isValidHex(current.hex) ? current.hex : '#000000';
+      colorPreview.style.backgroundColor = isValidHex(current.hex) ? current.hex : '#FFFFFF';
       refreshSwatches();
     };
 
-    const commitColorState = (target, hex, name) => {
-      const color = COLOR_OPTIONS[target].find((option) => option.value === hex && option.name === name);
-      if (!color) {
-        return;
-      }
+    const commitColorState = (target, rawHex, forcedName) => {
+      const normalizedHex = normalizeHex(rawHex);
+      const valid = isValidHex(normalizedHex);
+      const name = forcedName || (valid ? getColorName(target, normalizedHex) : 'Custom');
+      const label = valid ? formatColorLabel(normalizedHex, name) : 'Invalid HEX';
 
-      const label = formatColorLabel(color.value, color.name);
-      colorState[target].hex = color.value;
-      colorState[target].name = color.name;
-      colorPropertyInputs[target].value = label;
+      colorState[target].hex = normalizedHex;
+      colorState[target].name = name;
+      colorPropertyInputs[target].value = valid ? formatColorLabel(normalizedHex, name) : '';
       colorSummaryValues[target].textContent = label;
       orderSummaryColors[target].textContent = label;
       refreshColorEditor();
@@ -241,7 +254,7 @@
       const totalPieces = parseInt(totalPiecesProperty.value || '0', 10) || 0;
 
       Object.keys(colorState).forEach((target) => {
-        if (!colorPropertyInputs[target].value) {
+        if (!isValidHex(colorState[target].hex) || !colorPropertyInputs[target].value) {
           isValid = false;
         }
       });
@@ -305,6 +318,18 @@
         activeColorTarget = button.dataset.colorTarget || 'Base';
         refreshColorEditor();
       });
+    });
+
+    colorPicker.addEventListener('input', () => {
+      commitColorState(activeColorTarget, colorPicker.value);
+    });
+
+    colorHexInput.addEventListener('input', () => {
+      commitColorState(activeColorTarget, colorHexInput.value);
+    });
+
+    colorHexInput.addEventListener('blur', () => {
+      commitColorState(activeColorTarget, colorHexInput.value);
     });
 
     colorSwatches.forEach((swatch) => {
