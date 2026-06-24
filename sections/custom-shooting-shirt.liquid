@@ -339,42 +339,7 @@
 
             <div class="shooting-shirt-section__palette-area">
               <p class="shooting-shirt-section__color-apply" data-color-apply-copy>Applies to the shirt body and sleeves.</p>
-
-              <div class="shooting-shirt-section__stock-select-group" data-color-select-group="Shirt">
-                <label class="shooting-shirt-section__swatch-group-label" for="StockShirtColor-{{ section.id }}">Stock Team Shirt Colors</label>
-                <select
-                  id="StockShirtColor-{{ section.id }}"
-                  class="shooting-shirt-section__select-input"
-                  data-color-select
-                  data-color-target-scope="Shirt"
-                >
-                  <option value="">Custom from wheel / HEX</option>
-                  {% for color_entry in shirt_colors %}
-                    {% assign color_parts = color_entry | split: ':' %}
-                    {% assign color_name = color_parts[0] %}
-                    {% assign color_hex = color_parts[1] %}
-                    <option value="{{ color_hex }}" data-color-name="{{ color_name }}"{% if forloop.first %} selected{% endif %}>{{ color_name }} · {{ color_hex }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-
-              <div class="shooting-shirt-section__stock-select-group" data-color-select-group="Artwork" hidden>
-                <label class="shooting-shirt-section__swatch-group-label" for="StockArtworkColor-{{ section.id }}">Stock Team Words + CC Logo Colors</label>
-                <select
-                  id="StockArtworkColor-{{ section.id }}"
-                  class="shooting-shirt-section__select-input"
-                  data-color-select
-                  data-color-target-scope="Artwork"
-                >
-                  <option value="">Custom from wheel / HEX</option>
-                  {% for color_entry in artwork_colors %}
-                    {% assign color_parts = color_entry | split: ':' %}
-                    {% assign color_name = color_parts[0] %}
-                    {% assign color_hex = color_parts[1] %}
-                    <option value="{{ color_hex }}" data-color-name="{{ color_name }}"{% if color_name == 'Black' %} selected{% endif %}>{{ color_name }} · {{ color_hex }}</option>
-                  {% endfor %}
-                </select>
-              </div>
+              <p class="shooting-shirt-section__swatch-group-label">Select any production color using the wheel or enter a HEX value.</p>
 
               <div class="shooting-shirt-section__hex-shell">
                 <label class="shooting-shirt-section__field-label shooting-shirt-section__field-label--small" for="ColorHex-{{ section.id }}">Custom HEX</label>

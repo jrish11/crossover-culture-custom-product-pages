@@ -151,24 +151,7 @@
 
                 <div class="team-order-section__palette-area">
                   <p class="team-order-section__color-apply" data-color-apply-copy>Applies to the jersey body and shorts body.</p>
-                  <div class="team-order-section__mini-swatches" role="list" aria-label="Uniform color presets">
-                    {% for color_entry in preset_colors %}
-                      {% assign color_parts = color_entry | split: ':' %}
-                      {% assign color_name = color_parts[0] %}
-                      {% assign color_hex = color_parts[1] %}
-                      <button
-                        type="button"
-                        class="team-order-section__mini-swatch{% if forloop.first %} is-active{% endif %}"
-                        data-color-swatch
-                        data-color-name="{{ color_name }}"
-                        data-color-value="{{ color_hex }}"
-                        aria-label="{{ color_name }}"
-                        aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
-                      >
-                        <span class="team-order-section__mini-swatch-fill" style="background-color: {{ color_hex }};"></span>
-                      </button>
-                    {% endfor %}
-                  </div>
+                  <p class="team-order-section__field-label team-order-section__field-label--small">Select any production color using the wheel or enter a HEX value.</p>
 
                   <div class="team-order-section__hex-shell">
                     <label class="team-order-section__field-label team-order-section__field-label--small" for="ColorHex-{{ section.id }}">Custom HEX</label>
