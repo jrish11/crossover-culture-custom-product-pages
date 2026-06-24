@@ -389,6 +389,20 @@
             </div>
           </div>
 
+          <div class="team-order-section__form-section">
+            <div class="team-order-section__field-header">
+              <label class="team-order-section__field-label" for="TeamOrderNotes-{{ section.id }}">8. Order Notes</label>
+              <span class="team-order-section__field-meta">Optional</span>
+            </div>
+            <textarea
+              id="TeamOrderNotes-{{ section.id }}"
+              class="team-order-section__textarea"
+              name="properties[Order Notes]"
+              rows="4"
+              placeholder="Add deadline notes, placement notes, or production details."
+            ></textarea>
+          </div>
+
           <div class="team-order-section__cta-group">
             <button type="submit" class="team-order-section__cta team-order-section__cta--primary" data-add-to-cart>
               Add Team Order To Cart

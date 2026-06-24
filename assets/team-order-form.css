@@ -249,7 +249,8 @@
 
 .team-order-section__text-input,
 .team-order-section__select-input,
-.team-order-section__file-input {
+.team-order-section__file-input,
+.team-order-section__textarea {
   appearance: none;
   background: var(--team-order-white);
   border: 1px solid var(--team-order-border);
@@ -259,6 +260,12 @@
   min-height: 40px;
   padding: 10px 12px;
   width: 100%;
+}
+
+.team-order-section__textarea {
+  line-height: 1.45;
+  min-height: 108px;
+  resize: vertical;
 }
 
 .team-order-section__select-input {
@@ -272,6 +279,7 @@
 .team-order-section__text-input:focus,
 .team-order-section__select-input:focus,
 .team-order-section__file-input:focus,
+.team-order-section__textarea:focus,
 .team-order-section__thumbnail:focus,
 .team-order-section__style-button:focus,
 .team-order-section__add-player:focus,
@@ -1084,6 +1092,7 @@
 .team-order-section__text-input,
 .team-order-section__select-input,
 .team-order-section__file-input,
+.team-order-section__textarea,
 .team-order-section__thumbnail,
 .team-order-section__color-target,
 .team-order-section__style-button,
