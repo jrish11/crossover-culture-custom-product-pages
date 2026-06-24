@@ -14,7 +14,12 @@
   assign custom_uniform_url = section.settings.custom_uniform_url | default: '/products/custom-team-uniform'
   assign custom_shooting_url = section.settings.custom_shooting_url | default: '/products/custom-shooting-shirt'
   assign custom_travel_url = section.settings.custom_travel_url | default: '/products/custom-travel-gear'
+  assign custom_unisex_travel_url = section.settings.custom_unisex_travel_url | default: '/products/custom-unisex-travel-gear'
   assign custom_polo_url = section.settings.custom_polo_url | default: '/products/custom-polo'
+  assign custom_practice_shorts_url = section.settings.custom_practice_shorts_url | default: '/products/custom-practice-shorts'
+  assign custom_varsity_sock_url = section.settings.custom_varsity_sock_url | default: '/products/custom-varsity-sock'
+  assign custom_origin_fleece_url = section.settings.custom_origin_fleece_url | default: '/products/custom-origin-fleece-hoodie'
+  assign custom_elevate_fleece_url = section.settings.custom_elevate_fleece_url | default: '/products/custom-elevate-fleece-hoodie'
   assign process_url = section.settings.process_url | default: '/pages/our-process'
   assign about_url = section.settings.about_url | default: '/pages/about'
   assign contact_url = section.settings.contact_url | default: '/pages/contact'
@@ -31,6 +36,10 @@
     assign recommend_route_url = custom_shooting_url
     assign recommend_route_label = 'Start custom shooting order'
     assign recommend_route_copy = 'Need this customized for a full shooting program? Start with the shooting-shirt order path.'
+  elsif title_downcase contains 'unisex'
+    assign recommend_route_url = custom_unisex_travel_url
+    assign recommend_route_label = 'Start unisex custom order'
+    assign recommend_route_copy = 'Need one shared size run without Mens, Womens, and Youth splits? Start with the unisex order path.'
   elsif title_downcase contains 'travel' or title_downcase contains 'crew' or title_downcase contains 'zip'
     assign recommend_route_url = custom_travel_url
     assign recommend_route_label = 'Start custom travel order'
@@ -39,6 +48,22 @@
     assign recommend_route_url = custom_polo_url
     assign recommend_route_label = 'Start custom polo order'
     assign recommend_route_copy = 'Need a coordinated coach or staff version? Start with the custom polo order path.'
+  elsif title_downcase contains 'short'
+    assign recommend_route_url = custom_practice_shorts_url
+    assign recommend_route_label = 'Start custom shorts order'
+    assign recommend_route_copy = 'Need team shorts with adult/youth totals and saved artwork details? Start with the practice-shorts order path.'
+  elsif title_downcase contains 'sock'
+    assign recommend_route_url = custom_varsity_sock_url
+    assign recommend_route_label = 'Start custom sock order'
+    assign recommend_route_copy = 'Need the sock program customized with logo upload and color code? Start with the varsity sock order path.'
+  elsif title_downcase contains 'origin'
+    assign recommend_route_url = custom_origin_fleece_url
+    assign recommend_route_label = 'Start Origin fleece order'
+    assign recommend_route_copy = 'Need this fleece customized for the full group? Start with the Origin fleece order path.'
+  elsif title_downcase contains 'elevate' or title_downcase contains 'fleece' or title_downcase contains 'hoodie' or title_downcase contains 'jogger'
+    assign recommend_route_url = custom_elevate_fleece_url
+    assign recommend_route_label = 'Start Elevate fleece order'
+    assign recommend_route_copy = 'Need this fleece customized for the full group? Start with the Elevate fleece order path.'
   endif
 %}
 
@@ -63,7 +88,12 @@
         custom_uniform_url: custom_uniform_url,
         custom_shooting_url: custom_shooting_url,
         custom_travel_url: custom_travel_url,
+        custom_unisex_travel_url: custom_unisex_travel_url,
         custom_polo_url: custom_polo_url,
+        custom_practice_shorts_url: custom_practice_shorts_url,
+        custom_varsity_sock_url: custom_varsity_sock_url,
+        custom_origin_fleece_url: custom_origin_fleece_url,
+        custom_elevate_fleece_url: custom_elevate_fleece_url,
         process_url: process_url,
         about_url: about_url
       %}
@@ -249,7 +279,12 @@
         custom_uniform_url: custom_uniform_url,
         custom_shooting_url: custom_shooting_url,
         custom_travel_url: custom_travel_url,
+        custom_unisex_travel_url: custom_unisex_travel_url,
         custom_polo_url: custom_polo_url,
+        custom_practice_shorts_url: custom_practice_shorts_url,
+        custom_varsity_sock_url: custom_varsity_sock_url,
+        custom_origin_fleece_url: custom_origin_fleece_url,
+        custom_elevate_fleece_url: custom_elevate_fleece_url,
         process_url: process_url,
         about_url: about_url,
         contact_url: contact_url
@@ -273,7 +308,12 @@
     { "type": "url", "id": "custom_uniform_url", "label": "Custom uniform product URL" },
     { "type": "url", "id": "custom_shooting_url", "label": "Custom shooting shirt product URL" },
     { "type": "url", "id": "custom_travel_url", "label": "Custom travel gear product URL" },
+    { "type": "url", "id": "custom_unisex_travel_url", "label": "Custom unisex travel gear product URL" },
     { "type": "url", "id": "custom_polo_url", "label": "Custom polo product URL" },
+    { "type": "url", "id": "custom_practice_shorts_url", "label": "Custom practice shorts product URL" },
+    { "type": "url", "id": "custom_varsity_sock_url", "label": "Custom varsity sock product URL" },
+    { "type": "url", "id": "custom_origin_fleece_url", "label": "Custom Origin fleece product URL" },
+    { "type": "url", "id": "custom_elevate_fleece_url", "label": "Custom Elevate fleece product URL" },
     { "type": "url", "id": "process_url", "label": "Our process URL" },
     { "type": "url", "id": "about_url", "label": "About URL" },
     { "type": "url", "id": "contact_url", "label": "Contact URL" }

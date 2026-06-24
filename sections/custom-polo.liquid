@@ -406,9 +406,29 @@
         </div>
       </section>
 
+      <section class="shooting-shirt-section__panel shooting-shirt-section__panel--upload">
+        <div class="shooting-shirt-section__field-header">
+          <span class="shooting-shirt-section__field-label">4. Artwork Upload</span>
+          <span class="shooting-shirt-section__field-meta">SVG, AI, EPS only</span>
+        </div>
+        <div class="shooting-shirt-section__upload-copy">
+          <p class="shooting-shirt-section__upload-headline">One production-ready vector file for the polo order.</p>
+          <p class="shooting-shirt-section__upload-note">Attach the exact logo or artwork file the production team should review before fulfillment.</p>
+        </div>
+        <input
+          class="shooting-shirt-section__file-input"
+          type="file"
+          name="properties[Artwork Upload]"
+          accept=".svg,.ai,.eps"
+          data-vector-upload
+          required
+        >
+        <p class="shooting-shirt-section__upload-filename" data-upload-name>No file selected</p>
+      </section>
+
       <section class="shooting-shirt-section__panel shooting-shirt-section__panel--notes">
         <div class="shooting-shirt-section__field-header">
-          <label class="shooting-shirt-section__field-label" for="OrderNotes-{{ section.id }}">4. Order Notes</label>
+          <label class="shooting-shirt-section__field-label" for="OrderNotes-{{ section.id }}">5. Order Notes</label>
           <span class="shooting-shirt-section__field-meta">Optional</span>
         </div>
         <textarea
@@ -447,6 +467,10 @@
             <span class="shooting-shirt-section__order-summary-label">Total Pieces</span>
             <span class="shooting-shirt-section__order-summary-value" data-summary-total-pieces>0 pieces</span>
           </div>
+          <div class="shooting-shirt-section__order-summary-item">
+            <span class="shooting-shirt-section__order-summary-label">Upload Status</span>
+            <span class="shooting-shirt-section__order-summary-value" data-summary-upload>No file selected</span>
+          </div>
         </div>
       </section>
 
@@ -464,7 +488,7 @@
         </div>
       </div>
 
-      <p class="shooting-shirt-section__rules">Minimum order: {{ min_pieces }} pieces. Team wording, font, garment color, logo / artwork color, size breakdown, and notes are submitted with the order for production review.</p>
+      <p class="shooting-shirt-section__rules">Minimum order: {{ min_pieces }} pieces. Team wording, font, garment color, logo / artwork color, size breakdown, notes, and vector artwork upload are submitted with the order for production review.</p>
     </form>
   </div>
 </section>
@@ -478,7 +502,7 @@
     { "type": "text", "id": "minimum_order", "label": "Minimum Order Text", "default": "6 pieces per order" },
     { "type": "url", "id": "contact_url", "label": "Contact Page URL" },
     { "type": "number", "id": "min_pieces", "label": "Minimum Pieces", "default": 6 },
-    { "type": "textarea", "id": "intro_copy", "label": "Intro Copy", "default": "Build your polo order with separate garment and logo colors, team wording, and a full size breakdown in one streamlined form." }
+    { "type": "textarea", "id": "intro_copy", "label": "Intro Copy", "default": "Build your polo order with separate garment and logo colors, team wording, a full size breakdown, and one vector artwork upload in one streamlined form." }
   ],
   "presets": [{ "name": "Polo Order" }]
 }

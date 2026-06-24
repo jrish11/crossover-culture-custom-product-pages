@@ -8,6 +8,8 @@ If ChatGPT agent mode in Atlas is being used for theme work, start here:
 
 - `ATLAS_IMPLEMENTATION.md`
 - `ATLAS_AGENT_PROMPT.md`
+- `SHOPIFY_IMPLEMENTATION_CHECKLIST.md`
+- `QA_AUDIT_REPORT.md`
 - `references/crossover-culture-homepage-concept.png`
 
 These files are intended to help Atlas implement the premium storefront shell without modifying the protected custom-order systems.
@@ -38,6 +40,10 @@ All new or updated custom product templates should keep the liquid-glass visual 
 - `templates/product.custom-unisex-travel-gear.json`
 - `templates/product.custom-polo.json`
 - `templates/product.custom-practice-shorts.json`
+- `templates/product.custom-origin-fleece-hoodie.json`
+- `templates/product.custom-origin-fleece-jogger.json`
+- `templates/product.custom-elevate-fleece-hoodie.json`
+- `templates/product.custom-elevate-fleece-jogger.json`
 - `templates/product.custom-varsity-sock.json`
 - `sections/team-order-form.liquid`
 - `sections/custom-shooting-shirt.liquid`
@@ -45,6 +51,8 @@ All new or updated custom product templates should keep the liquid-glass visual 
 - `sections/custom-unisex-travel-gear.liquid`
 - `sections/custom-polo.liquid`
 - `sections/custom-practice-shorts.liquid`
+- `sections/custom-origin-fleece.liquid`
+- `sections/custom-elevate-fleece.liquid`
 - `sections/custom-varsity-sock.liquid`
 - `assets/team-order-form.css`
 - `assets/team-order-form.js`
@@ -56,6 +64,10 @@ All new or updated custom product templates should keep the liquid-glass visual 
 - `assets/custom-polo.js`
 - `assets/custom-practice-shorts.css`
 - `assets/custom-practice-shorts.js`
+- `assets/custom-origin-fleece.css`
+- `assets/custom-origin-fleece.js`
+- `assets/custom-elevate-fleece.css`
+- `assets/custom-elevate-fleece.js`
 - `assets/custom-varsity-sock.css`
 - `assets/custom-varsity-sock.js`
 - `snippets/team-feature-icons.liquid`
@@ -63,7 +75,7 @@ All new or updated custom product templates should keep the liquid-glass visual 
 
 ## Overview
 
-This repo contains Shopify theme files for seven custom product-ordering flows:
+This repo contains Shopify theme files for nine custom product-ordering flows:
 
 - `team-order-form`
   Custom team uniform ordering
@@ -80,6 +92,10 @@ This repo contains Shopify theme files for seven custom product-ordering flows:
   - Enlisted Polo
 - `custom-practice-shorts`
   Custom practice shorts ordering
+- `custom-origin-fleece`
+  Custom Origin fleece hoodie/jogger ordering
+- `custom-elevate-fleece`
+  Custom Elevate fleece hoodie/jogger ordering
 - `custom-varsity-sock`
   Custom varsity sock ordering
 
@@ -97,6 +113,10 @@ custom product/
 │   ├── custom-shooting-shirt.js
 │   ├── custom-polo.css
 │   ├── custom-polo.js
+│   ├── custom-origin-fleece.css
+│   ├── custom-origin-fleece.js
+│   ├── custom-elevate-fleece.css
+│   ├── custom-elevate-fleece.js
 │   ├── custom-practice-shorts.css
 │   ├── custom-practice-shorts.js
 │   ├── custom-travel-gear.css
@@ -107,6 +127,8 @@ custom product/
 │   └── team-order-form.js
 ├── sections/
 │   ├── custom-polo.liquid
+│   ├── custom-origin-fleece.liquid
+│   ├── custom-elevate-fleece.liquid
 │   ├── custom-practice-shorts.liquid
 │   ├── custom-shooting-shirt.liquid
 │   ├── custom-travel-gear.liquid
@@ -118,6 +140,10 @@ custom product/
 │   └── team-size-guide.liquid
 └── templates/
     ├── product.custom-polo.json
+    ├── product.custom-origin-fleece-hoodie.json
+    ├── product.custom-origin-fleece-jogger.json
+    ├── product.custom-elevate-fleece-hoodie.json
+    ├── product.custom-elevate-fleece-jogger.json
     ├── product.custom-practice-shorts.json
     ├── product.custom-shooting-shirt.json
     ├── product.custom-team-uniform.json
@@ -159,7 +185,19 @@ custom product/
 - `assets/custom-practice-shorts.css`
   Practice-shorts-specific styling on top of the shared apparel layout.
 - `assets/custom-practice-shorts.js`
-  Practice shorts color, size, pricing, validation, and submit behavior.
+  Practice shorts color, size, upload, pricing, validation, and submit behavior.
+- `sections/custom-origin-fleece.liquid`
+  Main Origin fleece product section for hoodie and jogger templates.
+- `assets/custom-origin-fleece.css`
+  Origin-fleece-specific styling on top of the shared apparel layout.
+- `assets/custom-origin-fleece.js`
+  Origin fleece color, size, upload, pricing, validation, and submit behavior.
+- `sections/custom-elevate-fleece.liquid`
+  Main Elevate fleece product section for hoodie and jogger templates.
+- `assets/custom-elevate-fleece.css`
+  Elevate-fleece-specific styling on top of the shared apparel layout.
+- `assets/custom-elevate-fleece.js`
+  Elevate fleece color, size, upload, pricing, validation, and submit behavior.
 - `sections/custom-varsity-sock.liquid`
   Main varsity sock product section.
 - `assets/custom-varsity-sock.css`
@@ -178,6 +216,14 @@ custom product/
   Product template that mounts `custom-polo`.
 - `templates/product.custom-practice-shorts.json`
   Product template that mounts `custom-practice-shorts`.
+- `templates/product.custom-origin-fleece-hoodie.json`
+  Product template that mounts `custom-origin-fleece`.
+- `templates/product.custom-origin-fleece-jogger.json`
+  Product template that mounts `custom-origin-fleece`.
+- `templates/product.custom-elevate-fleece-hoodie.json`
+  Product template that mounts `custom-elevate-fleece`.
+- `templates/product.custom-elevate-fleece-jogger.json`
+  Product template that mounts `custom-elevate-fleece`.
 - `templates/product.custom-varsity-sock.json`
   Product template that mounts `custom-varsity-sock`.
 
@@ -192,6 +238,8 @@ custom product/
    - `sections/custom-unisex-travel-gear.liquid`
    - `sections/custom-polo.liquid`
    - `sections/custom-practice-shorts.liquid`
+   - `sections/custom-origin-fleece.liquid`
+   - `sections/custom-elevate-fleece.liquid`
    - `sections/custom-varsity-sock.liquid`
    - `templates/product.custom-team-uniform.json`
    - `templates/product.custom-shooting-shirt.json`
@@ -199,6 +247,10 @@ custom product/
    - `templates/product.custom-unisex-travel-gear.json`
    - `templates/product.custom-polo.json`
    - `templates/product.custom-practice-shorts.json`
+   - `templates/product.custom-origin-fleece-hoodie.json`
+   - `templates/product.custom-origin-fleece-jogger.json`
+   - `templates/product.custom-elevate-fleece-hoodie.json`
+   - `templates/product.custom-elevate-fleece-jogger.json`
    - `templates/product.custom-varsity-sock.json`
    - `assets/team-order-form.css`
    - `assets/team-order-form.js`
@@ -210,6 +262,10 @@ custom product/
    - `assets/custom-travel-gear.js`
    - `assets/custom-practice-shorts.css`
    - `assets/custom-practice-shorts.js`
+   - `assets/custom-origin-fleece.css`
+   - `assets/custom-origin-fleece.js`
+   - `assets/custom-elevate-fleece.css`
+   - `assets/custom-elevate-fleece.js`
    - `assets/custom-varsity-sock.css`
    - `assets/custom-varsity-sock.js`
    - `snippets/team-size-guide.liquid`
@@ -235,6 +291,14 @@ Assign each product to the matching template in the Shopify product admin:
   - Enlisted Polo
 - `custom-practice-shorts`
   Use for custom practice shorts products.
+- `custom-origin-fleece-hoodie`
+  Use for Origin Fleece Hoodie products.
+- `custom-origin-fleece-jogger`
+  Use for Origin Fleece Jogger products.
+- `custom-elevate-fleece-hoodie`
+  Use for Elevate Fleece Hoodie products.
+- `custom-elevate-fleece-jogger`
+  Use for Elevate Fleece Jogger products.
 - `custom-varsity-sock`
   Use for custom varsity sock products.
 
@@ -311,6 +375,26 @@ Configured through `product.custom-practice-shorts.json` / `custom-practice-shor
 - `Youth Unit Price`
 - `Intro Copy`
 
+### Origin Fleece
+
+Configured through `product.custom-origin-fleece-hoodie.json` / `custom-origin-fleece` and `product.custom-origin-fleece-jogger.json` / `custom-origin-fleece`:
+
+- `Minimum Order Text`
+- `Contact Page URL`
+- `Minimum Pieces`
+- `Hoodie Intro Copy`
+- `Jogger Intro Copy`
+
+### Elevate Fleece
+
+Configured through `product.custom-elevate-fleece-hoodie.json` / `custom-elevate-fleece` and `product.custom-elevate-fleece-jogger.json` / `custom-elevate-fleece`:
+
+- `Minimum Order Text`
+- `Contact Page URL`
+- `Minimum Pieces`
+- `Hoodie Intro Copy`
+- `Jogger Intro Copy`
+
 ### Varsity Sock
 
 Configured through `product.custom-varsity-sock.json` / `custom-varsity-sock`:
@@ -321,7 +405,7 @@ Configured through `product.custom-varsity-sock.json` / `custom-varsity-sock`:
 
 ## Runtime Behavior
 
-All seven flows:
+All nine flows:
 
 - submit through the native Shopify product form
 - store custom selections as line item properties
@@ -426,6 +510,10 @@ The theme cart must render line item properties and uploaded file links. If the 
    - `custom-unisex-travel-gear`
    - `custom-polo`
    - `custom-practice-shorts`
+   - `custom-origin-fleece-hoodie`
+   - `custom-origin-fleece-jogger`
+   - `custom-elevate-fleece-hoodie`
+   - `custom-elevate-fleece-jogger`
    - `custom-varsity-sock`
 2. Confirm the gallery thumbnails swap the main image.
 3. Confirm all required fields block submission when empty.

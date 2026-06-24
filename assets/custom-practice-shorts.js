@@ -4,6 +4,8 @@
     Artwork: { hex: '#FFFFFF', name: 'White', apply: 'Applies to the CC logo, piping, and words.' }
   };
 
+  const VECTOR_EXTENSIONS = ['svg', 'ai', 'eps'];
+
   const normalizeHex = (value) => {
     const stripped = value.toUpperCase().replace(/[^0-9A-F]/g, '').slice(0, 6);
     return stripped ? `#${stripped}` : '#';
@@ -29,6 +31,11 @@
 
   const formatColorLabel = (hex, name) => `${hex} (${name})`;
 
+  const getFileExtension = (filename) => {
+    const parts = filename.split('.');
+    return parts.length > 1 ? parts.pop().toLowerCase() : '';
+  };
+
   const initializeSection = (section) => {
     const minPieces = Math.max(parseInt(section.dataset.minPieces || '6', 10) || 6, 6);
     const adultUnitPriceCents = Math.max(parseInt(section.dataset.adultUnitPriceCents || '0', 10) || 0, 0);
@@ -47,6 +54,9 @@
     const youthPiecesProperty = section.querySelector('[data-youth-pieces-property]');
     const calculatedTotalProperty = section.querySelector('[data-calculated-total-property]');
     const quantityInputs = Array.from(section.querySelectorAll('[data-size-quantity]'));
+    const uploadInput = section.querySelector('[data-vector-upload]');
+    const uploadName = section.querySelector('[data-upload-name]');
+    const uploadSummary = section.querySelector('[data-summary-upload]');
     const sizeBreakdownSummary = section.querySelector('[data-summary-size-breakdown]');
     const livePricingCopy = section.querySelector('[data-live-pricing-copy]');
     const errorMessage = section.querySelector('[data-form-message="error"]');
@@ -234,6 +244,25 @@
       refreshColorEditor();
     };
 
+    const validateVectorUpload = () => {
+      if (!uploadInput.files || !uploadInput.files.length) {
+        uploadName.textContent = 'No file selected';
+        uploadSummary.textContent = 'No file selected';
+        return false;
+      }
+
+      const file = uploadInput.files[0];
+      const extension = getFileExtension(file.name);
+      if (!VECTOR_EXTENSIONS.includes(extension)) {
+        uploadSummary.textContent = 'Invalid file type';
+        return false;
+      }
+
+      uploadName.textContent = file.name;
+      uploadSummary.textContent = file.name;
+      return true;
+    };
+
     const validateForm = () => {
       clearFieldErrors();
       setMessage(null);
@@ -256,12 +285,17 @@
         isValid = false;
       }
 
+      if (!validateVectorUpload()) {
+        uploadInput.classList.add('shooting-shirt-section__field-error');
+        isValid = false;
+      }
+
       if (pricingIssue) {
         isValid = false;
       }
 
       if (!isValid) {
-        setMessage('error', pricingIssue || `Please confirm at least ${minPieces} total pieces and choose valid colors before adding to cart.`);
+        setMessage('error', pricingIssue || `Please confirm at least ${minPieces} total pieces, choose valid colors, and upload one vector artwork file before adding to cart.`);
       }
 
       return isValid;
@@ -330,6 +364,13 @@
 
     updateTotalPieces();
     refreshColorEditor();
+
+    uploadInput.addEventListener('change', () => {
+      uploadInput.classList.remove('shooting-shirt-section__field-error');
+      if (!validateVectorUpload()) {
+        uploadName.textContent = 'Vector files only: SVG, AI, EPS';
+      }
+    });
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();

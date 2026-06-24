@@ -46,6 +46,10 @@ These are protected custom-order system files and must remain untouched:
 - `templates/product.custom-unisex-travel-gear.json`
 - `templates/product.custom-polo.json`
 - `templates/product.custom-practice-shorts.json`
+- `templates/product.custom-origin-fleece-hoodie.json`
+- `templates/product.custom-origin-fleece-jogger.json`
+- `templates/product.custom-elevate-fleece-hoodie.json`
+- `templates/product.custom-elevate-fleece-jogger.json`
 - `templates/product.custom-varsity-sock.json`
 - `sections/team-order-form.liquid`
 - `sections/custom-shooting-shirt.liquid`
@@ -53,6 +57,8 @@ These are protected custom-order system files and must remain untouched:
 - `sections/custom-unisex-travel-gear.liquid`
 - `sections/custom-polo.liquid`
 - `sections/custom-practice-shorts.liquid`
+- `sections/custom-origin-fleece.liquid`
+- `sections/custom-elevate-fleece.liquid`
 - `sections/custom-varsity-sock.liquid`
 - `assets/team-order-form.css`
 - `assets/team-order-form.js`
@@ -64,6 +70,10 @@ These are protected custom-order system files and must remain untouched:
 - `assets/custom-polo.js`
 - `assets/custom-practice-shorts.css`
 - `assets/custom-practice-shorts.js`
+- `assets/custom-origin-fleece.css`
+- `assets/custom-origin-fleece.js`
+- `assets/custom-elevate-fleece.css`
+- `assets/custom-elevate-fleece.js`
 - `assets/custom-varsity-sock.css`
 - `assets/custom-varsity-sock.js`
 - `snippets/team-feature-icons.liquid`
@@ -119,6 +129,12 @@ The shell currently defaults to these product routes:
 - `/products/custom-travel-gear`
 - `/products/custom-unisex-travel-gear`
 - `/products/custom-polo`
+- `/products/custom-practice-shorts`
+- `/products/custom-origin-fleece-hoodie`
+- `/products/custom-origin-fleece-jogger`
+- `/products/custom-elevate-fleece-hoodie`
+- `/products/custom-elevate-fleece-jogger`
+- `/products/custom-varsity-sock`
 
 If the live Shopify store uses different product handles, Atlas should update the section settings in the theme editor if possible, or stop and report the mismatch.
 

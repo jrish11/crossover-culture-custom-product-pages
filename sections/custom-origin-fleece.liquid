@@ -100,13 +100,13 @@
       <input type="hidden" name="properties[Product Style]" value="{{ product_style }}">
       <input type="hidden" name="properties[Product Type]" value="Travel Gear / Fleece">
       <input type="hidden" name="properties[Garment Type]" value="{{ garment_label }}">
-      <input type="hidden" name="properties[Base/Garment Color]" value="#111111 (Black)" data-color-property="Base">
-      <input type="hidden" name="properties[Artwork Color]" value="#FFFFFF (White)" data-color-property="Artwork">
+      <input type="hidden" name="properties[Garment Color]" value="#111111 (Black)" data-color-property="Base">
+      <input type="hidden" name="properties[Logo / Artwork Color]" value="#FFFFFF (White)" data-color-property="Artwork">
       <input type="hidden" name="properties[Size Breakdown]" value="" data-size-breakdown-property>
       <input type="hidden" name="properties[Total Pieces]" value="0" data-total-pieces-property>
-      <input type="hidden" name="properties[Company]" value="Crossover Culture">
-      <input type="hidden" name="properties[Order Flow]" value="Origin Fleece Customizer">
-      <input type="hidden" name="properties[Source Product]" value="{{ product.title }}">
+      <input type="hidden" name="properties[_Company]" value="Crossover Culture">
+      <input type="hidden" name="properties[_Order Flow]" value="Origin Fleece Customizer">
+      <input type="hidden" name="properties[_Source Product]" value="{{ product.title }}">
 
       <div class="shooting-shirt-section__message shooting-shirt-section__message--error" data-form-message="error" role="alert" hidden></div>
 
@@ -324,7 +324,7 @@
         <textarea
           id="OrderNotes-{{ section.id }}"
           class="shooting-shirt-section__textarea"
-          name="properties[Notes]"
+          name="properties[Order Notes]"
           rows="6"
           placeholder="Add placement notes, artwork notes, or special instructions here."
         ></textarea>

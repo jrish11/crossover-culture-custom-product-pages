@@ -51,7 +51,29 @@
         </div>
 
         <a class="cc-shell__nav-item{% if page_handle == 'shooting' %} is-active{% endif %}" href="{{ shooting_shirts_url }}">Shooting</a>
-        <a class="cc-shell__nav-item{% if page_handle == 'travel' %} is-active{% endif %}" href="{{ travel_gear_url }}">Travel</a>
+
+        <div class="cc-shell__dropdown">
+          <a class="cc-shell__nav-item{% if page_handle == 'travel' %} is-active{% endif %}" href="{{ travel_gear_url }}">
+            Travel
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </a>
+          <div class="cc-shell__dropdown-panel" role="menu">
+            <a class="cc-shell__dropdown-link" href="{{ travel_gear_url }}">
+              <span class="cc-shell__dropdown-label">Travel Gear</span>
+              <span class="cc-shell__dropdown-copy">Arrival and off-court program presence.</span>
+            </a>
+            <a class="cc-shell__dropdown-link" href="{{ custom_travel_url }}">
+              <span class="cc-shell__dropdown-label">Custom Travel Gear</span>
+              <span class="cc-shell__dropdown-copy">Quarter-zip, crew, and team travel orders.</span>
+            </a>
+            <a class="cc-shell__dropdown-link" href="{{ custom_unisex_travel_url }}">
+              <span class="cc-shell__dropdown-label">Unisex Custom Gear</span>
+              <span class="cc-shell__dropdown-copy">One shared XS-3XL size run with wheel colors.</span>
+            </a>
+          </div>
+        </div>
 
         <div class="cc-shell__dropdown">
           <a class="cc-shell__nav-item{% if page_handle == 'apparel' %} is-active{% endif %}" href="{{ hoodies_fleece_url }}">
@@ -68,6 +90,18 @@
             <a class="cc-shell__dropdown-link" href="{{ practice_shorts_url }}">
               <span class="cc-shell__dropdown-label">Practice Shorts</span>
               <span class="cc-shell__dropdown-copy">Daily program essentials for repeat reps.</span>
+            </a>
+            <a class="cc-shell__dropdown-link" href="{{ custom_origin_fleece_url }}">
+              <span class="cc-shell__dropdown-label">Custom Origin Fleece</span>
+              <span class="cc-shell__dropdown-copy">Hoodie and jogger fleece orders with upload details.</span>
+            </a>
+            <a class="cc-shell__dropdown-link" href="{{ custom_elevate_fleece_url }}">
+              <span class="cc-shell__dropdown-label">Custom Elevate Fleece</span>
+              <span class="cc-shell__dropdown-copy">Fleece orders with unisex sizing and vector artwork.</span>
+            </a>
+            <a class="cc-shell__dropdown-link" href="{{ custom_practice_shorts_url }}">
+              <span class="cc-shell__dropdown-label">Custom Practice Shorts</span>
+              <span class="cc-shell__dropdown-copy">Adult/youth shorts ordering with saved color details.</span>
             </a>
             <a class="cc-shell__dropdown-link" href="{{ base_layers_url }}">
               <span class="cc-shell__dropdown-label">Base Layers</span>
@@ -146,7 +180,12 @@
           <a class="cc-shell__drawer-link" href="{{ custom_uniform_url }}"><span>Custom Uniform Orders</span><span>Go</span></a>
           <a class="cc-shell__drawer-link" href="{{ custom_shooting_url }}"><span>Custom Shooting Shirt Orders</span><span>Go</span></a>
           <a class="cc-shell__drawer-link" href="{{ custom_travel_url }}"><span>Custom Travel Gear Orders</span><span>Go</span></a>
+          <a class="cc-shell__drawer-link" href="{{ custom_unisex_travel_url }}"><span>Unisex Custom Gear Orders</span><span>Go</span></a>
           <a class="cc-shell__drawer-link" href="{{ custom_polo_url }}"><span>Custom Polo Orders</span><span>Go</span></a>
+          <a class="cc-shell__drawer-link" href="{{ custom_practice_shorts_url }}"><span>Practice Shorts Orders</span><span>Go</span></a>
+          <a class="cc-shell__drawer-link" href="{{ custom_origin_fleece_url }}"><span>Origin Fleece Orders</span><span>Go</span></a>
+          <a class="cc-shell__drawer-link" href="{{ custom_elevate_fleece_url }}"><span>Elevate Fleece Orders</span><span>Go</span></a>
+          <a class="cc-shell__drawer-link" href="{{ custom_varsity_sock_url }}"><span>Varsity Sock Orders</span><span>Go</span></a>
         </div>
 
         <div class="cc-shell__drawer-group">

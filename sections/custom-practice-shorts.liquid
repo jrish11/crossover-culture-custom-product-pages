@@ -31,11 +31,11 @@
   assign billing_mode = 'Checkout blocked until pricing is aligned'
   assign total_label = 'Estimated Total'
   assign live_pricing_copy = 'Estimated total before tax and discounts updates as sizes are entered. Checkout is disabled until Shopify pricing is aligned for this page.'
-  assign rules_copy = 'Minimum order: ' | append: min_pieces | append: ' pieces. Short color, artwork plus decoration color, size breakdown, pricing details, and notes are submitted with the order for production review. Displayed totals are before tax and discounts.'
+  assign rules_copy = 'Minimum order: ' | append: min_pieces | append: ' pieces. Short color, artwork plus decoration color, size breakdown, pricing details, notes, and vector artwork upload are submitted with the order for production review. Displayed totals are before tax and discounts.'
   if can_sync_checkout_quantity
     assign billing_mode = 'Shopify checkout quantity synced to total pieces'
     assign live_pricing_copy = 'Estimated total before tax and discounts updates as sizes are entered. Shopify checkout quantity syncs to total pieces.'
-    assign rules_copy = 'Minimum order: ' | append: min_pieces | append: ' pieces. Short color, artwork plus decoration color, size breakdown, pricing details, and notes are submitted with the order. Displayed totals are before tax and discounts. Shopify checkout quantity syncs to total pieces.'
+    assign rules_copy = 'Minimum order: ' | append: min_pieces | append: ' pieces. Short color, artwork plus decoration color, size breakdown, pricing details, notes, and vector artwork upload are submitted with the order. Displayed totals are before tax and discounts. Shopify checkout quantity syncs to total pieces.'
   endif
   assign display_price = 'Mens / Womens ' | append: adult_unit_price_display | append: ' each | Youth ' | append: youth_unit_price_display | append: ' each'
 %}
@@ -311,9 +311,29 @@
         </div>
       </section>
 
+      <section class="shooting-shirt-section__panel shooting-shirt-section__panel--upload">
+        <div class="shooting-shirt-section__field-header">
+          <span class="shooting-shirt-section__field-label">3. Artwork Upload</span>
+          <span class="shooting-shirt-section__field-meta">SVG, AI, EPS only</span>
+        </div>
+        <div class="shooting-shirt-section__upload-copy">
+          <p class="shooting-shirt-section__upload-headline">One production-ready vector file for the shorts order.</p>
+          <p class="shooting-shirt-section__upload-note">Attach the artwork or decoration reference that should be reviewed with the size breakdown.</p>
+        </div>
+        <input
+          class="shooting-shirt-section__file-input"
+          type="file"
+          name="properties[Artwork Upload]"
+          accept=".svg,.ai,.eps"
+          data-vector-upload
+          required
+        >
+        <p class="shooting-shirt-section__upload-filename" data-upload-name>No file selected</p>
+      </section>
+
       <section class="shooting-shirt-section__panel shooting-shirt-section__panel--notes">
         <div class="shooting-shirt-section__field-header">
-          <label class="shooting-shirt-section__field-label" for="OrderNotes-{{ section.id }}">3. Order Notes</label>
+          <label class="shooting-shirt-section__field-label" for="OrderNotes-{{ section.id }}">4. Order Notes</label>
           <span class="shooting-shirt-section__field-meta">Optional</span>
         </div>
         <textarea
@@ -352,6 +372,10 @@
             <span class="shooting-shirt-section__order-summary-label">Size Breakdown</span>
             <span class="shooting-shirt-section__order-summary-value custom-practice-shorts-section__order-summary-value--wrap" data-summary-size-breakdown>No sizes entered yet</span>
           </div>
+          <div class="shooting-shirt-section__order-summary-item custom-practice-shorts-section__order-summary-item--wide">
+            <span class="shooting-shirt-section__order-summary-label">Upload Status</span>
+            <span class="shooting-shirt-section__order-summary-value custom-practice-shorts-section__order-summary-value--wrap" data-summary-upload>No file selected</span>
+          </div>
         </div>
       </section>
 
@@ -383,7 +407,7 @@
     { "type": "number", "id": "min_pieces", "label": "Minimum Pieces", "default": 6 },
     { "type": "number", "id": "adult_unit_price", "label": "Mens / Womens Unit Price", "default": 35 },
     { "type": "number", "id": "youth_unit_price", "label": "Youth Unit Price", "default": 35 },
-    { "type": "textarea", "id": "intro_copy", "label": "Intro Copy", "default": "Build your practice short order with separate main short and artwork plus decoration colors, a full size breakdown, and saved pricing details in the same streamlined Crossover Culture order flow." }
+    { "type": "textarea", "id": "intro_copy", "label": "Intro Copy", "default": "Build your practice short order with separate main short and artwork plus decoration colors, a full size breakdown, saved pricing details, and one vector artwork upload in the same streamlined Crossover Culture order flow." }
   ],
   "presets": [{ "name": "Practice Shorts Order" }]
 }
