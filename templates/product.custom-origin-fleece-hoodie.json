@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "main": {
+      "type": "custom-origin-fleece",
+      "settings": {
+        "minimum_order": "6 pieces per order",
+        "contact_url": "/pages/contact",
+        "min_pieces": 6,
+        "hoodie_intro_copy": "Build your Origin Fleece Hoodie order with one stock base color, one artwork color, a full XS-3XL size breakdown, and one vector artwork upload in a production-ready form.",
+        "jogger_intro_copy": "Build your Origin Fleece Jogger order with one stock base color, one artwork color, a full XS-3XL size breakdown, and one vector artwork upload in a production-ready form."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
