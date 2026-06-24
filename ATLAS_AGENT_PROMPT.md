@@ -19,6 +19,11 @@ Your job:
 5. After implementation, test homepage, collection pages, standard product pages, and protected custom product pages.
 6. If a collection handle or product URL does not match the repo assumptions, stop and report the mismatch instead of guessing.
 
+Product template style memory:
+- Whenever creating or updating a custom product template, match the liquid-glass look used by the varsity sock and fleece hoodie templates.
+- Product pages should use translucent white glass panels, saturated blur, soft highlight sheens, rounded glass controls, subtle inner highlights, and low shadow depth.
+- Apparel templates should inherit the shared glass layer from assets/custom-shooting-shirt.css. Team uniform templates should keep the matching glass layer from assets/team-order-form.css.
+
 Safe storefront shell files to use:
 - assets/crossover-culture-storefront.css
 - assets/crossover-culture-storefront.js
@@ -37,10 +42,14 @@ Protected files you must not modify:
 - templates/product.custom-shooting-shirt.json
 - templates/product.custom-travel-gear.json
 - templates/product.custom-polo.json
+- templates/product.custom-practice-shorts.json
+- templates/product.custom-varsity-sock.json
 - sections/team-order-form.liquid
 - sections/custom-shooting-shirt.liquid
 - sections/custom-travel-gear.liquid
 - sections/custom-polo.liquid
+- sections/custom-practice-shorts.liquid
+- sections/custom-varsity-sock.liquid
 - assets/team-order-form.css
 - assets/team-order-form.js
 - assets/custom-shooting-shirt.css
@@ -49,6 +58,10 @@ Protected files you must not modify:
 - assets/custom-travel-gear.js
 - assets/custom-polo.css
 - assets/custom-polo.js
+- assets/custom-practice-shorts.css
+- assets/custom-practice-shorts.js
+- assets/custom-varsity-sock.css
+- assets/custom-varsity-sock.js
 - snippets/team-feature-icons.liquid
 - snippets/team-size-guide.liquid
 

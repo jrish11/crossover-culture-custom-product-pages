@@ -4,7 +4,7 @@
       "type": "cc-homepage-shell",
       "settings": {
         "render_shell_chrome": true,
-        "show_hero_copy": true,
+        "show_hero_copy": false,
         "announcement_text": "Premium custom teamwear. Built to represent.",
         "minimum_order_text": "Minimum order: 6 pieces per style",
         "support_text": "Expert support. Fast mockups.",

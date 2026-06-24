@@ -6,14 +6,13 @@
   assign current_variant = product.selected_or_first_available_variant
   assign featured_image = product.featured_image | default: product.images.first
   assign min_pieces = section.settings.min_pieces | default: 1
-  assign unit_price = section.settings.unit_price | default: 12
   if min_pieces < 1
     assign min_pieces = 1
   endif
 
   assign product_style = 'Base Layer'
   assign garment_label = 'Varsity Sock'
-  assign unit_price_cents = unit_price | times: 100
+  assign unit_price_cents = current_variant.price
   assign unit_price_display = unit_price_cents | money
   assign display_price = 'Mens / Womens / Youth ' | append: unit_price_display | append: ' each'
   assign total_label = 'Estimated Total'
@@ -372,7 +371,6 @@
   "tag": "section",
   "class": "custom-varsity-sock-section",
   "settings": [
-    { "type": "number", "id": "unit_price", "label": "Unit Price", "default": 12 },
     { "type": "number", "id": "min_pieces", "label": "Minimum Pairs", "default": 1 },
     { "type": "textarea", "id": "intro_copy", "label": "Intro Copy", "default": "Build your varsity sock order with one stock color selection, a full size breakdown, required vector logo upload, and saved pricing details in the same streamlined Crossover Culture order flow." }
   ],

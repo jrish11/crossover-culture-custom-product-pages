@@ -2,7 +2,6 @@
   const COLOR_OPTIONS = {
     Base: [
       { name: 'Black', value: '#111111' },
-      { name: 'Light Grey', value: '#E5E5E5' },
       { name: 'Heather Grey', value: '#C8C8C2' },
       { name: 'Charcoal', value: '#676767' },
       { name: 'Team Red', value: '#C63737' },
@@ -16,77 +15,82 @@
       { name: 'Maroon', value: '#6F263D' },
       { name: 'Team Red', value: '#C63737' },
       { name: 'Red', value: '#D73B32' },
+      { name: 'Bright Pink', value: '#B04A8B' },
+      { name: 'Light Pink', value: '#B6849A' },
       { name: 'Purple', value: '#52426F' },
       { name: 'Team Navy', value: '#203A72' },
       { name: 'Team Royal', value: '#4056B4' },
       { name: 'Atomic Blue', value: '#4F8FB4' },
       { name: 'Bright Blue', value: '#78AFCF' },
       { name: 'Forest Green', value: '#4F6E54' },
-      { name: 'Orange', value: '#C46A3A' },
+      { name: 'Kelly Green', value: '#3F7B4B' },
+      { name: 'Bright Green', value: '#6B8E45' },
+      { name: 'Texas Orange', value: '#A35F3E' },
+      { name: 'Bright Orange', value: '#B54F35' },
+      { name: 'Orange', value: '#B45A3F' },
       { name: 'Gold Yellow', value: '#B08D2F' },
       { name: 'Yellow', value: '#B7A82F' },
+      { name: 'Vegas Gold', value: '#78704E' },
       { name: 'Brown', value: '#6A5B52' }
     ]
   };
 
   const DEFAULT_COLORS = {
-    Base: { hex: '#111111', name: 'Black', apply: 'Applies to the main garment body.' },
-    Artwork: { hex: '#FFFFFF', name: 'White', apply: 'Applies to the logo, wording, and artwork placements.' }
+    Base: { hex: '#111111', name: 'Black', apply: 'Applies to the main fleece body.' },
+    Artwork: { hex: '#FFFFFF', name: 'White', apply: 'Applies to the logo and artwork placements.' }
   };
-
-  const VECTOR_EXTENSIONS = ['svg', 'ai', 'eps'];
 
   const normalizeHex = (value) => {
-    const stripped = value.toUpperCase().replace(/[^0-9A-F]/g, '').slice(0, 6);
-    return stripped ? `#${stripped}` : '#';
+    const raw = String(value || '').trim().replace(/[^0-9a-fA-F]/g, '').slice(0, 6);
+    if (raw.length !== 6) {
+      return null;
+    }
+    return `#${raw.toUpperCase()}`;
   };
-
-  const isValidHex = (value) => /^#[0-9A-F]{6}$/.test(value);
-
-  const getPalette = (target) => COLOR_OPTIONS[target] || [];
-
-  const getColorName = (target, hex) => getPalette(target).find((color) => color.value === hex)?.name || 'Custom';
 
   const formatColorLabel = (hex, name) => `${hex} (${name})`;
 
-  const getFileExtension = (filename) => {
-    const parts = filename.split('.');
-    return parts.length > 1 ? parts.pop().toLowerCase() : '';
+  const formatMoney = (cents) => {
+    const amount = cents / 100;
+    return amount.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    });
+  };
+
+  const getColorName = (target, hex) => {
+    const match = COLOR_OPTIONS[target].find((option) => option.value.toUpperCase() === hex.toUpperCase());
+    return match ? match.name : 'Custom';
   };
 
   const initializeSection = (section) => {
     const minPieces = Math.max(parseInt(section.dataset.minPieces || '6', 10) || 6, 6);
     const unitPriceCents = Math.max(parseInt(section.dataset.unitPriceCents || '0', 10) || 0, 0);
+    const expectedUnitPriceCents = Math.max(parseInt(section.dataset.expectedUnitPriceCents || '0', 10) || 0, 0);
+    const expectedUnitPriceLabel = section.dataset.expectedUnitPriceLabel || formatMoney(expectedUnitPriceCents);
 
     const mainImage = section.querySelector('[data-main-image]');
     const thumbnails = Array.from(section.querySelectorAll('[data-gallery-thumb]'));
-    const form = section.querySelector('[data-travel-gear-form]');
+    const form = section.querySelector('[data-elevate-fleece-form]');
     const cartQuantityInput = section.querySelector('[data-cart-quantity]');
-    const wordingInput = section.querySelector('[data-team-wording]');
-    const wordingCount = section.querySelector('[data-wording-count]');
-    const fontSelect = section.querySelector('[data-font-select]');
-    const fontSummary = section.querySelector('[data-summary-font]');
     const totalPiecesProperty = section.querySelector('[data-total-pieces-property]');
     const sizeBreakdownProperty = section.querySelector('[data-size-breakdown-property]');
     const calculatedTotalProperty = section.querySelector('[data-calculated-total-property]');
     const quantityInputs = Array.from(section.querySelectorAll('[data-size-quantity]'));
-    const uploadInput = section.querySelector('[data-vector-upload]');
-    const uploadName = section.querySelector('[data-upload-name]');
     const errorMessage = section.querySelector('[data-form-message="error"]');
-    const colorPicker = section.querySelector('[data-color-picker]');
-    const colorHexInput = section.querySelector('[data-color-hex]');
-    const colorPreview = section.querySelector('[data-color-preview]');
     const colorApplyCopy = section.querySelector('[data-color-apply-copy]');
     const activeColorDisplay = section.querySelector('[data-active-color-display]');
     const colorTargetButtons = Array.from(section.querySelectorAll('[data-color-target-button]'));
     const colorSwatches = Array.from(section.querySelectorAll('[data-color-swatch]'));
     const swatchGroups = Array.from(section.querySelectorAll('[data-color-group]'));
+    const colorPickers = Array.from(section.querySelectorAll('[data-color-picker]'));
+    const colorHexInputs = Array.from(section.querySelectorAll('[data-color-hex-input]'));
     const resetColorsButton = section.querySelector('[data-reset-colors]');
     const addToCartButton = section.querySelector('[data-add-to-cart]');
-    const submittingLabel = addToCartButton?.dataset.submittingLabel || 'Adding Travel Gear Order...';
-    const wordingSummary = section.querySelector('[data-summary-wording]');
+    const submittingLabel = addToCartButton?.dataset.submittingLabel || 'Adding Fleece Order...';
     const totalPiecesSummary = section.querySelector('[data-summary-total-pieces]');
-    const requiresTeamWording = Boolean(wordingInput);
+    const sizeBreakdownSummary = section.querySelector('[data-summary-size-breakdown]');
+    const orderTotalSummary = section.querySelector('[data-summary-order-total]');
     const colorPropertyInputs = {
       Base: section.querySelector('[data-color-property="Base"]'),
       Artwork: section.querySelector('[data-color-property="Artwork"]')
@@ -100,6 +104,10 @@
       Artwork: section.querySelector('[data-summary-color="Artwork"]')
     };
 
+    if (!form) {
+      return;
+    }
+
     const colorState = {
       Base: { ...DEFAULT_COLORS.Base },
       Artwork: { ...DEFAULT_COLORS.Artwork }
@@ -107,56 +115,35 @@
 
     let activeColorTarget = 'Base';
 
-    const getApplyCopy = (target) => {
-      const matchingButton = colorTargetButtons.find((button) => button.dataset.colorTarget === target);
-      return matchingButton?.dataset.colorApplyCopy || DEFAULT_COLORS[target].apply;
+    const colorPickerMap = {
+      Base: section.querySelector('[data-color-picker][data-color-target-scope="Base"]'),
+      Artwork: section.querySelector('[data-color-picker][data-color-target-scope="Artwork"]')
     };
 
-    colorState.Base.apply = getApplyCopy('Base');
-    colorState.Artwork.apply = getApplyCopy('Artwork');
+    const colorHexInputMap = {
+      Base: section.querySelector('[data-color-hex-input][data-color-target-scope="Base"]'),
+      Artwork: section.querySelector('[data-color-hex-input][data-color-target-scope="Artwork"]')
+    };
 
-    const setMessage = (type, message) => {
-      if (type === 'error') {
-        errorMessage.textContent = message;
-        errorMessage.hidden = false;
+    const setMessage = (message) => {
+      if (!errorMessage) {
         return;
       }
 
-      errorMessage.hidden = true;
+      if (!message) {
+        errorMessage.hidden = true;
+        errorMessage.textContent = '';
+        return;
+      }
+
+      errorMessage.textContent = message;
+      errorMessage.hidden = false;
     };
 
     const clearFieldErrors = () => {
       section.querySelectorAll('.shooting-shirt-section__field-error').forEach((field) => {
         field.classList.remove('shooting-shirt-section__field-error');
       });
-    };
-
-    const formatMoney = (cents) => {
-      const amount = cents / 100;
-      return amount.toLocaleString('en-US', {
-        style: 'currency',
-        currency: 'USD'
-      });
-    };
-
-    const updateWordingCount = () => {
-      if (!wordingInput) {
-        return;
-      }
-
-      const length = wordingInput.value.length;
-      if (wordingCount) {
-        wordingCount.textContent = `${length}/24`;
-      }
-      if (wordingSummary) {
-        wordingSummary.textContent = wordingInput.value.trim() || 'Not entered yet';
-      }
-    };
-
-    const updateFontSummary = () => {
-      if (fontSelect && fontSummary) {
-        fontSummary.textContent = fontSelect.value || 'ATHLETIC';
-      }
     };
 
     const buildSizeBreakdown = () => quantityInputs.reduce((entries, input) => {
@@ -167,16 +154,21 @@
       return entries;
     }, []);
 
-    const updateTotalPieces = () => {
+    const syncSizeSummary = () => {
+      const entries = buildSizeBreakdown();
       const total = quantityInputs.reduce((sum, input) => {
         const quantity = Math.max(parseInt(input.value || '0', 10) || 0, 0);
         return sum + quantity;
       }, 0);
+      const totalLabel = `${total} piece${total === 1 ? '' : 's'}`;
+      const totalMoney = formatMoney(total * unitPriceCents);
 
       totalPiecesProperty.value = String(total);
-      totalPiecesSummary.textContent = `${total} piece${total === 1 ? '' : 's'}`;
-      if (calculatedTotalProperty) {
-        calculatedTotalProperty.value = formatMoney(total * unitPriceCents);
+      calculatedTotalProperty.value = totalMoney;
+      totalPiecesSummary.textContent = totalLabel;
+      sizeBreakdownSummary.textContent = entries.length ? entries.join(' | ') : 'Not entered yet';
+      if (orderTotalSummary) {
+        orderTotalSummary.textContent = totalMoney;
       }
     };
 
@@ -184,7 +176,7 @@
       const current = colorState[activeColorTarget];
       colorSwatches.forEach((swatch) => {
         const sameTarget = swatch.dataset.colorTargetScope === activeColorTarget;
-        const isMatch = sameTarget && swatch.dataset.colorValue === current.hex && swatch.dataset.colorName === current.name;
+        const isMatch = sameTarget && swatch.dataset.colorValue?.toUpperCase() === current.hex.toUpperCase();
         swatch.classList.toggle('is-active', isMatch);
         swatch.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
       });
@@ -192,7 +184,6 @@
 
     const refreshColorEditor = () => {
       const current = colorState[activeColorTarget];
-
       colorTargetButtons.forEach((button) => {
         const isActive = button.dataset.colorTarget === activeColorTarget;
         button.classList.toggle('is-active', isActive);
@@ -204,72 +195,66 @@
       });
 
       activeColorDisplay.textContent = formatColorLabel(current.hex, current.name);
-      colorApplyCopy.textContent = current.apply;
-      colorHexInput.value = current.hex;
-      colorPicker.value = isValidHex(current.hex) ? current.hex : '#000000';
-      colorPreview.style.backgroundColor = isValidHex(current.hex) ? current.hex : '#FFFFFF';
+      if (colorApplyCopy) {
+        colorApplyCopy.textContent = current.apply;
+      }
       refreshSwatches();
     };
 
-    const commitColorState = (target, rawHex, forcedName) => {
-      const normalizedHex = normalizeHex(rawHex);
-      const valid = isValidHex(normalizedHex);
-      const name = forcedName || (valid ? getColorName(target, normalizedHex) : 'Custom');
-      const label = valid ? formatColorLabel(normalizedHex, name) : 'Invalid HEX';
+    const syncColorInputs = (target) => {
+      if (colorPickerMap[target]) {
+        colorPickerMap[target].value = colorState[target].hex;
+      }
+      if (colorHexInputMap[target]) {
+        colorHexInputMap[target].value = colorState[target].hex;
+      }
+    };
+
+    const commitColorState = (target, hex, providedName) => {
+      const normalizedHex = normalizeHex(hex);
+      if (!normalizedHex) {
+        return;
+      }
+
+      const name = providedName || getColorName(target, normalizedHex);
+      const label = formatColorLabel(normalizedHex, name);
 
       colorState[target].hex = normalizedHex;
       colorState[target].name = name;
-      colorPropertyInputs[target].value = valid ? formatColorLabel(normalizedHex, name) : '';
+      colorPropertyInputs[target].value = label;
       colorSummaryValues[target].textContent = label;
       orderSummaryColors[target].textContent = label;
+      syncColorInputs(target);
       refreshColorEditor();
     };
 
     const resetColors = () => {
       Object.keys(DEFAULT_COLORS).forEach((target) => {
-        colorState[target] = { ...DEFAULT_COLORS[target], apply: getApplyCopy(target) };
-        colorPropertyInputs[target].value = formatColorLabel(DEFAULT_COLORS[target].hex, DEFAULT_COLORS[target].name);
-        colorSummaryValues[target].textContent = formatColorLabel(DEFAULT_COLORS[target].hex, DEFAULT_COLORS[target].name);
-        orderSummaryColors[target].textContent = formatColorLabel(DEFAULT_COLORS[target].hex, DEFAULT_COLORS[target].name);
+        const color = DEFAULT_COLORS[target];
+        colorState[target] = { ...color };
+        const label = formatColorLabel(color.hex, color.name);
+        colorPropertyInputs[target].value = label;
+        colorSummaryValues[target].textContent = label;
+        orderSummaryColors[target].textContent = label;
+        syncColorInputs(target);
       });
 
       activeColorTarget = 'Base';
       refreshColorEditor();
     };
 
-    const validateVectorUpload = () => {
-      if (!uploadInput.files || !uploadInput.files.length) {
-        uploadName.textContent = 'No file selected';
-        return false;
-      }
-
-      const file = uploadInput.files[0];
-      const extension = getFileExtension(file.name);
-      if (!VECTOR_EXTENSIONS.includes(extension)) {
-        return false;
-      }
-
-      uploadName.textContent = file.name;
-      return true;
-    };
-
     const validateForm = () => {
       clearFieldErrors();
-      setMessage(null);
+      setMessage('');
 
       let isValid = true;
       const sizeEntries = buildSizeBreakdown();
       const totalPieces = parseInt(totalPiecesProperty.value || '0', 10) || 0;
 
-      if (requiresTeamWording && !wordingInput.value.trim()) {
-        wordingInput.classList.add('shooting-shirt-section__field-error');
-        isValid = false;
-      }
-
       Object.keys(colorState).forEach((target) => {
-        if (!isValidHex(colorState[target].hex) || !colorPropertyInputs[target].value) {
-          colorHexInput.classList.add('shooting-shirt-section__field-error');
+        if (!normalizeHex(colorState[target].hex)) {
           isValid = false;
+          colorHexInputMap[target]?.classList.add('shooting-shirt-section__field-error');
         }
       });
 
@@ -280,31 +265,26 @@
         isValid = false;
       }
 
-      if (!validateVectorUpload()) {
-        uploadInput.classList.add('shooting-shirt-section__field-error');
+      if (unitPriceCents <= 0 || unitPriceCents !== expectedUnitPriceCents) {
         isValid = false;
       }
 
       if (!isValid) {
-        const wordingLead = requiresTeamWording ? 'Please enter the team wording, ' : 'Please ';
-        setMessage('error', `${wordingLead}confirm at least ${minPieces} total pieces, choose valid colors, and upload one vector artwork file before adding to cart.`);
+        setMessage(`Please choose valid colors, enter at least ${minPieces} total pieces, and confirm the Shopify variant price is ${expectedUnitPriceLabel} before adding to cart.`);
       }
 
       return isValid;
     };
 
     const submitOrder = () => {
+      syncSizeSummary();
       if (!validateForm()) {
         return;
       }
 
-      const totalPieces = quantityInputs.reduce((sum, input) => sum + (Math.max(parseInt(input.value || '0', 10) || 0, 0)), 0);
+      const totalPieces = parseInt(totalPiecesProperty.value || '0', 10) || 0;
       sizeBreakdownProperty.value = buildSizeBreakdown().join(' | ');
-      totalPiecesProperty.value = String(totalPieces);
-      if (calculatedTotalProperty) {
-        calculatedTotalProperty.value = formatMoney(totalPieces * unitPriceCents);
-      }
-      cartQuantityInput.value = String(Math.max(totalPieces, 1));
+      cartQuantityInput.value = String(totalPieces);
       addToCartButton.disabled = true;
       addToCartButton.textContent = submittingLabel;
       HTMLFormElement.prototype.submit.call(form);
@@ -327,33 +307,11 @@
       });
     }
 
-    if (wordingInput) {
-      wordingInput.addEventListener('input', updateWordingCount);
-      updateWordingCount();
-    }
-
-    if (fontSelect) {
-      fontSelect.addEventListener('change', updateFontSummary);
-      updateFontSummary();
-    }
-
     colorTargetButtons.forEach((button) => {
       button.addEventListener('click', () => {
         activeColorTarget = button.dataset.colorTarget || 'Base';
         refreshColorEditor();
       });
-    });
-
-    colorPicker.addEventListener('input', () => {
-      commitColorState(activeColorTarget, colorPicker.value);
-    });
-
-    colorHexInput.addEventListener('input', () => {
-      commitColorState(activeColorTarget, colorHexInput.value);
-    });
-
-    colorHexInput.addEventListener('blur', () => {
-      commitColorState(activeColorTarget, colorHexInput.value);
     });
 
     colorSwatches.forEach((swatch) => {
@@ -366,6 +324,35 @@
       });
     });
 
+    colorPickers.forEach((input) => {
+      input.addEventListener('input', () => {
+        const target = input.dataset.colorTargetScope || 'Base';
+        commitColorState(target, input.value, getColorName(target, input.value));
+      });
+    });
+
+    colorHexInputs.forEach((input) => {
+      input.addEventListener('input', () => {
+        input.classList.remove('shooting-shirt-section__field-error');
+        const target = input.dataset.colorTargetScope || 'Base';
+        const normalizedHex = normalizeHex(input.value);
+        if (!normalizedHex) {
+          return;
+        }
+        commitColorState(target, normalizedHex, getColorName(target, normalizedHex));
+      });
+
+      input.addEventListener('blur', () => {
+        const target = input.dataset.colorTargetScope || 'Base';
+        const normalizedHex = normalizeHex(input.value);
+        if (!normalizedHex) {
+          input.value = colorState[target].hex;
+          return;
+        }
+        input.value = normalizedHex;
+      });
+    });
+
     if (resetColorsButton) {
       resetColorsButton.addEventListener('click', resetColors);
     }
@@ -375,25 +362,18 @@
         input.classList.remove('shooting-shirt-section__field-error');
         const nextValue = Math.min(Math.max(parseInt(input.value || '0', 10) || 0, 0), 99);
         input.value = nextValue === 0 ? '' : String(nextValue);
-        updateTotalPieces();
+        syncSizeSummary();
       });
-    });
-
-    updateTotalPieces();
-    refreshColorEditor();
-
-    uploadInput.addEventListener('change', () => {
-      uploadInput.classList.remove('shooting-shirt-section__field-error');
-      if (!validateVectorUpload()) {
-        uploadName.textContent = 'Vector files only: SVG, AI, EPS';
-      }
     });
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       submitOrder();
     });
+
+    syncSizeSummary();
+    resetColors();
   };
 
-  document.querySelectorAll('.travel-gear-section').forEach(initializeSection);
+  document.querySelectorAll('.custom-elevate-fleece-section').forEach(initializeSection);
 })();

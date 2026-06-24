@@ -1,10 +1,10 @@
 .team-order-section {
   --team-order-primary: #111111;
   --team-order-accent: #c8a84b;
-  --team-order-border: #cccccc;
-  --team-order-soft-border: #e9e5dc;
-  --team-order-surface: #faf8f3;
-  --team-order-surface-strong: #f4f0e8;
+  --team-order-border: rgba(79, 72, 62, 0.16);
+  --team-order-soft-border: rgba(255, 255, 255, 0.5);
+  --team-order-surface: rgba(255, 255, 255, 0.34);
+  --team-order-surface-strong: rgba(255, 255, 255, 0.54);
   --team-order-muted: #666666;
   --team-order-error: #cc0000;
   --team-order-success: #1a5c38;
@@ -1027,5 +1027,146 @@
 
   .team-order-section__title {
     font-size: 2rem;
+  }
+}
+
+.team-order-section__main-image-shell,
+.team-order-section__form-card,
+.team-order-section__color-studio,
+.team-order-section__color-summary,
+.team-order-section__roster-table-shell,
+.team-order-section__dropdown,
+.team-order-section__font-card,
+.catalog-size-guide__card {
+  background: rgba(255, 255, 255, 0.34);
+  backdrop-filter: blur(22px) saturate(135%);
+  -webkit-backdrop-filter: blur(22px) saturate(135%);
+  border: 1px solid rgba(255, 255, 255, 0.52);
+  border-radius: 30px;
+  box-shadow:
+    0 20px 45px rgba(31, 28, 23, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  position: relative;
+}
+
+.team-order-section__main-image-shell::before,
+.team-order-section__form-card::before,
+.team-order-section__color-studio::before,
+.team-order-section__color-summary::before,
+.team-order-section__roster-table-shell::before,
+.team-order-section__dropdown::before,
+.team-order-section__font-card::before,
+.catalog-size-guide__card::before {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.56), rgba(255, 255, 255, 0.06));
+  content: "";
+  inset: 0 0 auto 0;
+  height: 48%;
+  pointer-events: none;
+  position: absolute;
+}
+
+.team-order-section__main-image-shell {
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.68), rgba(255, 255, 255, 0.18) 42%, rgba(255, 255, 255, 0.3) 100%);
+  overflow: hidden;
+}
+
+.team-order-section__form-card {
+  overflow: hidden;
+  padding: 4px 18px 18px;
+}
+
+.team-order-section__form-section,
+.team-order-section__form-row {
+  border-top-color: rgba(79, 72, 62, 0.08);
+}
+
+.team-order-section__text-input,
+.team-order-section__select-input,
+.team-order-section__file-input,
+.team-order-section__thumbnail,
+.team-order-section__color-target,
+.team-order-section__style-button,
+.team-order-section__mini-swatch,
+.team-order-section__add-player,
+.team-order-section__dropdown-summary {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(14px) saturate(130%);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  border-radius: 18px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.65),
+    0 12px 28px rgba(31, 28, 23, 0.05);
+}
+
+.team-order-section__color-target.is-active,
+.team-order-section__style-button.is-active,
+.team-order-section__dropdown--font .team-order-section__dropdown-summary {
+  background: var(--team-order-primary);
+  border-color: var(--team-order-primary);
+  color: var(--team-order-white);
+}
+
+.team-order-section__color-summary {
+  gap: 0;
+  overflow: hidden;
+  padding: 4px;
+}
+
+.team-order-section__color-summary-item {
+  background: transparent;
+  border: 0;
+  border-left: 1px solid rgba(79, 72, 62, 0.08);
+  min-height: 0;
+  padding: 12px 14px;
+}
+
+.team-order-section__color-summary-item:first-child {
+  border-left: 0;
+}
+
+.team-order-section__roster-table-shell,
+.team-order-section__dropdown,
+.team-order-section__font-card,
+.catalog-size-guide__card {
+  overflow: hidden;
+}
+
+.team-order-section__roster-table th,
+.catalog-size-guide__table tbody th,
+.catalog-size-guide__table thead tr + tr th {
+  background: rgba(255, 255, 255, 0.34);
+}
+
+.team-order-section__roster-table th,
+.team-order-section__roster-table td,
+.catalog-size-guide__heading,
+.catalog-size-guide__table th,
+.catalog-size-guide__table td,
+.team-order-section__dropdown-content {
+  border-color: rgba(79, 72, 62, 0.08);
+}
+
+.team-order-section__cta,
+.team-order-section__cta-link {
+  border-radius: 999px;
+}
+
+.team-order-section__field-label,
+.team-order-section__color-summary-label,
+.team-order-section__font-card-name,
+.catalog-size-guide__heading {
+  letter-spacing: 0.09em;
+}
+
+@media screen and (max-width: 768px) {
+  .team-order-section__color-summary-item {
+    border-left: 0;
+    border-top: 1px solid rgba(79, 72, 62, 0.08);
+  }
+
+  .team-order-section__color-summary-item:first-child {
+    border-top: 0;
   }
 }

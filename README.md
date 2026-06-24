@@ -12,6 +12,10 @@ If ChatGPT agent mode in Atlas is being used for theme work, start here:
 
 These files are intended to help Atlas implement the premium storefront shell without modifying the protected custom-order systems.
 
+### Product template style standard
+
+All new or updated custom product templates should keep the liquid-glass visual language now used across the product system. Match the socks and fleece hoodie look: translucent white panels, saturated blur, soft highlight sheens, rounded glass controls, subtle inner highlights, and low shadow depth. Use the shared apparel glass layer in `assets/custom-shooting-shirt.css` for apparel-style templates and the matching uniform glass layer in `assets/team-order-form.css` for team uniform templates.
+
 ### Safe storefront shell files
 
 - `assets/crossover-culture-storefront.css`
@@ -32,10 +36,14 @@ These files are intended to help Atlas implement the premium storefront shell wi
 - `templates/product.custom-shooting-shirt.json`
 - `templates/product.custom-travel-gear.json`
 - `templates/product.custom-polo.json`
+- `templates/product.custom-practice-shorts.json`
+- `templates/product.custom-varsity-sock.json`
 - `sections/team-order-form.liquid`
 - `sections/custom-shooting-shirt.liquid`
 - `sections/custom-travel-gear.liquid`
 - `sections/custom-polo.liquid`
+- `sections/custom-practice-shorts.liquid`
+- `sections/custom-varsity-sock.liquid`
 - `assets/team-order-form.css`
 - `assets/team-order-form.js`
 - `assets/custom-shooting-shirt.css`
@@ -44,12 +52,16 @@ These files are intended to help Atlas implement the premium storefront shell wi
 - `assets/custom-travel-gear.js`
 - `assets/custom-polo.css`
 - `assets/custom-polo.js`
+- `assets/custom-practice-shorts.css`
+- `assets/custom-practice-shorts.js`
+- `assets/custom-varsity-sock.css`
+- `assets/custom-varsity-sock.js`
 - `snippets/team-feature-icons.liquid`
 - `snippets/team-size-guide.liquid`
 
 ## Overview
 
-This repo contains Shopify theme files for four custom product-ordering flows:
+This repo contains Shopify theme files for six custom product-ordering flows:
 
 - `team-order-form`
   Custom team uniform ordering
@@ -62,6 +74,10 @@ This repo contains Shopify theme files for four custom product-ordering flows:
 - `custom-polo`
   Custom polo ordering for:
   - Enlisted Polo
+- `custom-practice-shorts`
+  Custom practice shorts ordering
+- `custom-varsity-sock`
+  Custom varsity sock ordering
 
 These templates use native Shopify product form submission to `{{ routes.cart_add_url }}`. They do not use AJAX add-to-cart.
 
@@ -77,23 +93,31 @@ custom product/
 │   ├── custom-shooting-shirt.js
 │   ├── custom-polo.css
 │   ├── custom-polo.js
+│   ├── custom-practice-shorts.css
+│   ├── custom-practice-shorts.js
 │   ├── custom-travel-gear.css
 │   ├── custom-travel-gear.js
+│   ├── custom-varsity-sock.css
+│   ├── custom-varsity-sock.js
 │   ├── team-order-form.css
 │   └── team-order-form.js
 ├── sections/
 │   ├── custom-polo.liquid
+│   ├── custom-practice-shorts.liquid
 │   ├── custom-shooting-shirt.liquid
 │   ├── custom-travel-gear.liquid
+│   ├── custom-varsity-sock.liquid
 │   └── team-order-form.liquid
 ├── snippets/
 │   ├── team-feature-icons.liquid
 │   └── team-size-guide.liquid
 └── templates/
     ├── product.custom-polo.json
+    ├── product.custom-practice-shorts.json
     ├── product.custom-shooting-shirt.json
     ├── product.custom-team-uniform.json
-    └── product.custom-travel-gear.json
+    ├── product.custom-travel-gear.json
+    └── product.custom-varsity-sock.json
 ```
 
 ## Files That Matter Most
@@ -122,6 +146,18 @@ custom product/
   Polo-specific layout adjustments on top of the shared apparel layout.
 - `assets/custom-polo.js`
   Polo gallery, color, size, validation, and submit behavior.
+- `sections/custom-practice-shorts.liquid`
+  Main practice shorts product section.
+- `assets/custom-practice-shorts.css`
+  Practice-shorts-specific styling on top of the shared apparel layout.
+- `assets/custom-practice-shorts.js`
+  Practice shorts color, size, pricing, validation, and submit behavior.
+- `sections/custom-varsity-sock.liquid`
+  Main varsity sock product section.
+- `assets/custom-varsity-sock.css`
+  Varsity-sock-specific styling on top of the shared apparel layout.
+- `assets/custom-varsity-sock.js`
+  Varsity sock color, size, pricing, validation, and submit behavior.
 - `templates/product.custom-team-uniform.json`
   Product template that mounts `team-order-form`.
 - `templates/product.custom-shooting-shirt.json`
@@ -130,6 +166,10 @@ custom product/
   Product template that mounts `custom-travel-gear`.
 - `templates/product.custom-polo.json`
   Product template that mounts `custom-polo`.
+- `templates/product.custom-practice-shorts.json`
+  Product template that mounts `custom-practice-shorts`.
+- `templates/product.custom-varsity-sock.json`
+  Product template that mounts `custom-varsity-sock`.
 
 ## Shopify Installation
 
@@ -140,10 +180,14 @@ custom product/
    - `sections/custom-shooting-shirt.liquid`
    - `sections/custom-travel-gear.liquid`
    - `sections/custom-polo.liquid`
+   - `sections/custom-practice-shorts.liquid`
+   - `sections/custom-varsity-sock.liquid`
    - `templates/product.custom-team-uniform.json`
    - `templates/product.custom-shooting-shirt.json`
    - `templates/product.custom-travel-gear.json`
    - `templates/product.custom-polo.json`
+   - `templates/product.custom-practice-shorts.json`
+   - `templates/product.custom-varsity-sock.json`
    - `assets/team-order-form.css`
    - `assets/team-order-form.js`
    - `assets/custom-shooting-shirt.css`
@@ -152,6 +196,10 @@ custom product/
    - `assets/custom-polo.js`
    - `assets/custom-travel-gear.css`
    - `assets/custom-travel-gear.js`
+   - `assets/custom-practice-shorts.css`
+   - `assets/custom-practice-shorts.js`
+   - `assets/custom-varsity-sock.css`
+   - `assets/custom-varsity-sock.js`
    - `snippets/team-size-guide.liquid`
    - `snippets/team-feature-icons.liquid`
 4. Save the files.
@@ -171,6 +219,10 @@ Assign each product to the matching template in the Shopify product admin:
 - `custom-polo`
   Use for:
   - Enlisted Polo
+- `custom-practice-shorts`
+  Use for custom practice shorts products.
+- `custom-varsity-sock`
+  Use for custom varsity sock products.
 
 Do not assign `custom-travel-gear` to polo products. Polo has its own dedicated template.
 
@@ -225,9 +277,26 @@ Configured through `product.custom-polo.json` / `custom-polo`:
 - `Minimum Pieces`
 - `Intro Copy`
 
+### Practice Shorts
+
+Configured through `product.custom-practice-shorts.json` / `custom-practice-shorts`:
+
+- `Minimum Pieces`
+- `Mens / Womens Unit Price`
+- `Youth Unit Price`
+- `Intro Copy`
+
+### Varsity Sock
+
+Configured through `product.custom-varsity-sock.json` / `custom-varsity-sock`:
+
+- `Unit Price`
+- `Minimum Pairs`
+- `Intro Copy`
+
 ## Runtime Behavior
 
-All four flows:
+All six flows:
 
 - submit through the native Shopify product form
 - store custom selections as line item properties
@@ -297,6 +366,28 @@ Total Pieces: 6
 Artwork Upload: [uploaded vector file]
 ```
 
+### Practice Shorts
+
+```text
+Short Color: #111111 (Black)
+Artwork + Decoration Color: #FFFFFF (White)
+Size Breakdown: Mens M x 6 | Youth YL x 2
+Total Pieces: 8
+Calculated Order Total: $280.00
+Artwork Upload: [uploaded vector file]
+```
+
+### Varsity Sock
+
+```text
+Sock Color: #111111 (Black)
+Sock Color Code: A3-3-BLK
+Size Breakdown: Medium x 6 | Large x 6
+Total Pairs: 12
+Calculated Order Total: $144.00
+Logo Upload: [uploaded vector file]
+```
+
 ## Cart Theme Requirement
 
 The theme cart must render line item properties and uploaded file links. If the cart hides `item.properties`, the custom order details will still submit, but the customer and staff will not see them in the cart UI.
@@ -308,6 +399,8 @@ The theme cart must render line item properties and uploaded file links. If the 
    - `custom-shooting-shirt`
    - `custom-travel-gear`
    - `custom-polo`
+   - `custom-practice-shorts`
+   - `custom-varsity-sock`
 2. Confirm the gallery thumbnails swap the main image.
 3. Confirm all required fields block submission when empty.
 4. Confirm invalid upload types are rejected.

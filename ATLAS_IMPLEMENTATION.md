@@ -12,6 +12,10 @@ Use Atlas only against a duplicated Shopify theme, never the live theme first.
 
 Atlas should use these files from this repo:
 
+## Product Template Style Standard
+
+All new or updated custom product templates should preserve the liquid-glass look used by the varsity sock and fleece hoodie templates. Use translucent white glass panels, saturated blur, soft highlight sheens, rounded glass controls, subtle inner highlights, and low shadow depth. Apparel templates should inherit from the shared glass layer in `assets/custom-shooting-shirt.css`; team uniform templates should use the matching glass layer in `assets/team-order-form.css`.
+
 ### Safe storefront shell files to copy into the duplicate theme
 
 - `assets/crossover-culture-storefront.css`
@@ -40,10 +44,14 @@ These are protected custom-order system files and must remain untouched:
 - `templates/product.custom-shooting-shirt.json`
 - `templates/product.custom-travel-gear.json`
 - `templates/product.custom-polo.json`
+- `templates/product.custom-practice-shorts.json`
+- `templates/product.custom-varsity-sock.json`
 - `sections/team-order-form.liquid`
 - `sections/custom-shooting-shirt.liquid`
 - `sections/custom-travel-gear.liquid`
 - `sections/custom-polo.liquid`
+- `sections/custom-practice-shorts.liquid`
+- `sections/custom-varsity-sock.liquid`
 - `assets/team-order-form.css`
 - `assets/team-order-form.js`
 - `assets/custom-shooting-shirt.css`
@@ -52,6 +60,10 @@ These are protected custom-order system files and must remain untouched:
 - `assets/custom-travel-gear.js`
 - `assets/custom-polo.css`
 - `assets/custom-polo.js`
+- `assets/custom-practice-shorts.css`
+- `assets/custom-practice-shorts.js`
+- `assets/custom-varsity-sock.css`
+- `assets/custom-varsity-sock.js`
 - `snippets/team-feature-icons.liquid`
 - `snippets/team-size-guide.liquid`
 

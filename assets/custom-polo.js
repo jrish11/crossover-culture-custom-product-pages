@@ -48,6 +48,7 @@
 
   const initializeSection = (section) => {
     const minPieces = Math.max(parseInt(section.dataset.minPieces || '6', 10) || 6, 6);
+    const unitPriceCents = Math.max(parseInt(section.dataset.unitPriceCents || '0', 10) || 0, 0);
 
     const mainImage = section.querySelector('[data-main-image]');
     const thumbnails = Array.from(section.querySelectorAll('[data-gallery-thumb]'));
@@ -59,6 +60,7 @@
     const fontSummary = section.querySelector('[data-summary-font]');
     const totalPiecesProperty = section.querySelector('[data-total-pieces-property]');
     const sizeBreakdownProperty = section.querySelector('[data-size-breakdown-property]');
+    const calculatedTotalProperty = section.querySelector('[data-calculated-total-property]');
     const quantityInputs = Array.from(section.querySelectorAll('[data-size-quantity]'));
     const errorMessage = section.querySelector('[data-form-message="error"]');
     const colorPicker = section.querySelector('[data-color-picker]');
@@ -118,6 +120,14 @@
       });
     };
 
+    const formatMoney = (cents) => {
+      const amount = cents / 100;
+      return amount.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD'
+      });
+    };
+
     const updateWordingCount = () => {
       const length = wordingInput.value.length;
       wordingCount.textContent = `${length}/24`;
@@ -146,6 +156,9 @@
 
       totalPiecesProperty.value = String(total);
       totalPiecesSummary.textContent = `${total} piece${total === 1 ? '' : 's'}`;
+      if (calculatedTotalProperty) {
+        calculatedTotalProperty.value = formatMoney(total * unitPriceCents);
+      }
     };
 
     const refreshSwatches = () => {
@@ -247,6 +260,9 @@
       const totalPieces = quantityInputs.reduce((sum, input) => sum + (Math.max(parseInt(input.value || '0', 10) || 0, 0)), 0);
       sizeBreakdownProperty.value = buildSizeBreakdown().join(' | ');
       totalPiecesProperty.value = String(totalPieces);
+      if (calculatedTotalProperty) {
+        calculatedTotalProperty.value = formatMoney(totalPieces * unitPriceCents);
+      }
       cartQuantityInput.value = String(Math.max(totalPieces, 1));
       addToCartButton.disabled = true;
       addToCartButton.textContent = submittingLabel;

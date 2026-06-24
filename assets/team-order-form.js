@@ -114,6 +114,7 @@
   const initializeSection = (section) => {
     const sectionId = section.dataset.sectionId || 'section';
     const minPlayers = Math.max(parseInt(section.dataset.minPlayers || '6', 10) || 6, 6);
+    const unitPriceCents = Math.max(parseInt(section.dataset.unitPriceCents || '0', 10) || 0, 0);
 
     const mainImage = section.querySelector('[data-main-image]');
     const thumbnails = Array.from(section.querySelectorAll('[data-gallery-thumb]'));
@@ -126,6 +127,7 @@
     const cartQuantityInput = section.querySelector('[data-cart-quantity]');
     const rosterPropertyInput = section.querySelector('[data-roster-property]');
     const playerCountPropertyInput = section.querySelector('[data-player-count-property]');
+    const calculatedTotalPropertyInput = section.querySelector('[data-calculated-total-property]');
     const styleInput = section.querySelector('[data-style-value]');
     const styleButtons = Array.from(section.querySelectorAll('[data-style-button]'));
     const uploadInput = section.querySelector('[data-vector-upload]');
@@ -171,6 +173,14 @@
     const clearFieldErrors = () => {
       section.querySelectorAll('.team-order-section__field-error').forEach((field) => {
         field.classList.remove('team-order-section__field-error');
+      });
+    };
+
+    const formatMoney = (cents) => {
+      const amount = cents / 100;
+      return amount.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD'
       });
     };
 
@@ -357,6 +367,9 @@
       rosterPropertyInput.value = rosterEntries.join(' | ');
       playerCountPropertyInput.value = String(rosterEntries.length);
       cartQuantityInput.value = String(Math.max(rosterEntries.length, 1));
+      if (calculatedTotalPropertyInput) {
+        calculatedTotalPropertyInput.value = formatMoney(rosterEntries.length * unitPriceCents);
+      }
       return rosterEntries;
     };
 

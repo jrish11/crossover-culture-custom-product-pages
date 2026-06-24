@@ -14,19 +14,28 @@
 
   assign product_style = 'Enlisted'
   assign garment_label = 'Practice Shorts'
+  assign variant_unit_price_cents = current_variant.price
   assign adult_unit_price_cents = adult_unit_price | times: 100
   assign youth_unit_price_cents = youth_unit_price | times: 100
   assign adult_unit_price_display = adult_unit_price_cents | money
   assign youth_unit_price_display = youth_unit_price_cents | money
-  assign billing_mode = 'Estimated total saved for review'
+  assign can_sync_checkout_quantity = false
+  assign pricing_issue = ''
+  if adult_unit_price_cents == youth_unit_price_cents and adult_unit_price_cents == variant_unit_price_cents
+    assign can_sync_checkout_quantity = true
+  elsif adult_unit_price_cents != youth_unit_price_cents
+    assign pricing_issue = 'Mixed adult and youth pricing cannot be charged automatically from one Shopify variant.'
+  else
+    assign pricing_issue = 'Shopify variant price must match the configured flat unit price before checkout can work correctly.'
+  endif
+  assign billing_mode = 'Checkout blocked until pricing is aligned'
   assign total_label = 'Estimated Total'
-  assign live_pricing_copy = 'Estimated total updates as sizes are entered.'
-  assign rules_copy = 'Minimum order: ' | append: min_pieces | append: ' pieces. Short color, artwork plus decoration color, size breakdown, pricing details, and notes are submitted with the order for production review.'
-  if adult_unit_price_cents == youth_unit_price_cents
+  assign live_pricing_copy = 'Estimated total before tax and discounts updates as sizes are entered. Checkout is disabled until Shopify pricing is aligned for this page.'
+  assign rules_copy = 'Minimum order: ' | append: min_pieces | append: ' pieces. Short color, artwork plus decoration color, size breakdown, pricing details, and notes are submitted with the order for production review. Displayed totals are before tax and discounts.'
+  if can_sync_checkout_quantity
     assign billing_mode = 'Shopify checkout quantity synced to total pieces'
-    assign total_label = 'Order Total'
-    assign live_pricing_copy = 'Order total updates as sizes are entered. Shopify checkout quantity syncs to total pieces.'
-    assign rules_copy = 'Minimum order: ' | append: min_pieces | append: ' pieces. Short color, artwork plus decoration color, size breakdown, pricing details, and notes are submitted with the order. Shopify checkout quantity syncs to total pieces.'
+    assign live_pricing_copy = 'Estimated total before tax and discounts updates as sizes are entered. Shopify checkout quantity syncs to total pieces.'
+    assign rules_copy = 'Minimum order: ' | append: min_pieces | append: ' pieces. Short color, artwork plus decoration color, size breakdown, pricing details, and notes are submitted with the order. Displayed totals are before tax and discounts. Shopify checkout quantity syncs to total pieces.'
   endif
   assign display_price = 'Mens / Womens ' | append: adult_unit_price_display | append: ' each | Youth ' | append: youth_unit_price_display | append: ' each'
 %}
@@ -37,6 +46,8 @@
   data-min-pieces="{{ min_pieces }}"
   data-adult-unit-price-cents="{{ adult_unit_price_cents }}"
   data-youth-unit-price-cents="{{ youth_unit_price_cents }}"
+  data-variant-unit-price-cents="{{ variant_unit_price_cents }}"
+  data-pricing-issue="{{ pricing_issue | escape }}"
 >
   <div class="shooting-shirt-section__inner">
     <form
@@ -62,6 +73,7 @@
       <input type="hidden" name="properties[Mens / Womens Pieces]" value="0" data-adult-pieces-property>
       <input type="hidden" name="properties[Youth Pieces]" value="0" data-youth-pieces-property>
       <input type="hidden" name="properties[Calculated Order Total]" value="$0.00" data-calculated-total-property>
+      <input type="hidden" name="properties[Displayed Total Context]" value="Before tax and discounts">
       <input type="hidden" name="properties[Checkout Billing Mode]" value="{{ billing_mode }}">
       <input type="hidden" name="properties[_Company]" value="Crossover Culture">
       <input type="hidden" name="properties[_Order Flow]" value="Practice Shorts Customizer">

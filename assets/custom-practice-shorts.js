@@ -33,7 +33,9 @@
     const minPieces = Math.max(parseInt(section.dataset.minPieces || '6', 10) || 6, 6);
     const adultUnitPriceCents = Math.max(parseInt(section.dataset.adultUnitPriceCents || '0', 10) || 0, 0);
     const youthUnitPriceCents = Math.max(parseInt(section.dataset.youthUnitPriceCents || '0', 10) || 0, 0);
-    const sameUnitPrice = adultUnitPriceCents === youthUnitPriceCents;
+    const variantUnitPriceCents = Math.max(parseInt(section.dataset.variantUnitPriceCents || '0', 10) || 0, 0);
+    const pricingIssue = section.dataset.pricingIssue || '';
+    const canSyncCheckoutQuantity = !pricingIssue && adultUnitPriceCents === youthUnitPriceCents && adultUnitPriceCents === variantUnitPriceCents;
 
     const mainImage = section.querySelector('[data-main-image]');
     const thumbnails = Array.from(section.querySelectorAll('[data-gallery-thumb]'));
@@ -161,17 +163,21 @@
 
       if (livePricingCopy) {
         if (totalPieces > 0) {
-          livePricingCopy.textContent = sameUnitPrice
-            ? `${totalPieces} total pieces = ${formattedTotal} order total.`
-            : `${pricingState.adultPieces} mens / womens + ${pricingState.youthPieces} youth = ${formattedTotal} estimated total.`;
+          livePricingCopy.textContent = pricingIssue
+            ? `${pricingState.adultPieces} mens / womens + ${pricingState.youthPieces} youth = ${formattedTotal} estimated total before tax and discounts. Checkout is disabled until Shopify pricing is aligned.`
+            : canSyncCheckoutQuantity
+            ? `${totalPieces} total pieces = ${formattedTotal} estimated total before tax and discounts.`
+            : `${pricingState.adultPieces} mens / womens + ${pricingState.youthPieces} youth = ${formattedTotal} estimated total before tax and discounts.`;
         } else {
-          livePricingCopy.textContent = sameUnitPrice
-            ? 'Order total updates as sizes are entered. Shopify checkout quantity syncs to total pieces.'
-            : 'Estimated total updates as sizes are entered.';
+          livePricingCopy.textContent = pricingIssue
+            ? 'Checkout is disabled until Shopify pricing is aligned for this page.'
+            : canSyncCheckoutQuantity
+            ? 'Estimated total before tax and discounts updates as sizes are entered. Shopify checkout quantity syncs to total pieces.'
+            : 'Estimated total before tax and discounts updates as sizes are entered.';
         }
       }
 
-      cartQuantityInput.value = String(sameUnitPrice && totalPieces > 0 ? totalPieces : 1);
+      cartQuantityInput.value = String(canSyncCheckoutQuantity && totalPieces > 0 ? totalPieces : 1);
     };
 
     const updateTotalPieces = () => {
@@ -250,8 +256,12 @@
         isValid = false;
       }
 
+      if (pricingIssue) {
+        isValid = false;
+      }
+
       if (!isValid) {
-        setMessage('error', `Please confirm at least ${minPieces} total pieces and choose valid colors before adding to cart.`);
+        setMessage('error', pricingIssue || `Please confirm at least ${minPieces} total pieces and choose valid colors before adding to cart.`);
       }
 
       return isValid;

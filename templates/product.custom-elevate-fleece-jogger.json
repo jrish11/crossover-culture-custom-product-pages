@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "main": {
+      "type": "custom-elevate-fleece",
+      "settings": {
+        "minimum_order": "6 pieces per order",
+        "contact_url": "/pages/contact",
+        "min_pieces": 6,
+        "hoodie_intro_copy": "Build your Elevate Fleece Hoodie order with separate garment and artwork colors, a full XS-3XL size breakdown, and one streamlined order form built for Shopify checkout.",
+        "jogger_intro_copy": "Build your Elevate Fleece Jogger order with separate garment and artwork colors, a full XS-3XL size breakdown, and one streamlined order form built for Shopify checkout."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

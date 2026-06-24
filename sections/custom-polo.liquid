@@ -8,13 +8,14 @@
   assign featured_image = product.featured_image | default: product.images.first
   assign contact_link = section.settings.contact_url | default: '/pages/contact'
   assign min_pieces = section.settings.min_pieces | default: 6
+  assign unit_price_display = current_variant.price | money
   if min_pieces < 6
     assign min_pieces = 6
   endif
 
   assign product_style = 'Enlisted'
   assign garment_label = 'Polo'
-  assign display_price = '$35.00 each'
+  assign display_price = unit_price_display | append: ' each'
   assign intro_copy = section.settings.intro_copy
   assign base_colors = 'Black:#111111,Light Grey:#E5E5E5,Charcoal:#676767,Team Red:#C63737,Team Navy:#203A72,Team Royal:#4056B4' | split: ','
   assign spec_points = '80% cotton / 20% polyester.,Moisture wicking.,Sport shoulder for maximum movement.,Button collar.' | split: ','
@@ -27,6 +28,7 @@
   class="custom-polo-section travel-gear-section shooting-shirt-section"
   data-section-id="{{ section.id }}"
   data-min-pieces="{{ min_pieces }}"
+  data-unit-price-cents="{{ current_variant.price }}"
 >
   <div class="shooting-shirt-section__utility-bar" aria-label="Polo order details">
     <div class="shooting-shirt-section__utility-item">
@@ -80,12 +82,16 @@
       <input type="hidden" name="id" value="{{ current_variant.id }}">
       <input type="hidden" name="quantity" value="1" data-cart-quantity>
       <input type="hidden" name="properties[Requested Unit Price]" value="{{ display_price }}">
+      <input type="hidden" name="properties[Unit Price]" value="{{ unit_price_display }}">
       <input type="hidden" name="properties[Product Style]" value="{{ product_style }}">
       <input type="hidden" name="properties[Garment Type]" value="{{ garment_label }}">
       <input type="hidden" name="properties[Garment Color]" value="#111111 (Black)" data-color-property="Base">
       <input type="hidden" name="properties[Logo / Artwork Color]" value="#FFFFFF (White)" data-color-property="Artwork">
       <input type="hidden" name="properties[Size Breakdown]" value="" data-size-breakdown-property>
       <input type="hidden" name="properties[Total Pieces]" value="0" data-total-pieces-property>
+      <input type="hidden" name="properties[Calculated Order Total]" value="$0.00" data-calculated-total-property>
+      <input type="hidden" name="properties[Displayed Total Context]" value="Before tax and discounts">
+      <input type="hidden" name="properties[Checkout Billing Mode]" value="Shopify checkout quantity synced to total pieces">
       <input type="hidden" name="properties[_Company]" value="Crossover Culture">
       <input type="hidden" name="properties[_Order Flow]" value="Polo Customizer">
       <input type="hidden" name="properties[_Source Product]" value="{{ product.title }}">
